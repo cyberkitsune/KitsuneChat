@@ -18,11 +18,13 @@ public class KitsuneChatCommand implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
 		if (sender instanceof Player) {
-			if (command.getName().equalsIgnoreCase("ch")) {
+			if (command.getName().equalsIgnoreCase("kc")) {
 				if (args.length > 0) {
-					plugin.chans.changeChannel((Player) sender, args[0]);
+					if(args[0] == "chan" && args.length > 1) {
+						plugin.chans.changeChannel((Player) sender, args[1]);
+					}
 				} else {
-					sender.sendMessage(ChatColor.RED+"Usage: /ch [channel]");
+					sender.sendMessage(ChatColor.RED+"[KitsuneChat] Unknown or missing command. See /kc ? for help.");
 				}
 			}
 			return true;
