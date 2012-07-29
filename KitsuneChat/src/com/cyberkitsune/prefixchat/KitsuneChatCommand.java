@@ -20,9 +20,13 @@ public class KitsuneChatCommand implements CommandExecutor {
 		if (sender instanceof Player) {
 			if (command.getName().equalsIgnoreCase("kc")) {
 				if (args.length > 0) {
-					if(args[0].equalsIgnoreCase("party") && args.length > 1) {
-						plugin.party.changeChannel((Player) sender, args[1]);
-					}
+					if(args[0].equalsIgnoreCase("party")) {
+						if(args.length > 1) {
+							plugin.party.changeParty((Player) sender, args[1]);
+						} else {
+							sender.sendMessage(ChatColor.RED+"[KitsuneChat] Please choose a party name!");
+						}
+					} 
 				} else {
 					sender.sendMessage(ChatColor.RED+"[KitsuneChat] Unknown or missing command. See /kc ? for help.");
 				}
