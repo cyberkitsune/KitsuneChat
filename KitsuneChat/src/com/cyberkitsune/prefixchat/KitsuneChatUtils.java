@@ -44,7 +44,7 @@ public class KitsuneChatUtils {
 		output = output.replaceAll("\\{world\\}", context.getPlayer().getWorld().getName());
 		output = output.replaceAll("\\{channel\\}", getChannelName(target, false));
 		output = output.replaceAll("\\{prefix\\}", getChannelName(target, true));
-		output = output.replaceAll("\\{party\\}", (plugin.chans.isInAChannel(context.getPlayer()) ? plugin.chans.getChannelName(context.getPlayer()) : ""));
+		output = output.replaceAll("\\{party\\}", (plugin.party.isInAChannel(context.getPlayer()) ? plugin.party.getChannelName(context.getPlayer()) : ""));
 		target = target.replaceFirst("\\"+getChannelName(target, true), "");
 		output = output.replaceAll("\\{message\\}", target);
 		output = colorizeString(output);

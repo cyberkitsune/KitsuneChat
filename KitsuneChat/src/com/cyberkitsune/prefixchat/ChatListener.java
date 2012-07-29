@@ -62,9 +62,9 @@ public class ChatListener implements Listener {
 			}
 		} else if (evt.getMessage().startsWith(
 				plugin.getConfig().getString("party.prefix"))) {
-			if (plugin.chans.isInAChannel(evt.getPlayer())) {
-				Set<Player> channelPlayers = plugin.chans
-						.getChannelMembers(plugin.chans.getChannelName(evt
+			if (plugin.party.isInAChannel(evt.getPlayer())) {
+				Set<Player> channelPlayers = plugin.party
+						.getChannelMembers(plugin.party.getChannelName(evt
 								.getPlayer()));
 				for (Player plr : channelPlayers) {
 					plr.sendMessage(util.formatChatPrefixes(message, plugin.getConfig().getString("party.sayformat"), evt));

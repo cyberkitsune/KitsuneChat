@@ -9,7 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class KitsuneChat extends JavaPlugin{
 	
 	public Logger mcLog = Logger.getLogger("Minecraft");
-	public ChatChannels chans = new ChatChannels();
+	public ChatParties party = new ChatParties();
 	public KitsuneChatCommand exec = new KitsuneChatCommand(this);
 	
 	

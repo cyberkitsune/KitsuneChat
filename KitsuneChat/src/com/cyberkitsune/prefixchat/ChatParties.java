@@ -9,7 +9,7 @@ import java.util.Set;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-public class ChatChannels {
+public class ChatParties {
 
 	public HashMap<Player, String> channelData = new HashMap<Player, String>();
 	
