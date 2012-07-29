@@ -24,6 +24,7 @@ public class ChatParties {
 				partyData.remove(target);
 				return;
 			}
+			return;
 		}
 		if(!partyData.containsKey(target))
 		{
