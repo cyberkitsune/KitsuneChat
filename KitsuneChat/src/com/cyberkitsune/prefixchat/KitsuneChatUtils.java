@@ -51,31 +51,31 @@ public class KitsuneChatUtils {
 		return output;
 	}
 	
-	public String getChannelName(String chname, boolean displayPrefix) {
+	public String getChannelName(String target, boolean displayPrefix) {
 		if(!displayPrefix) {
-			if(chname.startsWith(plugin.getConfig().getString("global.prefix"))) {
+			if(target.startsWith(plugin.getConfig().getString("global.prefix"))) {
 				return "global";
-			} else if(chname.startsWith(plugin.getConfig().getString("admin.prefix"))) {
+			} else if(target.startsWith(plugin.getConfig().getString("admin.prefix"))) {
 				return "admin";
-			} else if(chname.startsWith(plugin.getConfig().getString("world.prefix"))) {
+			} else if(target.startsWith(plugin.getConfig().getString("world.prefix"))) {
 				return "world";
-			} else if(chname.startsWith(plugin.getConfig().getString("party.prefix"))) {
+			} else if(target.startsWith(plugin.getConfig().getString("party.prefix"))) {
 				return "party";
-			} else if(chname.startsWith(plugin.getConfig().getString("local.prefix"))) {
+			} else if(target.startsWith(plugin.getConfig().getString("local.prefix"))) {
 				return "local";
 			} else {
 				return "local";
 			}
 		} else {
-			if(chname.startsWith(plugin.getConfig().getString("global.prefix"))) {
+			if(target.startsWith(plugin.getConfig().getString("global.prefix"))) {
 				return plugin.getConfig().getString("global.prefix");
-			} else if(chname.startsWith(plugin.getConfig().getString("admin.prefix"))) {
+			} else if(target.startsWith(plugin.getConfig().getString("admin.prefix"))) {
 				return plugin.getConfig().getString("admin.prefix");
-			} else if(chname.startsWith(plugin.getConfig().getString("world.prefix"))) {
+			} else if(target.startsWith(plugin.getConfig().getString("world.prefix"))) {
 				return plugin.getConfig().getString("world.prefix");
-			} else if(chname.startsWith(plugin.getConfig().getString("party.prefix"))) {
+			} else if(target.startsWith(plugin.getConfig().getString("party.prefix"))) {
 				return plugin.getConfig().getString("party.prefix");
-			} else if(chname.startsWith(plugin.getConfig().getString("local.prefix"))) {
+			} else if(target.startsWith(plugin.getConfig().getString("local.prefix"))) {
 				return plugin.getConfig().getString("local.prefix");
 			} else {
 				return plugin.getConfig().getString("local.prefix");
