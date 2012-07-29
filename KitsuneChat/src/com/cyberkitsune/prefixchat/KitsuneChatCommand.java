@@ -20,7 +20,7 @@ public class KitsuneChatCommand implements CommandExecutor {
 		if (sender instanceof Player) {
 			if (command.getName().equalsIgnoreCase("kc")) {
 				if (args.length > 0) {
-					if(args[0] == "chan" && args.length > 1) {
+					if(args[0].equalsIgnoreCase("chan") && args.length > 1) {
 						plugin.chans.changeChannel((Player) sender, args[1]);
 					}
 				} else {

@@ -40,12 +40,13 @@ public class KitsuneChatUtils {
 	
 	public String formatChatPrefixes(String target, String formatString, PlayerChatEvent context) {
 		String output ="";
-		output = formatString.replaceAll("{sender}", context.getPlayer().getDisplayName());
-		output = output.replaceAll("{world}", context.getPlayer().getWorld().getName());
-		output = output.replaceAll("{channel}", getChannelName(target, false));
-		output = output.replaceAll("{prefix}", getChannelName(target, true));
-		output = output.replaceAll("{party}", (plugin.chans.isInAChannel(context.getPlayer()) ? plugin.chans.getChannelName(context.getPlayer()) : ""));
-		output = output.replaceAll("{message}", target);
+		output = formatString.replaceAll("\\{sender\\}", context.getPlayer().getDisplayName());
+		output = output.replaceAll("\\{world\\}", context.getPlayer().getWorld().getName());
+		output = output.replaceAll("\\{channel\\}", getChannelName(target, false));
+		output = output.replaceAll("\\{prefix\\}", getChannelName(target, true));
+		output = output.replaceAll("\\{party\\}", (plugin.chans.isInAChannel(context.getPlayer()) ? plugin.chans.getChannelName(context.getPlayer()) : ""));
+		target = target.replaceFirst("\\"+getChannelName(target, true), "");
+		output = output.replaceAll("\\{message\\}", target);
 		output = colorizeString(output);
 		return output;
 	}

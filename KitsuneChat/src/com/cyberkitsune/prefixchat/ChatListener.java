@@ -37,34 +37,21 @@ public class ChatListener implements Listener {
 		if (evt.getMessage().startsWith(plugin.getConfig().getString("global.prefix"))) {
 			Set<Player> everybody = evt.getRecipients();
 			for (Player plr : everybody) {
-				plr.sendMessage(ChatColor.DARK_AQUA
-						+ "["+evt.getPlayer().getWorld().getName()+"] " + ChatColor.RESET
-						+ prefix
-						+ " "
-						+ message.replaceFirst(
-								"\\"+plugin.getConfig().getString("global.prefix"), ""));
+				plr.sendMessage(
+						util.formatChatPrefixes(message, plugin.getConfig().getString("global.sayformat"), evt));
 			}
 		} else if (evt.getMessage().startsWith(
 				plugin.getConfig().getString("world.prefix"))) {
 			List<Player> worldPlayers = evt.getPlayer().getWorld().getPlayers();
 			for (Player plr : worldPlayers) {
-				plr.sendMessage(ChatColor.GOLD + "["+plugin.getConfig().getString("world.prefix")+"] " + ChatColor.RESET
-						+ prefix
-						+ " " 
-						+ message.replaceFirst(
-								"\\"+plugin.getConfig().getString("world.prefix"), ""));
+				plr.sendMessage(util.formatChatPrefixes(message, plugin.getConfig().getString("world.sayformat"), evt));
 			}
 		} else if (evt.getMessage().startsWith(
 				plugin.getConfig().getString("admin.prefix"))) {
 			if (evt.getPlayer().hasPermission("kitsunechat.adminchat")) {
 				for (Player plr : plugin.getServer().getOnlinePlayers()) {
 					if (plr.hasPermission("kitsunechat.adminchat")) {
-						plr.sendMessage(ChatColor.GREEN
-								+ "[@] " + ChatColor.RESET
-								+ prefix
-								+ " "
-								+ message.replaceFirst("\\"+plugin.getConfig()
-										.getString("admin.prefix"), ""));
+						plr.sendMessage(util.formatChatPrefixes(message, plugin.getConfig().getString("admin.sayformat"), evt));
 					}
 				}
 			} else {
@@ -80,14 +67,7 @@ public class ChatListener implements Listener {
 						.getChannelMembers(plugin.chans.getChannelName(evt
 								.getPlayer()));
 				for (Player plr : channelPlayers) {
-					plr.sendMessage(ChatColor.YELLOW
-							+ "["
-							+ plugin.chans.getChannelName(evt.getPlayer())
-							+ "] " + ChatColor.RESET
-							+ prefix
-							+ " "
-							+ message.replaceFirst("\\"+plugin.getConfig()
-									.getString("party.prefix"), ""));
+					plr.sendMessage(util.formatChatPrefixes(message, plugin.getConfig().getString("party.sayformat"), evt));
 				}
 			} else {
 				evt.getPlayer()
@@ -100,7 +80,7 @@ public class ChatListener implements Listener {
 			Set<Player> local = KitsuneChatUtils.getNearbyPlayers(plugin
 					.getConfig().getInt("local.radius"), evt.getPlayer());
 			for (Player plr : local) {
-				plr.sendMessage(prefix + " " + message);
+				plr.sendMessage(util.formatChatPrefixes(message, plugin.getConfig().getString("local.sayformat"), evt));
 			}
 		}
 
