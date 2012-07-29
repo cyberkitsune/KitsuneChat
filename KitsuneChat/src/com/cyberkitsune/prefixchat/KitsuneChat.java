@@ -60,7 +60,7 @@ public class KitsuneChat extends JavaPlugin{
 	
 	public void loadConfig() {
 		try {
-			this.getConfig().load("KitsuneChat/config.yml");
+			this.getConfig().load(getDataFolder()+"/config.yml");
 		} catch (Exception e) {
 			mcLog.severe("KitsuneChat could not load the config file!!");
 			e.printStackTrace();
