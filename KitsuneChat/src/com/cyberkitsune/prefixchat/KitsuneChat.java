@@ -36,6 +36,14 @@ public class KitsuneChat extends JavaPlugin{
 			config.set("local.prefix", "%");
 			config.set("party.cost", 0);
 			config.set("local.radius", 200);
+			
+			config.set("global.sayformat", "[{world}] {sender}: {message}");
+			config.set("admin.sayformat", "[{prefix}] {sender}: {message}");
+			config.set("world.sayformat", "[{prefix}] {sender}: {message}");
+			config.set("party.sayformat", "[{party}] {sender}: {message}");
+			config.set("local.sayformat", "{sender}: {message}");
+			
+			config.set("version", 1);
 			this.saveConfig();	
 		}
 		loadConfig();

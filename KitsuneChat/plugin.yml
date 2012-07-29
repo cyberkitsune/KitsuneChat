@@ -2,8 +2,8 @@ name: KitsuneChat
 version: 0.2
 main: com.cyberkitsune.prefixchat.KitsuneChat
 commands:
-     ch:
-      description: Change KitsuneChat channel.
+     kc:
+      description: KitsuneChat commands
       
 permissions:
      kitsunechat.adminchat:
