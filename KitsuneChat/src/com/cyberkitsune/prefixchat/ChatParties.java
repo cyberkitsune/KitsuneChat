@@ -10,6 +10,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 public class ChatParties {
+	
+	private KitsuneChat plugin;
+	public ChatParties(KitsuneChat plugin) {
+		this.plugin = plugin;
+	}
 
 	public HashMap<Player, String> partyData = new HashMap<Player, String>();
 	
@@ -41,6 +46,8 @@ public class ChatParties {
 			target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] "+channelPeople.size()+((channelPeople.size() == 1) ? " person " : " people ")+"in the party.");
 			target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] They are: "+memeberList+".");
 		}
+		plugin.dataFile.setUserParty(target, name);
+		
 	}
 	
 	public void notifyParty(String party, String message) {
@@ -62,10 +69,17 @@ public class ChatParties {
 		return partyData.containsKey(target);
 	}
 	
-	public void leaveParty(Player target) {
+	public void leaveParty(Player target, boolean disconnect) {
 		String party = getPartyName(target);
 		notifyParty(party, ChatColor.YELLOW+"[KitsuneChat] "+target.getDisplayName()+" has left "+party+".");
-		partyData.remove(target);
+		if(disconnect) {
+			plugin.dataFile.setUserParty(target, getPartyName(target));
+			partyData.remove(target);
+			
+		} else {
+			partyData.remove(target);
+			plugin.dataFile.setUserParty(target, "");
+		}
 	}
 	
 	public static <T, E> Set<T> getKeysByValue(Map<T, E> map, E value) {

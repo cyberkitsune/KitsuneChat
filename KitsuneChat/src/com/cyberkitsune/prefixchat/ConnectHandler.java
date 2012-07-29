@@ -2,6 +2,7 @@ package com.cyberkitsune.prefixchat;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public class ConnectHandler implements Listener {
@@ -13,9 +14,16 @@ public class ConnectHandler implements Listener {
 	@EventHandler
 	public void onDisconnect(PlayerQuitEvent evt) {
 		if(plugin.party.isInAParty(evt.getPlayer())) {
-			plugin.party.leaveParty(evt.getPlayer());
+			plugin.party.leaveParty(evt.getPlayer(), true);
 		}
 		
+	}
+	
+	@EventHandler
+	public void onConnect(PlayerJoinEvent evt) {
+		if(plugin.dataFile.getPartyDataForUser(evt.getPlayer()) != "")  {
+			plugin.party.changeParty(evt.getPlayer(), plugin.dataFile.getPartyDataForUser(evt.getPlayer()));
+		}
 	}
 
 }

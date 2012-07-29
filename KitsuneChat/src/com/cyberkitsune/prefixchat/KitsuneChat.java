@@ -9,8 +9,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class KitsuneChat extends JavaPlugin{
 	
 	public Logger mcLog = Logger.getLogger("Minecraft");
-	public ChatParties party = new ChatParties();
+	public ChatParties party = new ChatParties(this);
 	public KitsuneChatCommand exec = new KitsuneChatCommand(this);
+	public KitsuneChatUserData dataFile;
 	
 	
 	@Override
@@ -51,6 +52,8 @@ public class KitsuneChat extends JavaPlugin{
 		this.getServer().getPluginManager().registerEvents(new ChatListener(this), this);
 		this.getServer().getPluginManager().registerEvents(new ConnectHandler(this), this);
 		getCommand("kc").setExecutor(exec);
+		dataFile = new KitsuneChatUserData(this);
+		dataFile.loadUserData();
 	}
 	
 	@Override
