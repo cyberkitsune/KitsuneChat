@@ -45,7 +45,7 @@ public class ChatListener implements Listener {
 								"\\"+plugin.getConfig().getString("global.prefix"), ""));
 			}
 		} else if (evt.getMessage().startsWith(
-				plugin.getConfig().getString("world"))) {
+				plugin.getConfig().getString("world.prefix"))) {
 			List<Player> worldPlayers = evt.getPlayer().getWorld().getPlayers();
 			for (Player plr : worldPlayers) {
 				plr.sendMessage(ChatColor.GOLD + "["+plugin.getConfig().getString("world.prefix")+"] " + ChatColor.RESET
