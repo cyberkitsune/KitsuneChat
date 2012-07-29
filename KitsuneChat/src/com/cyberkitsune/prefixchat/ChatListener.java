@@ -29,7 +29,6 @@ public class ChatListener implements Listener {
 	public void playerChat(PlayerChatEvent evt) {
 		evt.setCancelled(true);
 		String message = KitsuneChatUtils.colorizeString(evt.getMessage());
-		String prefix = "<" + evt.getPlayer().getDisplayName() + ">";
 		/*
 		 * So, first split the first char to see what channel it goes to. Then,
 		 * colorize, Finally, send to just the group
