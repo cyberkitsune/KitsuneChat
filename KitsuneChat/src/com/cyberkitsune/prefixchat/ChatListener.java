@@ -12,9 +12,11 @@ import org.bukkit.event.player.PlayerChatEvent;
 public class ChatListener implements Listener {
 
 	private KitsuneChat plugin;
+	private KitsuneChatUtils util;
 
 	public ChatListener(KitsuneChat plugin) {
 		this.plugin = plugin;
+		util = new KitsuneChatUtils(plugin);
 	}
 
 	/**
