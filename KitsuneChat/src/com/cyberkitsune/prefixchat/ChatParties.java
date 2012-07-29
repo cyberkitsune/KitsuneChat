@@ -62,6 +62,12 @@ public class ChatParties {
 		return partyData.containsKey(target);
 	}
 	
+	public void leaveParty(Player target) {
+		String party = getPartyName(target);
+		notifyParty(party, ChatColor.YELLOW+"[KitsuneChat] "+target.getDisplayName()+" has left "+party+".");
+		partyData.remove(target);
+	}
+	
 	public static <T, E> Set<T> getKeysByValue(Map<T, E> map, E value) {
 	     Set<T> keys = new HashSet<T>();
 	     for (Entry<T, E> entry : map.entrySet()) {
