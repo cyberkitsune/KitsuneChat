@@ -29,12 +29,13 @@ public class KitsuneChat extends JavaPlugin{
 			}
 			loadConfig();
 			Configuration config = this.getConfig();
-			config.set("global", "!");
-			config.set("world", "#");
-			config.set("admin", "@");
-			config.set("user", "$");
-			config.set("userprice", 0);
-			config.set("localdist", 200);
+			config.set("global.prefix", "!");
+			config.set("world.prefix", "#");
+			config.set("admin.prefix", "@");
+			config.set("party.prefix", "$");
+			config.set("local.prefix", "%");
+			config.set("party.cost", 0);
+			config.set("local.radius", 200);
 			this.saveConfig();	
 		}
 		loadConfig();

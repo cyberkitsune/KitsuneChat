@@ -32,7 +32,7 @@ public class ChatListener implements Listener {
 		 * So, first split the first char to see what channel it goes to. Then,
 		 * colorize, Finally, send to just the group
 		 */
-		if (evt.getMessage().startsWith(plugin.getConfig().getString("global"))) {
+		if (evt.getMessage().startsWith(plugin.getConfig().getString("global.prefix"))) {
 			Set<Player> everybody = evt.getRecipients();
 			for (Player plr : everybody) {
 				plr.sendMessage(ChatColor.DARK_AQUA
@@ -40,20 +40,20 @@ public class ChatListener implements Listener {
 						+ prefix
 						+ " "
 						+ message.replaceFirst(
-								"\\"+plugin.getConfig().getString("global"), ""));
+								"\\"+plugin.getConfig().getString("global.prefix"), ""));
 			}
 		} else if (evt.getMessage().startsWith(
 				plugin.getConfig().getString("world"))) {
 			List<Player> worldPlayers = evt.getPlayer().getWorld().getPlayers();
 			for (Player plr : worldPlayers) {
-				plr.sendMessage(ChatColor.GOLD + "["+plugin.getConfig().getString("world")+"] " + ChatColor.RESET
+				plr.sendMessage(ChatColor.GOLD + "["+plugin.getConfig().getString("world.prefix")+"] " + ChatColor.RESET
 						+ prefix
 						+ " " 
 						+ message.replaceFirst(
-								"\\"+plugin.getConfig().getString("world"), ""));
+								"\\"+plugin.getConfig().getString("world.prefix"), ""));
 			}
 		} else if (evt.getMessage().startsWith(
-				plugin.getConfig().getString("admin"))) {
+				plugin.getConfig().getString("admin.prefix"))) {
 			if (evt.getPlayer().hasPermission("kitsunechat.adminchat")) {
 				for (Player plr : plugin.getServer().getOnlinePlayers()) {
 					if (plr.hasPermission("kitsunechat.adminchat")) {
@@ -62,7 +62,7 @@ public class ChatListener implements Listener {
 								+ prefix
 								+ " "
 								+ message.replaceFirst("\\"+plugin.getConfig()
-										.getString("admin"), ""));
+										.getString("admin.prefix"), ""));
 					}
 				}
 			} else {
@@ -72,7 +72,7 @@ public class ChatListener implements Listener {
 										+ "You do not have permissions to use admin chat.");
 			}
 		} else if (evt.getMessage().startsWith(
-				plugin.getConfig().getString("user"))) {
+				plugin.getConfig().getString("party.prefix"))) {
 			if (plugin.chans.isInAChannel(evt.getPlayer())) {
 				Set<Player> channelPlayers = plugin.chans
 						.getChannelMembers(plugin.chans.getChannelName(evt
@@ -85,7 +85,7 @@ public class ChatListener implements Listener {
 							+ prefix
 							+ " "
 							+ message.replaceFirst("\\"+plugin.getConfig()
-									.getString("user"), ""));
+									.getString("party.prefix"), ""));
 				}
 			} else {
 				evt.getPlayer()
@@ -96,7 +96,7 @@ public class ChatListener implements Listener {
 
 		} else {
 			Set<Player> local = KitsuneChatUtils.getNearbyPlayers(plugin
-					.getConfig().getInt("localdist"), evt.getPlayer());
+					.getConfig().getInt("local.radius"), evt.getPlayer());
 			for (Player plr : local) {
 				plr.sendMessage(prefix + " " + message);
 			}
