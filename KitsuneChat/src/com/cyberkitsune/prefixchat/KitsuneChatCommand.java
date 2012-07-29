@@ -22,6 +22,11 @@ public class KitsuneChatCommand implements CommandExecutor {
 				if (args.length > 0) {
 					if(args[0].equalsIgnoreCase("party")) {
 						if(args.length > 1) {
+							if(args[1].equalsIgnoreCase("leave"))
+							{
+								plugin.party.leaveParty((Player) sender, false);
+								return true;
+							}
 							plugin.party.changeParty((Player) sender, args[1]);
 						} else {
 							sender.sendMessage(ChatColor.RED+"[KitsuneChat] Please choose a party name!");

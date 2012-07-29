@@ -19,6 +19,12 @@ public class ChatParties {
 	public HashMap<Player, String> partyData = new HashMap<Player, String>();
 	
 	public void changeParty(Player target, String name) {
+		if(name == "") {
+			if(isInAParty(target)) {
+				partyData.remove(target);
+				return;
+			}
+		}
 		if(!partyData.containsKey(target))
 		{
 			partyData.put(target, name);
