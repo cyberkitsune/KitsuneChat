@@ -19,7 +19,7 @@ public class KitsuneChat extends JavaPlugin{
 		if(!(new File(getDataFolder()+"/config.yml").exists())) {
 			mcLog.info("[KitsuneChat] KitsuneChat config does not exist! Creating default config...");
 			if(!(new File(getDataFolder().toString()).isDirectory())) {
-				new File("KitsuneChat").mkdir();
+				new File(getDataFolder().toString()).mkdir();
 			}
 			try {
 				new File(getDataFolder()+"/config.yml").createNewFile();
