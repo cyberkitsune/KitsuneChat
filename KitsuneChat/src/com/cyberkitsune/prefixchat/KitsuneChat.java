@@ -49,6 +49,7 @@ public class KitsuneChat extends JavaPlugin{
 		loadConfig();
 		mcLog.info("[KitsuneChat] KitsuneChat config loaded!");
 		this.getServer().getPluginManager().registerEvents(new ChatListener(this), this);
+		this.getServer().getPluginManager().registerEvents(new ConnectHandler(this), this);
 		getCommand("kc").setExecutor(exec);
 	}
 	
