@@ -24,7 +24,6 @@ public class ChatListener implements Listener {
 	public void playerChat(PlayerChatEvent evt) {
 		evt.setCancelled(true);
 		String message = KitsuneChatUtils.colorizeString(evt.getMessage());
-		plugin.mcLog.info(evt.getPlayer().getName()+" : "+message);
 
 		if (evt.getMessage().startsWith(
 				plugin.getConfig().getString("global.prefix"))) {
@@ -95,8 +94,10 @@ public class ChatListener implements Listener {
 				plugin.dataFile.setUserChannel(evt.getPlayer(), plugin.getConfig().getString("local.prefix"));
 			}
 			playerChat(evt);
+			return;
 			}
 		
+		plugin.mcLog.info(evt.getPlayer().getName()+" : "+message);
 
 	}
 
