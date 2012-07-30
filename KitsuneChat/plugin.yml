@@ -1,9 +1,9 @@
 name: KitsuneChat
-version: 0.2
+version: 1.2
 main: com.cyberkitsune.prefixchat.KitsuneChat
 commands:
      kc:
-      description: KitsuneChat commands
+      description: KitsuneChat commands.
       
 permissions:
      kitsunechat.adminchat:
