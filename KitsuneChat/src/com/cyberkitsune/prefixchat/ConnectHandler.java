@@ -24,6 +24,9 @@ public class ConnectHandler implements Listener {
 		if(plugin.dataFile.getPartyDataForUser(evt.getPlayer()) != "")  {
 			plugin.party.changeParty(evt.getPlayer(), plugin.dataFile.getPartyDataForUser(evt.getPlayer()));
 		}
+		if(plugin.dataFile.getUserChannel(evt.getPlayer()) == null) {
+			plugin.dataFile.setUserChannel(evt.getPlayer(), plugin.getConfig().getString("local.prefix"));
+		}
 	}
 
 }

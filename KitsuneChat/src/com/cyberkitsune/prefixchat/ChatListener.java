@@ -1,5 +1,6 @@
 package com.cyberkitsune.prefixchat;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -80,13 +81,21 @@ public class ChatListener implements Listener {
 			}
 
 		} else {
-			Set<Player> local = KitsuneChatUtils.getNearbyPlayers(plugin
-					.getConfig().getInt("local.radius"), evt.getPlayer());
-			for (Player plr : local) {
-				plr.sendMessage(util.formatChatPrefixes(message, plugin
-						.getConfig().getString("local.sayformat"), evt));
+			List<String> prefixes = Arrays.asList(plugin.getConfig().getString("global.prefix"), plugin.getConfig().getString("local.prefix"), plugin.getConfig().getString("admin.prefix"), plugin.getConfig().getString("party.prefix"), plugin.getConfig().getString("world.prefix"));
+			boolean pass = false;
+			for(String str : prefixes ) {
+				if(plugin.dataFile.getUserChannel(evt.getPlayer()).equals(str)) {
+					pass = true;
+				}
 			}
-		}
+			if(pass) {
+				evt.setMessage(plugin.dataFile.getUserChannel(evt.getPlayer())+message);
+			} else {
+				plugin.dataFile.setUserChannel(evt.getPlayer(), plugin.getConfig().getString("local.prefix"));
+			}
+			playerChat(evt);
+			}
+		
 
 	}
 

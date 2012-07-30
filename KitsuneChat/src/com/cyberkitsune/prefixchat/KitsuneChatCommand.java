@@ -1,5 +1,8 @@
 package com.cyberkitsune.prefixchat;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -33,6 +36,13 @@ public class KitsuneChatCommand implements CommandExecutor {
 						}
 					} 
 				} else {
+					List<String> prefixes = Arrays.asList(plugin.getConfig().getString("global.prefix"), plugin.getConfig().getString("local.prefix"), plugin.getConfig().getString("admin.prefix"), plugin.getConfig().getString("party.prefix"), plugin.getConfig().getString("world.prefix"));
+					for(String str : prefixes) {
+						args[0].equalsIgnoreCase(str);
+						plugin.dataFile.setUserChannel((Player) sender, str);
+						sender.sendMessage(ChatColor.YELLOW+"[KitsuneChat] Default chat now set to "+new KitsuneChatUtils(plugin).getChannelName(str, false));
+						return true;
+					}
 					sender.sendMessage(ChatColor.RED+"[KitsuneChat] Unknown or missing command. See /kc ? for help.");
 				}
 			}

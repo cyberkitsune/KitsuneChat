@@ -66,6 +66,19 @@ public class KitsuneChatUserData {
 		}
 	}
 	
+	public void setUserChannel(Player target, String channel) {
+		userData.set(target.getName()+".channel", channel);
+		try {
+			userData.save(dataFile);
+		} catch (Exception ex) {
+			plugin.mcLog.severe("[KitsuneChat] Unable to save user data file!");
+		}
+	}
+	
+	public String getUserChannel(Player target) {
+		return userData.getString(target.getName()+".channel");
+	}
+	
 	
 	
 }
