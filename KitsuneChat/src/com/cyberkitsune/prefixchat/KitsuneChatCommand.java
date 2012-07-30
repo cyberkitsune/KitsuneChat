@@ -34,15 +34,18 @@ public class KitsuneChatCommand implements CommandExecutor {
 						} else {
 							sender.sendMessage(ChatColor.RED+"[KitsuneChat] Please choose a party name!");
 						}
-					} 
-				} else {
-					List<String> prefixes = Arrays.asList(plugin.getConfig().getString("global.prefix"), plugin.getConfig().getString("local.prefix"), plugin.getConfig().getString("admin.prefix"), plugin.getConfig().getString("party.prefix"), plugin.getConfig().getString("world.prefix"));
-					for(String str : prefixes) {
-						args[0].equalsIgnoreCase(str);
-						plugin.dataFile.setUserChannel((Player) sender, str);
-						sender.sendMessage(ChatColor.YELLOW+"[KitsuneChat] Default chat now set to "+new KitsuneChatUtils(plugin).getChannelName(str, false));
-						return true;
+					} else {
+						List<String> prefixes = Arrays.asList(plugin.getConfig().getString("global.prefix"), plugin.getConfig().getString("local.prefix"), plugin.getConfig().getString("admin.prefix"), plugin.getConfig().getString("party.prefix"), plugin.getConfig().getString("world.prefix"));
+						for(String str : prefixes) {
+								if(args[0].equalsIgnoreCase(str)) {
+								plugin.dataFile.setUserChannel((Player) sender, str);
+								sender.sendMessage(ChatColor.YELLOW+"[KitsuneChat] Default chat now set to "+new KitsuneChatUtils(plugin).getChannelName(str, false));
+								return true;
+								}
+						}
+						sender.sendMessage(ChatColor.RED+"[KitsuneChat] Unknown or missing command. See /kc ? for help.");
 					}
+				} else {
 					sender.sendMessage(ChatColor.RED+"[KitsuneChat] Unknown or missing command. See /kc ? for help.");
 				}
 			}
