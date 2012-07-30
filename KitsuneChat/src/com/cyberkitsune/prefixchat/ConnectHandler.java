@@ -21,7 +21,7 @@ public class ConnectHandler implements Listener {
 	
 	@EventHandler
 	public void onConnect(PlayerJoinEvent evt) {
-		if(plugin.dataFile.getPartyDataForUser(evt.getPlayer()) != "")  {
+		if(!plugin.dataFile.getPartyDataForUser(evt.getPlayer()).equalsIgnoreCase(""))  {
 			plugin.party.changeParty(evt.getPlayer(), plugin.dataFile.getPartyDataForUser(evt.getPlayer()));
 		}
 		if(plugin.dataFile.getUserChannel(evt.getPlayer()) == null) {

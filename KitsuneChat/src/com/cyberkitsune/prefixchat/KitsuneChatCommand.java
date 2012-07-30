@@ -1,8 +1,5 @@
 package com.cyberkitsune.prefixchat;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -34,9 +31,12 @@ public class KitsuneChatCommand implements CommandExecutor {
 						} else {
 							sender.sendMessage(ChatColor.RED+"[KitsuneChat] Please choose a party name!");
 						}
+					} else if(args[0].equalsIgnoreCase("leaveparty")) {
+						plugin.party.leaveParty((Player) sender, false);
+					} else if(args[0].equalsIgnoreCase("?")) {
+						printHelp((Player) sender);
 					} else {
-						List<String> prefixes = Arrays.asList(plugin.getConfig().getString("global.prefix"), plugin.getConfig().getString("local.prefix"), plugin.getConfig().getString("admin.prefix"), plugin.getConfig().getString("party.prefix"), plugin.getConfig().getString("world.prefix"));
-						for(String str : prefixes) {
+						for(String str : plugin.prefixes) {
 								if(args[0].equalsIgnoreCase(str)) {
 								plugin.dataFile.setUserChannel((Player) sender, str);
 								sender.sendMessage(ChatColor.YELLOW+"[KitsuneChat] Default chat now set to "+new KitsuneChatUtils(plugin).getChannelName(str, false));
@@ -52,6 +52,17 @@ public class KitsuneChatCommand implements CommandExecutor {
 			return true;
 		}
 		return false;
+	}
+	
+	public void printHelp(Player target) {
+		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] KitsuneChat - Channeled Chat System Version "+plugin.getDescription().getVersion());
+		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] KitsuneChat Commands: ");
+		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc ? - This command. ");
+		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc party <name> - Join a party with name <name>. ");
+		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc leaveparty - Leaves your current party. ");
+		for(String str : plugin.prefixes) {
+			target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc "+str+" - Change default channel to "+new KitsuneChatUtils(plugin).getChannelName(str, false)+".");
+		}
 	}
 
 }

@@ -1,6 +1,8 @@
 package com.cyberkitsune.prefixchat;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.bukkit.configuration.Configuration;
@@ -13,6 +15,7 @@ public class KitsuneChat extends JavaPlugin{
 	public ChatParties party = new ChatParties(this);
 	public KitsuneChatCommand exec = new KitsuneChatCommand(this);
 	public KitsuneChatUserData dataFile;
+	public List<String> prefixes;
 	
 	
 	@Override
@@ -61,6 +64,7 @@ public class KitsuneChat extends JavaPlugin{
 		for(Player plr : online) {
 			party.changeParty(plr, dataFile.getPartyDataForUser(plr));
 		}
+		prefixes = Arrays.asList(this.getConfig().getString("global.prefix"), this.getConfig().getString("local.prefix"), this.getConfig().getString("admin.prefix"), this.getConfig().getString("party.prefix"), this.getConfig().getString("world.prefix"));
 	}
 	
 	@Override
