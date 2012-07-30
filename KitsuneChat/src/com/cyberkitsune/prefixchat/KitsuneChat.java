@@ -33,31 +33,10 @@ public class KitsuneChat extends JavaPlugin{
 				e.printStackTrace();
 			}
 			loadConfig();
-			Configuration config = this.getConfig();
-			config.set("global.prefix", "!");
-			config.set("world.prefix", "#");
-			config.set("admin.prefix", "@");
-			config.set("party.prefix", "$");
-			config.set("local.prefix", "%");
-			config.set("party.cost", 0);
-			config.set("local.radius", 200);
-			
-			config.set("global.sayformat", "[{world}] {sender}: {message}");
-			config.set("admin.sayformat", "[{prefix}] {sender}: {message}");
-			config.set("world.sayformat", "[{prefix}] {sender}: {message}");
-			config.set("party.sayformat", "[{party}] {sender}: {message}");
-			config.set("local.sayformat", "{sender}: {message}");
-			
-			config.set("global.meformat", "[{world}] * {sender} {message}");
-			config.set("admin.meformat", "[{prefix}] * {sender} {message}");
-			config.set("world.meformat", "[{prefix}] * {sender} {message}");
-			config.set("party.meformat", "[{party}] * {sender} {message}");
-			config.set("local.meformat", "* {sender} {message}");
-			
-			config.set("version", 1);
-			this.saveConfig();	
+			setDefaults();
 		}
 		loadConfig();
+		setDefaults();
 		mcLog.info("[KitsuneChat] KitsuneChat config loaded!");
 		this.getServer().getPluginManager().registerEvents(new ChatListener(this), this);
 		this.getServer().getPluginManager().registerEvents(new ConnectHandler(this), this);
@@ -87,6 +66,36 @@ public class KitsuneChat extends JavaPlugin{
 			mcLog.severe("KitsuneChat could not load the config file!!");
 			e.printStackTrace();
 		} 
+	}
+	
+	public void setDefaults() {
+		Configuration config = this.getConfig();
+		if(!config.isSet("global.prefix")) {
+			config.set("global.prefix", "!");
+			config.set("world.prefix", "#");
+			config.set("admin.prefix", "@");
+			config.set("party.prefix", "$");
+			config.set("local.prefix", "%");
+			config.set("party.cost", 0);
+			config.set("local.radius", 200);
+		}
+		if(!config.isSet("global.sayformat")) {
+			config.set("global.sayformat", "[{world}] {sender}: {message}");
+			config.set("admin.sayformat", "[{prefix}] {sender}: {message}");
+			config.set("world.sayformat", "[{prefix}] {sender}: {message}");
+			config.set("party.sayformat", "[{party}] {sender}: {message}");
+			config.set("local.sayformat", "{sender}: {message}");
+		}
+		
+		if(!config.isSet("global.meformat")) {
+			config.set("global.meformat", "[{world}] * {sender} {message}");
+			config.set("admin.meformat", "[{prefix}] * {sender} {message}");
+			config.set("world.meformat", "[{prefix}] * {sender} {message}");
+			config.set("party.meformat", "[{party}] * {sender} {message}");
+			config.set("local.meformat", "* {sender} {message}");
+		}
+		config.set("version", this.getDescription().getVersion());
+		this.saveConfig();	
 	}
 
 }
