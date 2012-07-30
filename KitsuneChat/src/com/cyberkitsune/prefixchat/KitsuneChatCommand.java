@@ -48,6 +48,8 @@ public class KitsuneChatCommand implements CommandExecutor {
 				} else {
 					sender.sendMessage(ChatColor.RED+"[KitsuneChat] Unknown or missing command. See /kc ? for help.");
 				}
+			} else if(command.getName().equalsIgnoreCase("me")) {
+				
 			}
 			return true;
 		}

@@ -4,6 +4,8 @@ main: com.cyberkitsune.prefixchat.KitsuneChat
 commands:
      kc:
       description: KitsuneChat commands.
+     me:
+      description: Emote
       
 permissions:
      kitsunechat.adminchat:

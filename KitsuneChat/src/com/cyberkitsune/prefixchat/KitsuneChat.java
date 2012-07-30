@@ -56,6 +56,7 @@ public class KitsuneChat extends JavaPlugin{
 		this.getServer().getPluginManager().registerEvents(new ChatListener(this), this);
 		this.getServer().getPluginManager().registerEvents(new ConnectHandler(this), this);
 		getCommand("kc").setExecutor(exec);
+		getCommand("me").setExecutor(exec);
 		dataFile = new KitsuneChatUserData(this);
 		dataFile.loadUserData();
 		
