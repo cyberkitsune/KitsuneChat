@@ -94,6 +94,11 @@ public class KitsuneChat extends JavaPlugin{
 			config.set("party.meformat", "[{party}] * {sender} {message}");
 			config.set("local.meformat", "* {sender} {message}");
 		}
+		
+		if(!config.isSet("emote.prefix")) {
+			config.set("emote.prefix", "|");
+		}
+		
 		config.set("version", this.getDescription().getVersion());
 		this.saveConfig();	
 	}

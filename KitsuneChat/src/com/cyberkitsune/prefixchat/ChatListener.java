@@ -27,15 +27,15 @@ public class ChatListener implements Listener {
 		plugin.mcLog.info(("1st Char: "+message.charAt(1)));
 		boolean emote = false;
 		for(String str : plugin.prefixes) {
-			if(message.startsWith(str+":")) {
+			if(message.startsWith(str+plugin.getConfig().getString("emote.prefix"))) {
 				emote = true;
 			}
 		}
-		if(message.startsWith(":")) {
+		if(message.startsWith(plugin.getConfig().getString("emote.prefix"))) {
 			emote = true;
 		}
 		if(emote) {
-			message = message.replaceFirst(":", "");
+			message = message.replaceFirst("\\"+plugin.getConfig().getString("emote.prefix"), "");
 		}
 
 		if (evt.getMessage().startsWith(
@@ -105,7 +105,7 @@ public class ChatListener implements Listener {
 				if(!emote) {
 				evt.setMessage(plugin.dataFile.getUserChannel(evt.getPlayer())+message);
 				} else {
-					evt.setMessage(plugin.dataFile.getUserChannel(evt.getPlayer())+":"+message);
+					evt.setMessage(plugin.dataFile.getUserChannel(evt.getPlayer())+plugin.getConfig().getString("emote.prefix")+message);
 				}
 			} else {
 				plugin.dataFile.setUserChannel(evt.getPlayer(), plugin.getConfig().getString("local.prefix"));

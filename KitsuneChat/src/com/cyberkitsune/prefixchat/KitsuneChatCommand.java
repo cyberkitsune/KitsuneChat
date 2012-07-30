@@ -52,7 +52,7 @@ public class KitsuneChatCommand implements CommandExecutor {
 					sender.sendMessage(ChatColor.RED+"[KitsuneChat] Unknown or missing command. See /kc ? for help.");
 				}
 			} else if(command.getName().equalsIgnoreCase("me")) {
-				PlayerChatEvent evt = new PlayerChatEvent((Player)sender, ":"+Joiner.on(" ").join(args));
+				PlayerChatEvent evt = new PlayerChatEvent((Player)sender, plugin.getConfig().getString("emote.prefix")+Joiner.on(" ").join(args));
 				plugin.getServer().getPluginManager().callEvent(evt);
 			}
 			return true;
