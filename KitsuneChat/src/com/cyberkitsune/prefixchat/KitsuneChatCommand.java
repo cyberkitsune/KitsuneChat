@@ -5,6 +5,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerChatEvent;
+
+import com.google.common.base.Joiner;
 
 public class KitsuneChatCommand implements CommandExecutor {
 
@@ -49,7 +52,8 @@ public class KitsuneChatCommand implements CommandExecutor {
 					sender.sendMessage(ChatColor.RED+"[KitsuneChat] Unknown or missing command. See /kc ? for help.");
 				}
 			} else if(command.getName().equalsIgnoreCase("me")) {
-				
+				PlayerChatEvent evt = new PlayerChatEvent((Player)sender, ":"+Joiner.on(" ").join(args));
+				plugin.getServer().getPluginManager().callEvent(evt);
 			}
 			return true;
 		}

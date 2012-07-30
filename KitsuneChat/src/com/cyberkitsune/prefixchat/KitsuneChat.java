@@ -48,6 +48,12 @@ public class KitsuneChat extends JavaPlugin{
 			config.set("party.sayformat", "[{party}] {sender}: {message}");
 			config.set("local.sayformat", "{sender}: {message}");
 			
+			config.set("global.meformat", "[{world}] * {sender} {message}");
+			config.set("admin.meformat", "[{prefix}] * {sender} {message}");
+			config.set("world.meformat", "[{prefix}] * {sender} {message}");
+			config.set("party.meformat", "[{party}] * {sender} {message}");
+			config.set("local.meformat", "* {sender} {message}");
+			
 			config.set("version", 1);
 			this.saveConfig();	
 		}
