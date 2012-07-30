@@ -24,7 +24,6 @@ public class ChatListener implements Listener {
 	public void playerChat(PlayerChatEvent evt) {
 		evt.setCancelled(true);
 		String message = KitsuneChatUtils.colorizeString(evt.getMessage());
-		plugin.mcLog.info(("1st Char: "+message.charAt(1)));
 		boolean emote = false;
 		for(String str : plugin.prefixes) {
 			if(message.startsWith(str+plugin.getConfig().getString("emote.prefix"))) {
