@@ -1,8 +1,7 @@
 package com.cyberkitsune.prefixchat;
 
 import java.util.Arrays;
-import java.util.Set;
-
+import java.util.HashSet;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -54,8 +53,7 @@ public class KitsuneChatCommand implements CommandExecutor {
 					sender.sendMessage(ChatColor.RED+"[KitsuneChat] Unknown or missing command. See /kc ? for help.");
 				}
 			} else if(command.getName().equalsIgnoreCase("me")) {
-				@SuppressWarnings("unchecked")
-				AsyncPlayerChatEvent evt = new AsyncPlayerChatEvent(false, (Player)sender, plugin.getConfig().getString("emote.prefix")+Joiner.on(" ").join(args), (Set<Player>) Arrays.asList(plugin.getServer().getOnlinePlayers()));
+				AsyncPlayerChatEvent evt = new AsyncPlayerChatEvent(false, (Player)sender, plugin.getConfig().getString("emote.prefix")+Joiner.on(" ").join(args), new HashSet<Player>(Arrays.asList(plugin.getServer().getOnlinePlayers())));
 				plugin.getServer().getPluginManager().callEvent(evt);
 			}
 			return true;
