@@ -8,7 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class ChatListener implements Listener {
 
@@ -21,7 +21,7 @@ public class ChatListener implements Listener {
 	}
 
 	@EventHandler
-	public void playerChat(PlayerChatEvent evt) {
+	public void playerChat(AsyncPlayerChatEvent evt) {
 		evt.setCancelled(true);
 		String message = KitsuneChatUtils.colorizeString(evt.getMessage());
 		boolean emote = false;
