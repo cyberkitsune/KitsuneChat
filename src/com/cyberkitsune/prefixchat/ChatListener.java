@@ -40,23 +40,23 @@ public class ChatListener implements Listener {
 				(String) plugin.getConfigVal("global.prefix"))) {
 			Set<Player> everybody = evt.getRecipients();
 			for (Player plr : everybody) {
-				plr.sendMessage(util.formatChatPrefixes(message, plugin
-						.getConfig().getString(emote ? "global.meformat" : "global.sayformat"), evt));
+				plr.sendMessage(util.formatChatPrefixes(message, (String) plugin
+						.getConfigVal(emote ? "global.meformat" : "global.sayformat"), evt));
 			}
 		} else if (evt.getMessage().startsWith(
 				(String) plugin.getConfigVal("world.prefix"))) {
 			List<Player> worldPlayers = evt.getPlayer().getWorld().getPlayers();
 			for (Player plr : worldPlayers) {
-				plr.sendMessage(util.formatChatPrefixes(message, plugin
-						.getConfig().getString(emote ? "world.meformat" : "world.sayformat"), evt));
+				plr.sendMessage(util.formatChatPrefixes(message, (String) plugin
+						.getConfigVal(emote ? "world.meformat" : "world.sayformat"), evt));
 			}
 		} else if (evt.getMessage().startsWith(
 				(String) plugin.getConfigVal("admin.prefix"))) {
-			if (evt.getPlayer().hasPermission("kitsunechat.adminchat")) {
+			if (plugin.hasAdminPermission(evt.getPlayer())) {
 				for (Player plr : plugin.getServer().getOnlinePlayers()) {
-					if (plr.hasPermission("kitsunechat.adminchat")) {
-						plr.sendMessage(util.formatChatPrefixes(message, plugin
-								.getConfig().getString(emote ? "admin.meformat" : "admin.sayformat"), evt));
+					if (plugin.hasAdminPermission(plr)) {
+						plr.sendMessage(util.formatChatPrefixes(message, (String) plugin
+								.getConfigVal(emote ? "admin.meformat" : "admin.sayformat"), evt));
 					}
 				}
 			} else {
@@ -72,8 +72,8 @@ public class ChatListener implements Listener {
 						.getPartyMembers(plugin.party.getPartyName(evt
 								.getPlayer()));
 				for (Player plr : channelPlayers) {
-					plr.sendMessage(util.formatChatPrefixes(message, plugin
-							.getConfig().getString(emote ? "party.meformat" : "party.sayformat"), evt));
+					plr.sendMessage(util.formatChatPrefixes(message, (String) plugin
+							.getConfigVal(emote ? "party.meformat" : "party.sayformat"), evt));
 				}
 			} else {
 				evt.getPlayer()
@@ -87,8 +87,8 @@ public class ChatListener implements Listener {
 			Set<Player> local = KitsuneChatUtils.getNearbyPlayers(plugin
 					.getConfig().getInt("local.radius"), evt.getPlayer());
 			for (Player plr : local) {
-				plr.sendMessage(util.formatChatPrefixes(message, plugin
-						.getConfig().getString(emote ? "local.meformat" : "local.sayformat"), evt));
+				plr.sendMessage(util.formatChatPrefixes(message, (String) plugin
+						.getConfigVal(emote ? "local.meformat" : "local.sayformat"), evt));
 			}
 
 		} else {

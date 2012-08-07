@@ -20,6 +20,8 @@ public class KitsuneChat extends JavaPlugin{
 	public ImmutableList<String> prefixes;
 	public Map<String, Object> cachedConfig;
 	
+	private Object lock = new Object();
+	
 	
 	@Override
 	public void onEnable() {
@@ -113,6 +115,12 @@ public class KitsuneChat extends JavaPlugin{
 	
 	public Object getConfigVal(String key) {
 		return cachedConfig.get(key);
+	}
+	
+	public boolean hasAdminPermission(Player user) {
+		synchronized (lock) {
+			return user.hasPermission("kitsunechat.adminchat");	
+		}
 	}
 
 }
