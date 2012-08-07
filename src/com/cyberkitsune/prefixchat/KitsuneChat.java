@@ -54,6 +54,7 @@ public class KitsuneChat extends JavaPlugin{
 			party.changeParty(plr, dataFile.getPartyDataForUser(plr));
 		}
 		prefixes = (ImmutableList<String>) Arrays.asList(this.getConfig().getString("global.prefix"), this.getConfig().getString("local.prefix"), this.getConfig().getString("admin.prefix"), this.getConfig().getString("party.prefix"), this.getConfig().getString("world.prefix"));
+		cacheConfig();
 	}
 	
 	@Override
