@@ -1,11 +1,10 @@
 package com.cyberkitsune.prefixchat;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -16,7 +15,7 @@ public class ChatParties {
 		this.plugin = plugin;
 	}
 
-	public ConcurrentHashMap<Player, String> partyData = new ConcurrentHashMap<Player, String>();
+	public HashMap<Player, String> partyData = new HashMap<Player, String>();
 	
 	public void changeParty(Player target, String name) {
 		if(name == "" || name == null) {

@@ -1,6 +1,5 @@
 package com.cyberkitsune.prefixchat;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -26,33 +25,33 @@ public class ChatListener implements Listener {
 		String message = KitsuneChatUtils.colorizeString(evt.getMessage());
 		boolean emote = false;
 		for(String str : plugin.prefixes) {
-			if(message.startsWith(str+plugin.getConfig().getString("emote.prefix"))) {
+			if(message.startsWith(str+plugin.getConfigVal("emote.prefix"))) {
 				emote = true;
 			}
 		}
-		if(message.startsWith(plugin.getConfig().getString("emote.prefix"))) {
+		if(message.startsWith((String) plugin.getConfigVal("emote.prefix"))) {
 			emote = true;
 		}
 		if(emote) {
-			message = message.replaceFirst("\\"+plugin.getConfig().getString("emote.prefix"), "");
+			message = message.replaceFirst("\\"+plugin.getConfigVal("emote.prefix"), "");
 		}
 
 		if (evt.getMessage().startsWith(
-				plugin.getConfig().getString("global.prefix"))) {
+				(String) plugin.getConfigVal("global.prefix"))) {
 			Set<Player> everybody = evt.getRecipients();
 			for (Player plr : everybody) {
 				plr.sendMessage(util.formatChatPrefixes(message, plugin
 						.getConfig().getString(emote ? "global.meformat" : "global.sayformat"), evt));
 			}
 		} else if (evt.getMessage().startsWith(
-				plugin.getConfig().getString("world.prefix"))) {
+				(String) plugin.getConfigVal("world.prefix"))) {
 			List<Player> worldPlayers = evt.getPlayer().getWorld().getPlayers();
 			for (Player plr : worldPlayers) {
 				plr.sendMessage(util.formatChatPrefixes(message, plugin
 						.getConfig().getString(emote ? "world.meformat" : "world.sayformat"), evt));
 			}
 		} else if (evt.getMessage().startsWith(
-				plugin.getConfig().getString("admin.prefix"))) {
+				(String) plugin.getConfigVal("admin.prefix"))) {
 			if (evt.getPlayer().hasPermission("kitsunechat.adminchat")) {
 				for (Player plr : plugin.getServer().getOnlinePlayers()) {
 					if (plr.hasPermission("kitsunechat.adminchat")) {
@@ -67,7 +66,7 @@ public class ChatListener implements Listener {
 										+ "You do not have permissions to use admin chat.");
 			}
 		} else if (evt.getMessage().startsWith(
-				plugin.getConfig().getString("party.prefix"))) {
+				(String) plugin.getConfigVal("party.prefix"))) {
 			if (plugin.party.isInAParty(evt.getPlayer())) {
 				Set<Player> channelPlayers = plugin.party
 						.getPartyMembers(plugin.party.getPartyName(evt
@@ -83,7 +82,7 @@ public class ChatListener implements Listener {
 										+ "[KitsuneChat] You are not currently in a channel.");
 			}
 
-		} else if ((evt.getMessage().startsWith(plugin.getConfig().getString(
+		} else if ((evt.getMessage().startsWith((String) plugin.getConfigVal(
 				"local.prefix")))) {
 			Set<Player> local = KitsuneChatUtils.getNearbyPlayers(plugin
 					.getConfig().getInt("local.radius"), evt.getPlayer());
@@ -93,9 +92,8 @@ public class ChatListener implements Listener {
 			}
 
 		} else {
-			List<String> prefixes = Arrays.asList(plugin.getConfig().getString("global.prefix"), plugin.getConfig().getString("local.prefix"), plugin.getConfig().getString("admin.prefix"), plugin.getConfig().getString("party.prefix"), plugin.getConfig().getString("world.prefix"));
 			boolean pass = false;
-			for(String str : prefixes ) {
+			for(String str : plugin.prefixes ) {
 				if(plugin.dataFile.getUserChannel(evt.getPlayer()).equals(str)) {
 					pass = true;
 				}
@@ -104,10 +102,10 @@ public class ChatListener implements Listener {
 				if(!emote) {
 				evt.setMessage(plugin.dataFile.getUserChannel(evt.getPlayer())+message);
 				} else {
-					evt.setMessage(plugin.dataFile.getUserChannel(evt.getPlayer())+plugin.getConfig().getString("emote.prefix")+message);
+					evt.setMessage(plugin.dataFile.getUserChannel(evt.getPlayer())+plugin.getConfigVal("emote.prefix")+message);
 				}
 			} else {
-				plugin.dataFile.setUserChannel(evt.getPlayer(), plugin.getConfig().getString("local.prefix"));
+				plugin.dataFile.setUserChannel(evt.getPlayer(), (String) plugin.getConfigVal("local.prefix"));
 				
 			}
 			playerChat(evt);
