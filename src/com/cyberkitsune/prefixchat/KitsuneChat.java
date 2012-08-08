@@ -2,6 +2,7 @@ package com.cyberkitsune.prefixchat;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -9,15 +10,13 @@ import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.google.common.collect.ImmutableList;
-
 public class KitsuneChat extends JavaPlugin{
 	
 	public Logger mcLog = Logger.getLogger("Minecraft");
 	public ChatParties party = new ChatParties(this);
 	public KitsuneChatCommand exec = new KitsuneChatCommand(this);
 	public KitsuneChatUserData dataFile;
-	public ImmutableList<String> prefixes;
+	public List<String> prefixes;
 	public Map<String, Object> cachedConfig;
 	
 	@Override
@@ -52,7 +51,7 @@ public class KitsuneChat extends JavaPlugin{
 		for(Player plr : online) {
 			party.changeParty(plr, dataFile.getPartyDataForUser(plr));
 		}
-		prefixes = (ImmutableList<String>) Arrays.asList(this.getConfig().getString("global.prefix"), this.getConfig().getString("local.prefix"), this.getConfig().getString("admin.prefix"), this.getConfig().getString("party.prefix"), this.getConfig().getString("world.prefix"));
+		prefixes = Arrays.asList(this.getConfig().getString("global.prefix"), this.getConfig().getString("local.prefix"), this.getConfig().getString("admin.prefix"), this.getConfig().getString("party.prefix"), this.getConfig().getString("world.prefix"));
 		cacheConfig();
 	}
 	
