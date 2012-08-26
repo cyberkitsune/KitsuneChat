@@ -8,7 +8,7 @@ import java.util.Set;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerChatEvent;
 
 public class KitsuneChatUtils {
 	KitsuneChat plugin;
@@ -38,7 +38,7 @@ public class KitsuneChatUtils {
 		return colorized;
 	}
 	
-	public String formatChatPrefixes(String target, String formatString, AsyncPlayerChatEvent context) {
+	public String formatChatPrefixes(String target, String formatString, PlayerChatEvent context) {
 		String output ="";
 		output = formatString.replaceAll("\\{sender\\}", context.getPlayer().getDisplayName());
 		output = output.replaceAll("\\{world\\}", context.getPlayer().getWorld().getName());

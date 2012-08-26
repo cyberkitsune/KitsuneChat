@@ -3,7 +3,6 @@ package com.cyberkitsune.prefixchat;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 import org.bukkit.configuration.Configuration;
@@ -17,7 +16,7 @@ public class KitsuneChat extends JavaPlugin{
 	public KitsuneChatCommand exec = new KitsuneChatCommand(this);
 	public KitsuneChatUserData dataFile;
 	public List<String> prefixes;
-	public Map<String, Object> cachedConfig;
+	
 	
 	@Override
 	public void onEnable() {
@@ -52,7 +51,6 @@ public class KitsuneChat extends JavaPlugin{
 			party.changeParty(plr, dataFile.getPartyDataForUser(plr));
 		}
 		prefixes = Arrays.asList(this.getConfig().getString("global.prefix"), this.getConfig().getString("local.prefix"), this.getConfig().getString("admin.prefix"), this.getConfig().getString("party.prefix"), this.getConfig().getString("world.prefix"));
-		cacheConfig();
 	}
 	
 	@Override
@@ -103,18 +101,6 @@ public class KitsuneChat extends JavaPlugin{
 		
 		config.set("version", this.getDescription().getVersion());
 		this.saveConfig();	
-	}
-	
-	public void cacheConfig() {
-		cachedConfig = getConfig().getValues(true);
-	}
-	
-	public Object getConfigVal(String key) {
-		return cachedConfig.get(key);
-	}
-	
-	public synchronized boolean hasAdminPermission(Player user) {
-			return user.hasPermission("kitsunechat.adminchat");	
 	}
 
 }
