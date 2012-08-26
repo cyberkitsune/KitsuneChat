@@ -82,6 +82,7 @@ public class KitsuneChatCommand implements CommandExecutor {
 		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc ? - This command. ");
 		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc party <name> - Join a party with name <name>. ");
 		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc leaveparty - Leaves your current party. ");
+		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc invite <player> - Invites <player> to your current party.");
 		for(String str : plugin.prefixes) {
 			target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc "+str+" - Change default channel to "+new KitsuneChatUtils(plugin).getChannelName(str, false)+".");
 		}
