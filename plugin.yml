@@ -1,5 +1,5 @@
 name: KitsuneChat
-version: 1.3
+version: 1.3-BACKPORT
 main: com.cyberkitsune.prefixchat.KitsuneChat
 commands:
      kc:
