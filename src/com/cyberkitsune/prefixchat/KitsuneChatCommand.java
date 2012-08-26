@@ -77,7 +77,7 @@ public class KitsuneChatCommand implements CommandExecutor {
 	}
 	
 	public void printHelp(Player target) {
-		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] KitsuneChat - Channeled Chat System Version "+plugin.getDescription().getVersion());
+		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] KitsuneChat - Channeled Chat System Version "+plugin.getDescription().getVersion()+" by CyberKitsune.");
 		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] KitsuneChat Commands: ");
 		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc ? - This command. ");
 		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc party <name> - Join a party with name <name>. ");
