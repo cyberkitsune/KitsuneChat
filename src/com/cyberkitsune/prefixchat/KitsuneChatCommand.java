@@ -23,12 +23,26 @@ public class KitsuneChatCommand implements CommandExecutor {
 		if (sender instanceof Player) {
 			if (command.getName().equalsIgnoreCase("kc")) {
 				if (args.length > 0) {
-					if(args[0].equalsIgnoreCase("party")) {
+					if(args[0].equalsIgnoreCase("party") || args[0].equalsIgnoreCase("p")) {
 						if(args.length > 1) {
 							if(args[1].equalsIgnoreCase("leave"))
 							{
 								plugin.party.leaveParty((Player) sender, false);
 								return true;
+							} else if(args[1].equalsIgnoreCase("list")) {
+								if(plugin.party.isInAParty((Player) sender)) {
+									String playerlist = "";
+									int playerCount = 0;
+									for(Player plr : plugin.party.getPartyMembers(plugin.party.getPartyName((Player) sender))) {
+										playerlist = playerlist + plr.getDisplayName()+", ";
+										playerCount++;
+									}
+									sender.sendMessage(ChatColor.YELLOW+"[KitsuneChat] "+playerCount+((playerCount == 1) ? " person " : " people ")+"in the party.");
+									sender.sendMessage(ChatColor.YELLOW+"[KitsuneChat] They are: "+playerlist+".");
+									return true;
+								} else {
+									sender.sendMessage(ChatColor.RED+"[KitsuneChat] You are not in a party!");
+								}
 							}
 							plugin.party.changeParty((Player) sender, args[1]);
 						} else {
@@ -80,7 +94,8 @@ public class KitsuneChatCommand implements CommandExecutor {
 		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] KitsuneChat - Channeled Chat System Version "+plugin.getDescription().getVersion()+" by CyberKitsune.");
 		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] KitsuneChat Commands: ");
 		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc ? - This command. ");
-		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc party <name> - Join a party with name <name>. ");
+		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc party (or p) <name> - Join a party with name <name>. ");
+		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc party list - Lists who is in your party.");
 		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc leaveparty - Leaves your current party. ");
 		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc invite <player> - Invites <player> to your current party.");
 		for(String str : plugin.prefixes) {
