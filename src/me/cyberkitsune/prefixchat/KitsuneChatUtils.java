@@ -1,4 +1,4 @@
-package com.cyberkitsune.prefixchat;
+package me.cyberkitsune.prefixchat;
 
 
 import java.util.HashSet;

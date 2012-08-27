@@ -1,4 +1,4 @@
-package com.cyberkitsune.prefixchat;
+package me.cyberkitsune.prefixchat;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
