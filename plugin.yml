@@ -20,3 +20,4 @@ permissions:
      kitsunechat.nodefault.party:
         description: Denies use of using /kc to default to party chat.
         default: false
+     

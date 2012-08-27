@@ -101,7 +101,7 @@ public class ChatListener implements Listener {
 			boolean pass = false;
 			for(String str : prefixes ) {
 				if(plugin.dataFile.getUserChannel(evt.getPlayer()).equals(str)) {
-					if(evt.getPlayer().hasPermission("kitsunechat.nodefault."+plugin.util.getChannelName(str, false))) {
+					if(evt.getPlayer().hasPermission("kitsunechat.nodefault."+plugin.util.getChannelName(str, false)) && !plugin.util.getChannelName(str, false).equalsIgnoreCase("local")) { //Local failsafe
 						evt.getPlayer().sendMessage(ChatColor.GRAY+"(You do not have permission to talk in "+plugin.util.getChannelName(str, false)+" by default. Changing you to local chat.)");
 						pass = false;
 					} else {

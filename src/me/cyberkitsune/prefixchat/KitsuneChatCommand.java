@@ -72,7 +72,7 @@ public class KitsuneChatCommand implements CommandExecutor {
 					} else {
 						for(String str : plugin.prefixes) {
 								if(args[0].equalsIgnoreCase(str)) {
-									if(sender.hasPermission("kitsunechat.nodefault."+plugin.util.getChannelName(str, false)))
+									if(sender.hasPermission("kitsunechat.nodefault."+plugin.util.getChannelName(str, false)) && !plugin.util.getChannelName(str, false).equalsIgnoreCase("local")) //Failsafe
 									{
 										sender.sendMessage(ChatColor.RED+"[KitsuneChat] You do not have permission to use "+plugin.util.getChannelName(str, false)+" as your default channel.");
 										sender.sendMessage(ChatColor.RED+"[KitsuneChat] Try prefixing your message with "+plugin.util.getChannelName(str, true)+" instead.");
