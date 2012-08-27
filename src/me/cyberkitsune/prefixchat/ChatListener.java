@@ -93,7 +93,11 @@ public class ChatListener implements Listener {
 			}
 			
 			if(local.size() <= 1) {
-				evt.getPlayer().sendMessage(ChatColor.GRAY+"(Nobody can hear you, try defaulting to global chat with /kc "+plugin.getConfig().getString("global.prefix")+" )");
+				if(!evt.getPlayer().hasPermission("kitsunechat.nodefault.global")) {
+					evt.getPlayer().sendMessage(ChatColor.GRAY+"(Nobody can hear you, try defaulting to global chat with /kc "+plugin.getConfig().getString("global.prefix")+")");
+				} else {
+					evt.getPlayer().sendMessage(ChatColor.GRAY+"(Nobody can hear you, try talking globally by starting your message with "+plugin.getConfig().getString("global.prefix")+")");
+				}
 			}
 
 		} else { //Default chat
