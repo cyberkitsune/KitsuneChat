@@ -42,6 +42,7 @@ public class KitsuneChatCommand implements CommandExecutor {
 									return true;
 								} else {
 									sender.sendMessage(ChatColor.RED+"[KitsuneChat] You are not in a party!");
+									return true;
 								}
 							}
 							plugin.party.changeParty((Player) sender, args[1]);
