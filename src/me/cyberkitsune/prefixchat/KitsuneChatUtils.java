@@ -40,7 +40,11 @@ public class KitsuneChatUtils {
 	
 	public String formatChatPrefixes(String target, String formatString, PlayerChatEvent context) {
 		String output ="";
-		output = formatString.replaceAll("\\{sender\\}", context.getPlayer().getDisplayName());
+		if(plugin.vaultEnabled) {
+			output = formatString.replaceAll("\\{sender\\}", plugin.vaultChat.getPlayerPrefix(context.getPlayer())+context.getPlayer().getDisplayName()+plugin.vaultChat.getPlayerSuffix(context.getPlayer()));
+		} else {
+			output = formatString.replaceAll("\\{sender\\}", context.getPlayer().getDisplayName());
+		}
 		output = output.replaceAll("\\{world\\}", context.getPlayer().getWorld().getName());
 		output = output.replaceAll("\\{channel\\}", getChannelName(target, false));
 		output = output.replaceAll("\\{prefix\\}", getChannelName(target, true));

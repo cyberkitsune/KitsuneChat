@@ -5,8 +5,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
+import net.milkbowl.vault.chat.Chat;
+
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class KitsuneChat extends JavaPlugin{
@@ -17,6 +20,8 @@ public class KitsuneChat extends JavaPlugin{
 	public KitsuneChatUserData dataFile;
 	public KitsuneChatUtils util = new KitsuneChatUtils(this);
 	public List<String> prefixes;
+	public Chat vaultChat = null;
+	public boolean vaultEnabled = false;
 	
 	
 	@Override
@@ -39,6 +44,13 @@ public class KitsuneChat extends JavaPlugin{
 		loadConfig();
 		setDefaults();
 		mcLog.info("[KitsuneChat] KitsuneChat config loaded!");
+		if(setupVaultChat()) {
+			vaultEnabled = true;
+			mcLog.info("[KitsuneChat] Successfully linked to Vault for chat! Prefix / Suffix support enabled!");
+		} else {
+			vaultEnabled = false;
+			mcLog.info("[KitsuneChat] Unable to link to Vault for chat! Is it installed? Prefix / Suffix support disabled!");
+		}
 		this.getServer().getPluginManager().registerEvents(new ChatListener(this), this);
 		this.getServer().getPluginManager().registerEvents(new ConnectHandler(this), this);
 		getCommand("kc").setExecutor(exec);
@@ -102,6 +114,17 @@ public class KitsuneChat extends JavaPlugin{
 		
 		config.set("version", this.getDescription().getVersion());
 		this.saveConfig();	
+	}
+	
+	private boolean setupVaultChat() {
+		if(getServer().getPluginManager().getPlugin("Vault") == null) {
+			return false;
+		}
+		RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
+		if(chatProvider != null) {
+			vaultChat = chatProvider.getProvider();
+		}
+		return (vaultChat != null);
 	}
 
 }

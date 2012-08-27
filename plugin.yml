@@ -1,6 +1,7 @@
 name: KitsuneChat
 version: 1.4-TEKKITBACKPORT
 main: me.cyberkitsune.prefixchat.KitsuneChat
+softdepend: [Vault]
 commands:
      kc:
       description: KitsuneChat commands.
