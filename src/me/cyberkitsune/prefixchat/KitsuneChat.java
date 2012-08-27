@@ -15,6 +15,7 @@ public class KitsuneChat extends JavaPlugin{
 	public ChatParties party = new ChatParties(this);
 	public KitsuneChatCommand exec = new KitsuneChatCommand(this);
 	public KitsuneChatUserData dataFile;
+	public KitsuneChatUtils util = new KitsuneChatUtils(this);
 	public List<String> prefixes;
 	
 	

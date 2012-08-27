@@ -96,12 +96,17 @@ public class ChatListener implements Listener {
 				evt.getPlayer().sendMessage(ChatColor.GRAY+"(Nobody can hear you, try defaulting to global chat with /kc "+plugin.getConfig().getString("global.prefix")+" )");
 			}
 
-		} else {
+		} else { //Default chat
 			List<String> prefixes = Arrays.asList(plugin.getConfig().getString("global.prefix"), plugin.getConfig().getString("local.prefix"), plugin.getConfig().getString("admin.prefix"), plugin.getConfig().getString("party.prefix"), plugin.getConfig().getString("world.prefix"));
 			boolean pass = false;
 			for(String str : prefixes ) {
 				if(plugin.dataFile.getUserChannel(evt.getPlayer()).equals(str)) {
-					pass = true;
+					if(evt.getPlayer().hasPermission("kitsunechat.nodefault."+plugin.util.getChannelName(str, false))) {
+						evt.getPlayer().sendMessage(ChatColor.GRAY+"(You do not have permission to talk in "+plugin.util.getChannelName(str, false)+" by default. Changing you to local chat.)");
+						pass = false;
+					} else {
+						pass = true;
+					}
 				}
 			}
 			if(pass) {

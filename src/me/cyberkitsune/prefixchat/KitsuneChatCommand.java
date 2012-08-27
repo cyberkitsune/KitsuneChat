@@ -72,8 +72,14 @@ public class KitsuneChatCommand implements CommandExecutor {
 					} else {
 						for(String str : plugin.prefixes) {
 								if(args[0].equalsIgnoreCase(str)) {
+									if(sender.hasPermission("kitsunechat.nodefault."+plugin.util.getChannelName(str, false)))
+									{
+										sender.sendMessage(ChatColor.RED+"[KitsuneChat] You do not have permission to use "+plugin.util.getChannelName(str, false)+" as your default channel.");
+										sender.sendMessage(ChatColor.RED+"[KitsuneChat] Try prefixing your message with "+plugin.util.getChannelName(str, true)+" instead.");
+										return true;
+									}
 								plugin.dataFile.setUserChannel((Player) sender, str);
-								sender.sendMessage(ChatColor.YELLOW+"[KitsuneChat] Default chat now set to "+new KitsuneChatUtils(plugin).getChannelName(str, false));
+								sender.sendMessage(ChatColor.YELLOW+"[KitsuneChat] Default chat now set to "+plugin.util.getChannelName(str, false));
 								return true;
 								}
 						}
@@ -100,7 +106,7 @@ public class KitsuneChatCommand implements CommandExecutor {
 		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc leaveparty - Leaves your current party. ");
 		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc invite <player> - Invites <player> to your current party.");
 		for(String str : plugin.prefixes) {
-			target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc "+str+" - Change default channel to "+new KitsuneChatUtils(plugin).getChannelName(str, false)+".");
+			target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc "+str+" - Change default channel to "+plugin.util.getChannelName(str, false)+".");
 		}
 	}
 
