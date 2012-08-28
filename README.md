@@ -30,8 +30,9 @@ KitsuneChat Features:
 KitsuneChat Permissions:
 
 * kitsunechat.adminchat - ops get by default; Allows a user/group to talk in admin chat.
-* kitsunechat.nodefault.<channel> - nobody gets by default; Forces the user/group who has the node to talk in the specified channel by prefix ONLY (denies /kc <channel>)
-(Where <channel> is global, world, or party.)
+* kitsunechat.nodefault.\<channel\> - nobody gets by default; Forces the user/group who has the node to talk in the specified channel by prefix ONLY (denies /kc <channel>)
+
+(Where \<channel\> is global, world, or party.)
 
 KitsuneChat commands all begin with /kc. Use "/kc ?" for a help list.
 
