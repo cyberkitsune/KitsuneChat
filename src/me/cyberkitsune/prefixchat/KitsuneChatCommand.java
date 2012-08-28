@@ -58,7 +58,7 @@ public class KitsuneChatCommand implements CommandExecutor {
 							if(plugin.party.isInAParty((Player)sender)) {
 								Player target = plugin.getServer().getPlayer(args[1]);
 								if(target != null) {
-									target.sendMessage(ChatColor.GREEN+"[KitsuneChat] "+sender.getName()+" has invited you to a party! Type /kc party "+plugin.party.getPartyName((Player) sender)+" to join!");
+									target.sendMessage(ChatColor.GREEN+"[KitsuneChat] "+sender.getName()+" has invited you to a party! Type /kc p "+plugin.party.getPartyName((Player) sender)+" to join!");
 									plugin.party.notifyParty(plugin.party.getPartyName((Player) sender), ChatColor.GREEN+"[KitsuneChat] "+sender.getName()+" invited "+target.getDisplayName()+ChatColor.GREEN+" to the party.");
 								} else {
 									sender.sendMessage(ChatColor.RED+"[KitsuneChat] That player does not exist!");
