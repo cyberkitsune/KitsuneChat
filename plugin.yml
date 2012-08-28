@@ -1,5 +1,5 @@
 name: KitsuneChat
-version: 1.4.1
+version: 1.4.2
 main: me.cyberkitsune.prefixchat.KitsuneChat
 softdepend: [Vault]
 commands:
