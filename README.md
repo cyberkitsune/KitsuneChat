@@ -1,7 +1,7 @@
 KitsuneChat
 ===========
 
-(Quick Download: [stable build](https://github.com/downloads/cyberkitsune/KitsuneChat/KitsuneChat.jar) or [unstable build](https://dl.dropbox.com/u/27784707/KitsuneChat.jar).
+(Quick Download: [stable build](https://github.com/downloads/cyberkitsune/KitsuneChat/KitsuneChat.jar) or [unstable build](https://dl.dropbox.com/u/27784707/KitsuneChat.jar))
 
 Making chat RP-Safe and Customizable for all!
 ---------------------------------------------
