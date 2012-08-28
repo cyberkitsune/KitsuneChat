@@ -37,34 +37,26 @@ public class ChatListener implements Listener {
 			message = message.replaceFirst("\\"+plugin.getConfig().getString("emote.prefix"), "");
 		}
 
-		if (evt.getMessage().startsWith(
-				plugin.getConfig().getString("global.prefix"))) {
-			Set<Player> everybody = evt.getRecipients();
-			for (Player plr : everybody) {
-				plr.sendMessage(util.formatChatPrefixes(message, plugin
-						.getConfig().getString(emote ? "global.meformat" : "global.sayformat"), evt));
-			}
-		} else if (evt.getMessage().startsWith(
-				plugin.getConfig().getString("world.prefix"))) {
+		if (evt.getMessage().startsWith(plugin.getConfig().getString("global.prefix"))) {
+			evt.setCancelled(false); // We don't need to cancel an event that goes to everyone. Let vanilla handle it.
+			evt.setFormat(plugin.util.formatChatPrefixes(message, plugin.getConfig().getString(emote ? "global.meformat" : "global.sayformat"), evt));
+		} else if (evt.getMessage().startsWith(plugin.getConfig().getString("world.prefix"))) {
 			List<Player> worldPlayers = evt.getPlayer().getWorld().getPlayers();
 			for (Player plr : worldPlayers) {
-				plr.sendMessage(util.formatChatPrefixes(message, plugin
-						.getConfig().getString(emote ? "world.meformat" : "world.sayformat"), evt));
+				plr.sendMessage(util.formatChatPrefixes(message, plugin.getConfig().getString(emote ? "world.meformat" : "world.sayformat"), evt));
 			}
+			plugin.mcLog.info(util.formatChatPrefixes(message, plugin.getConfig().getString(emote ? "world.meformat" : "world.sayformat"), evt));
 		} else if (evt.getMessage().startsWith(
 				plugin.getConfig().getString("admin.prefix"))) {
 			if (evt.getPlayer().hasPermission("kitsunechat.adminchat")) {
 				for (Player plr : plugin.getServer().getOnlinePlayers()) {
 					if (plr.hasPermission("kitsunechat.adminchat")) {
-						plr.sendMessage(util.formatChatPrefixes(message, plugin
-								.getConfig().getString(emote ? "admin.meformat" : "admin.sayformat"), evt));
+						plr.sendMessage(util.formatChatPrefixes(message, plugin.getConfig().getString(emote ? "admin.meformat" : "admin.sayformat"), evt));
 					}
 				}
+				plugin.mcLog.info(util.formatChatPrefixes(message, plugin.getConfig().getString(emote ? "admin.meformat" : "admin.sayformat"), evt));
 			} else {
-				evt.getPlayer()
-						.sendMessage(
-								ChatColor.RED
-										+ "You do not have permissions to use admin chat.");
+				evt.getPlayer().sendMessage(ChatColor.RED+ "You do not have permissions to use admin chat.");
 			}
 		} else if (evt.getMessage().startsWith(
 				plugin.getConfig().getString("party.prefix"))) {
@@ -73,9 +65,9 @@ public class ChatListener implements Listener {
 						.getPartyMembers(plugin.party.getPartyName(evt
 								.getPlayer()));
 				for (Player plr : channelPlayers) {
-					plr.sendMessage(util.formatChatPrefixes(message, plugin
-							.getConfig().getString(emote ? "party.meformat" : "party.sayformat"), evt));
+					plr.sendMessage(util.formatChatPrefixes(message, plugin.getConfig().getString(emote ? "party.meformat" : "party.sayformat"), evt));
 				}
+				plugin.mcLog.info(util.formatChatPrefixes(message, plugin.getConfig().getString(emote ? "party.meformat" : "party.sayformat"), evt));
 			} else {
 				evt.getPlayer()
 						.sendMessage(
@@ -88,10 +80,9 @@ public class ChatListener implements Listener {
 			Set<Player> local = KitsuneChatUtils.getNearbyPlayers(plugin
 					.getConfig().getInt("local.radius"), evt.getPlayer());
 			for (Player plr : local) {
-				plr.sendMessage(util.formatChatPrefixes(message, plugin
-						.getConfig().getString(emote ? "local.meformat" : "local.sayformat"), evt));
+				plr.sendMessage(util.formatChatPrefixes(message, plugin.getConfig().getString(emote ? "local.meformat" : "local.sayformat"), evt));
 			}
-			
+			plugin.mcLog.info(util.formatChatPrefixes(message, plugin.getConfig().getString(emote ? "local.meformat" : "local.sayformat"), evt));
 			if(local.size() <= 1) {
 				if(!evt.getPlayer().hasPermission("kitsunechat.nodefault.global")) {
 					evt.getPlayer().sendMessage(ChatColor.GRAY+"(Nobody can hear you, try defaulting to global chat with /kc "+plugin.getConfig().getString("global.prefix")+")");
@@ -128,7 +119,8 @@ public class ChatListener implements Listener {
 		}
 		
 		
-		plugin.mcLog.info(evt.getPlayer().getName()+" : "+message);
+			//plugin.mcLog.info(evt.getPlayer().getName()+" : "+message);
+		
 
 	}
 
