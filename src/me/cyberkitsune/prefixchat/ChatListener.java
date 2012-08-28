@@ -39,6 +39,7 @@ public class ChatListener implements Listener {
 
 		if (evt.getMessage().startsWith(plugin.getConfig().getString("global.prefix"))) {
 			evt.setCancelled(false); // We don't need to cancel an event that goes to everyone. Let vanilla handle it.
+			evt.setMessage(plugin.util.stripPrefixes(message)); //For compatibility.
 			evt.setFormat(plugin.util.formatChatPrefixes(message, plugin.getConfig().getString(emote ? "global.meformat" : "global.sayformat"), evt));
 		} else if (evt.getMessage().startsWith(plugin.getConfig().getString("world.prefix"))) {
 			List<Player> worldPlayers = evt.getPlayer().getWorld().getPlayers();
@@ -111,15 +112,18 @@ public class ChatListener implements Listener {
 					evt.setMessage(plugin.dataFile.getUserChannel(evt.getPlayer())+plugin.getConfig().getString("emote.prefix")+message);
 				}
 			} else {
-				plugin.dataFile.setUserChannel(evt.getPlayer(), plugin.getConfig().getString("local.prefix"));
-				
+				//Stupid admin check :P
+				if(evt.getPlayer().hasPermission("kitsunechat.nodefault."+util.getChannelName(plugin.getConfig().getString("default"), false))) {
+					plugin.dataFile.setUserChannel(evt.getPlayer(), plugin.getConfig().getString("local.prefix"));
+				} else {
+					plugin.dataFile.setUserChannel(evt.getPlayer(), plugin.getConfig().getString("default"));
+				}
 			}
 			playerChat(evt);
 			return;
 		}
 		
 		
-			//plugin.mcLog.info(evt.getPlayer().getName()+" : "+message);
 		
 
 	}

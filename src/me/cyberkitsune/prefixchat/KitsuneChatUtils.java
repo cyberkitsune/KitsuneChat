@@ -38,6 +38,10 @@ public class KitsuneChatUtils {
 		return colorized;
 	}
 	
+	public String stripPrefixes(String target) {
+		return target.replaceFirst("\\"+getChannelName(target, true), "");
+	}
+	
 	public String formatChatPrefixes(String target, String formatString, PlayerChatEvent context) {
 		String output ="";
 		if(plugin.vaultEnabled) {
