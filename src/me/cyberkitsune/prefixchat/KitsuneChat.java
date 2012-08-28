@@ -112,6 +112,10 @@ public class KitsuneChat extends JavaPlugin{
 			config.set("emote.prefix", "|");
 		}
 		
+		if(!config.isSet("defaultchan")) {
+			config.set("defaultchan", "%");
+		}
+		
 		config.set("version", this.getDescription().getVersion());
 		this.saveConfig();	
 	}
