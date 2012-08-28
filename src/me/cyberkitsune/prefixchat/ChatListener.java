@@ -38,9 +38,16 @@ public class ChatListener implements Listener {
 		}
 
 		if (evt.getMessage().startsWith(plugin.getConfig().getString("global.prefix"))) {
+			if(!emote) {
 			evt.setCancelled(false); // We don't need to cancel an event that goes to everyone. Let vanilla handle it.
 			evt.setMessage(plugin.util.stripPrefixes(message)); //For compatibility.
 			evt.setFormat(plugin.util.formatChatPrefixes(message, plugin.getConfig().getString(emote ? "global.meformat" : "global.sayformat"), evt));
+			} else {
+				for(Player plr : plugin.getServer().getOnlinePlayers()) {
+					plr.sendMessage(plugin.util.formatChatPrefixes(message, plugin.getConfig().getString(emote ? "global.meformat" : "global.sayformat"), evt));
+				}
+				plugin.mcLog.info(plugin.util.formatChatPrefixes(message, plugin.getConfig().getString(emote ? "global.meformat" : "global.sayformat"), evt));
+			}
 		} else if (evt.getMessage().startsWith(plugin.getConfig().getString("world.prefix"))) {
 			List<Player> worldPlayers = evt.getPlayer().getWorld().getPlayers();
 			for (Player plr : worldPlayers) {
@@ -109,7 +116,7 @@ public class ChatListener implements Listener {
 				if(!emote) {
 				evt.setMessage(plugin.dataFile.getUserChannel(evt.getPlayer())+message);
 				} else {
-					evt.setMessage(plugin.dataFile.getUserChannel(evt.getPlayer())+plugin.getConfig().getString("emote.prefix")+message);
+				evt.setMessage(plugin.dataFile.getUserChannel(evt.getPlayer())+plugin.getConfig().getString("emote.prefix")+message);
 				}
 			} else {
 				//Stupid admin check :P
