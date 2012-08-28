@@ -39,7 +39,7 @@ public class KitsuneChatUtils {
 	}
 	
 	public String stripPrefixes(String target) {
-		return target.replaceFirst("\\"+getChannelName(target, true), "");
+		return (String) target.replaceFirst("\\"+getChannelName(target, true), "");
 	}
 	
 	public String formatChatPrefixes(String target, String formatString, PlayerChatEvent context) {
@@ -55,7 +55,11 @@ public class KitsuneChatUtils {
 		output = output.replaceAll("\\{party\\}", (plugin.party.isInAParty(context.getPlayer()) ? plugin.party.getPartyName(context.getPlayer()) : ""));
 		target = target.replaceFirst("\\"+getChannelName(target, true), "");
 		target = target.replaceAll("\\$", "\\\\\\$"); //Friggen dollar signs.
-		output = output.replaceAll("\\{message\\}", target);
+		if(context.isCancelled()) {
+			output = output.replaceAll("\\{message\\}", target);
+		} else {
+			output = output.replaceAll("\\{message\\}", "%2\\$s");
+		}
 		output = colorizeString(output);
 		return output;
 	}

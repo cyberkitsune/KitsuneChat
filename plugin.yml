@@ -1,5 +1,5 @@
 name: KitsuneChat
-version: 1.4.3
+version: 1.4.4
 main: me.cyberkitsune.prefixchat.KitsuneChat
 softdepend: [Vault]
 commands:
@@ -13,6 +13,8 @@ permissions:
         description: Allows use of adminchat
         default: op
      kitsunechat.nodefault.*:
+        description: Deny ALL the chat!
+        default: false
         children:
            kitsunechat.nodefault.global: true
            kitsunechat.nodefault.world: true
