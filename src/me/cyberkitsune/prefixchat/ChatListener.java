@@ -1,6 +1,7 @@
 package me.cyberkitsune.prefixchat;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -14,15 +15,34 @@ public class ChatListener implements Listener {
 
 	private KitsuneChat plugin;
 	private KitsuneChatUtils util;
+	
+	private HashMap<Player,String> bufs;
 
 	public ChatListener(KitsuneChat plugin) {
 		this.plugin = plugin;
 		util = new KitsuneChatUtils(plugin);
+		this.bufs = new HashMap();
 	}
 
 	@EventHandler
 	public void playerChat(PlayerChatEvent evt) {
 		evt.setCancelled(true);
+		if (evt.getMessage().endsWith("--")) {
+			if (bufs.get(evt.getPlayer())==null) {
+				bufs.put(evt.getPlayer(), evt.getMessage().substring(0, evt.getMessage().length()-2));
+				return;
+			} else {
+				bufs.put(evt.getPlayer(), 
+						bufs.get(evt.getPlayer())+" "+
+						plugin.util.stripPrefixes(evt.getMessage().substring(0, evt.getMessage().length()-2))
+					);
+				return;
+			}				
+		} else {
+			if (bufs.get(evt.getPlayer()) != null)
+				evt.setMessage(bufs.get(evt.getPlayer())+" "+plugin.util.stripPrefixes(evt.getMessage()));
+				bufs.put(evt.getPlayer(), null);
+		}
 		String message = KitsuneChatUtils.colorizeString(evt.getMessage());
 		boolean emote = false;
 		for(String str : plugin.prefixes) {
