@@ -87,6 +87,18 @@ public class ChatListener implements Listener {
 				evt.getPlayer().sendMessage(ChatColor.RED+ "You do not have permissions to use admin chat.");
 			}
 		} else if (evt.getMessage().startsWith(
+				plugin.getConfig().getString("staff.prefix"))) {
+			if (evt.getPlayer().hasPermission("kitsunechat.staffchat")) {
+				for (Player plr : plugin.getServer().getOnlinePlayers()) {
+					if (plr.hasPermission("kitsunechat.staffchat")) {
+						plr.sendMessage(util.formatChatPrefixes(message, plugin.getConfig().getString(emote ? "staff.meformat" : "staff.sayformat"), evt));
+					}
+				}
+				plugin.mcLog.info(util.formatChatPrefixes(message, plugin.getConfig().getString(emote ? "staff.meformat" : "staff.sayformat"), evt));
+			} else {
+				evt.getPlayer().sendMessage(ChatColor.RED+ "You do not have permissions to use staff chat.");
+			}
+		} else if (evt.getMessage().startsWith(
 				plugin.getConfig().getString("party.prefix"))) {
 			if (plugin.party.isInAParty(evt.getPlayer())) {
 				Set<Player> channelPlayers = plugin.party

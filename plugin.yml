@@ -1,6 +1,7 @@
 name: KitsuneChat
 version: 1.5
 main: me.cyberkitsune.prefixchat.KitsuneChat
+authors: [CyberKitsune, Alynna]
 softdepend: [Vault]
 commands:
      kc:

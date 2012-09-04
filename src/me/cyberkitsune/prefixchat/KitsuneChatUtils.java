@@ -70,6 +70,8 @@ public class KitsuneChatUtils {
 				return "global";
 			} else if(target.startsWith(plugin.getConfig().getString("admin.prefix"))) {
 				return "admin";
+			} else if(target.startsWith(plugin.getConfig().getString("staff.prefix"))) {
+				return "staff";
 			} else if(target.startsWith(plugin.getConfig().getString("world.prefix"))) {
 				return "world";
 			} else if(target.startsWith(plugin.getConfig().getString("party.prefix"))) {
@@ -84,6 +86,8 @@ public class KitsuneChatUtils {
 				return plugin.getConfig().getString("global.prefix");
 			} else if(target.startsWith(plugin.getConfig().getString("admin.prefix"))) {
 				return plugin.getConfig().getString("admin.prefix");
+			} else if(target.startsWith(plugin.getConfig().getString("staff.prefix"))) {
+				return plugin.getConfig().getString("staff.prefix");
 			} else if(target.startsWith(plugin.getConfig().getString("world.prefix"))) {
 				return plugin.getConfig().getString("world.prefix");
 			} else if(target.startsWith(plugin.getConfig().getString("party.prefix"))) {
