@@ -24,7 +24,6 @@ public class KitsuneChat extends JavaPlugin{
 	public Chat vaultChat = null;
 	public boolean vaultEnabled = false;
 	
-	
 	@Override
 	public void onEnable() {
 		mcLog.info("[KitsuneChat] Enabling KitsuneChat version "+this.getDescription().getVersion()+"a");
@@ -52,7 +51,6 @@ public class KitsuneChat extends JavaPlugin{
 			vaultEnabled = false;
 			mcLog.info("[KitsuneChat] Unable to link to Vault for chat! Is it installed? Prefix / Suffix support disabled!");
 		}
-		// Here we should set a legacy chat listener for 1.2.5 compatibility.
 		this.getServer().getPluginManager().registerEvents(new ChatListener(this), this);
 		this.getServer().getPluginManager().registerEvents(new ConnectHandler(this), this);
 		getCommand("kc").setExecutor(exec);

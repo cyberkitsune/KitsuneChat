@@ -12,6 +12,8 @@ import org.bukkit.event.Event;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 
+import com.google.common.base.Joiner;
+
 public class KitsuneChatUtils {
 	KitsuneChat plugin;
 	public KitsuneChatUtils(KitsuneChat plugin) {
@@ -41,6 +43,7 @@ public class KitsuneChatUtils {
 		for(Entity ent : event.getRecipients())
 		{
 			if (ent.equals(target)) continue;
+			if (!(ent.getWorld().equals(target.getWorld()))) continue;
 			if(target.getLocation().distance(ent.getLocation()) <= radius) {
 				nearbyPlayers.add((Player) ent);
 			}
@@ -61,7 +64,7 @@ public class KitsuneChatUtils {
 	}
 	
 	public String formatChatPrefixes(String target, String formatString, AsyncPlayerChatEvent context) {
-		String output ="";
+		String output="";
 		if(plugin.vaultEnabled) {
 			output = formatString.replaceAll("\\{sender\\}", plugin.vaultChat.getPlayerPrefix(context.getPlayer())+context.getPlayer().getDisplayName()+plugin.vaultChat.getPlayerSuffix(context.getPlayer()));
 		} else {
@@ -81,29 +84,17 @@ public class KitsuneChatUtils {
 		output = colorizeString(output);
 		return output;
 	}
-	// Why, gods, doesn't Java let me cast PlayerChatEvent to AsyncPlayerChatEvent?
-	public String formatChatPrefixes(String target, String formatString, PlayerChatEvent context) {
-		String output ="";
-		if(plugin.vaultEnabled) {
-			output = formatString.replaceAll("\\{sender\\}", plugin.vaultChat.getPlayerPrefix(context.getPlayer())+context.getPlayer().getDisplayName()+plugin.vaultChat.getPlayerSuffix(context.getPlayer()));
-		} else {
-			output = formatString.replaceAll("\\{sender\\}", context.getPlayer().getDisplayName());
-		}
-		output = output.replaceAll("\\{world\\}", context.getPlayer().getWorld().getName());
-		output = output.replaceAll("\\{channel\\}", getChannelName(target, false));
-		output = output.replaceAll("\\{prefix\\}", getChannelName(target, true));
-		output = output.replaceAll("\\{party\\}", (plugin.party.isInAParty(context.getPlayer()) ? plugin.party.getPartyName(context.getPlayer()) : ""));
-		target = target.replaceFirst("\\"+getChannelName(target, true), "");
-		target = target.replaceAll("\\$", "\\\\\\$"); //Friggen dollar signs.
-		if(context.isCancelled()) {
-			output = output.replaceAll("\\{message\\}", target);
-		} else {
-			output = output.replaceAll("\\{message\\}", "%2\\$s");
-		}
-		output = colorizeString(output);
-		return output;
+    public void chatWatcher(AsyncPlayerChatEvent event) {
+		plugin.mcLog.info(
+				"KitsuneChat "+
+				event.getEventName()+" "+
+				event.getPlayer()+" "+
+				Joiner.on(" ").join(event.getRecipients())+" "+
+				event.getFormat()+" "+
+				event.getMessage()
+				);
+		return;
 	}
-
 	public String getChannelName(String target, boolean displayPrefix) {
 		if(!displayPrefix) {
 			if(target.startsWith(plugin.getConfig().getString("global.prefix"))) {
