@@ -8,7 +8,9 @@ import java.util.Set;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChatEvent;
 
 public class ChatListener implements Listener {
@@ -24,8 +26,10 @@ public class ChatListener implements Listener {
 		this.bufs = new HashMap();
 	}
 
-	@EventHandler
-	public void playerChat(PlayerChatEvent evt) {
+	// LOW priority makes this event fire before NORMAL priority, so that we can properly rewrite event messages..
+	@SuppressWarnings("deprecation")
+	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = false)
+	public void playerChat(AsyncPlayerChatEvent evt) {
 		evt.setCancelled(true);
 		if (evt.getMessage().endsWith("--")) {
 			if (bufs.get(evt.getPlayer())==null) {
@@ -59,10 +63,11 @@ public class ChatListener implements Listener {
 
 		if (evt.getMessage().startsWith(plugin.getConfig().getString("global.prefix"))) {
 			if(!emote) {
-			evt.setCancelled(false); // We don't need to cancel an event that goes to everyone. Let vanilla handle it.
-			evt.setMessage(plugin.util.stripPrefixes(message)); //For compatibility.
-			evt.setFormat(plugin.util.formatChatPrefixes(message, plugin.getConfig().getString(emote ? "global.meformat" : "global.sayformat"), evt));
+				evt.setCancelled(false); // We don't need to cancel an event that goes to everyone. Let vanilla handle it.
+				evt.setMessage(plugin.util.stripPrefixes(message)); //For compatibility.
+				evt.setFormat(plugin.util.formatChatPrefixes(message, plugin.getConfig().getString(emote ? "global.meformat" : "global.sayformat"), evt));
 			} else {
+				plugin.getLogger().info(message);
 				for(Player plr : plugin.getServer().getOnlinePlayers()) {
 					plr.sendMessage(plugin.util.formatChatPrefixes(message, plugin.getConfig().getString(emote ? "global.meformat" : "global.sayformat"), evt));
 				}
@@ -118,7 +123,7 @@ public class ChatListener implements Listener {
 		} else if ((evt.getMessage().startsWith(plugin.getConfig().getString(
 				"local.prefix")))) {
 			Set<Player> local = KitsuneChatUtils.getNearbyPlayers(plugin
-					.getConfig().getInt("local.radius"), evt.getPlayer());
+					.getConfig().getInt("local.radius"), evt.getPlayer(), evt);
 			for (Player plr : local) {
 				plr.sendMessage(util.formatChatPrefixes(message, plugin.getConfig().getString(emote ? "local.meformat" : "local.sayformat"), evt));
 			}
@@ -130,7 +135,6 @@ public class ChatListener implements Listener {
 					evt.getPlayer().sendMessage(ChatColor.GRAY+"(Nobody can hear you, try talking globally by starting your message with "+plugin.getConfig().getString("global.prefix")+")");
 				}
 			}
-
 		} else { //Default chat
 			List<String> prefixes = Arrays.asList(plugin.getConfig().getString("global.prefix"), plugin.getConfig().getString("local.prefix"), plugin.getConfig().getString("staff.prefix"), plugin.getConfig().getString("admin.prefix"), plugin.getConfig().getString("party.prefix"), plugin.getConfig().getString("world.prefix"));
 			boolean pass = false;
@@ -161,10 +165,5 @@ public class ChatListener implements Listener {
 			playerChat(evt);
 			return;
 		}
-		
-		
-		
-
 	}
-
 }
