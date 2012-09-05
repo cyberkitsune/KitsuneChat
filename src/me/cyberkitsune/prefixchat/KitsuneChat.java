@@ -63,7 +63,7 @@ public class KitsuneChat extends JavaPlugin{
 		for(Player plr : online) {
 			party.changeParty(plr, dataFile.getPartyDataForUser(plr));
 		}
-		prefixes = Arrays.asList(this.getConfig().getString("global.prefix"), this.getConfig().getString("local.prefix"), this.getConfig().getString("admin.prefix"), this.getConfig().getString("party.prefix"), this.getConfig().getString("world.prefix"));
+		prefixes = Arrays.asList(this.getConfig().getString("global.prefix"), this.getConfig().getString("local.prefix"), this.getConfig().getString("staff.prefix"), this.getConfig().getString("admin.prefix"), this.getConfig().getString("party.prefix"), this.getConfig().getString("world.prefix"));
 	}
 	
 	@Override
@@ -87,14 +87,16 @@ public class KitsuneChat extends JavaPlugin{
 			config.set("global.prefix", "!");
 			config.set("world.prefix", "#");
 			config.set("admin.prefix", "@");
+			config.set("staff.prefix", "^");
 			config.set("party.prefix", "$");
 			config.set("local.prefix", "%");
 			config.set("party.cost", 0);
-			config.set("local.radius", 200);
+			config.set("local.radius", 128);
 		}
 		if(!config.isSet("global.sayformat")) {
 			config.set("global.sayformat", "[{world}] {sender}: {message}");
 			config.set("admin.sayformat", "[{prefix}] {sender}: {message}");
+			config.set("staff.sayformat", "[{prefix}] {sender}: {message}");
 			config.set("world.sayformat", "[{prefix}] {sender}: {message}");
 			config.set("party.sayformat", "[{party}] {sender}: {message}");
 			config.set("local.sayformat", "{sender}: {message}");
@@ -103,6 +105,7 @@ public class KitsuneChat extends JavaPlugin{
 		if(!config.isSet("global.meformat")) {
 			config.set("global.meformat", "[{world}] * {sender} {message}");
 			config.set("admin.meformat", "[{prefix}] * {sender} {message}");
+			config.set("staff.meformat", "[{prefix}] * {sender} {message}");
 			config.set("world.meformat", "[{prefix}] * {sender} {message}");
 			config.set("party.meformat", "[{party}] * {sender} {message}");
 			config.set("local.meformat", "* {sender} {message}");
