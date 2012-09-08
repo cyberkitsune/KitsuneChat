@@ -70,8 +70,8 @@ public class KitsuneChatUtils {
 			output = formatString.replaceAll("\\{sender\\}", context.getPlayer().getDisplayName());
 		}
 		if(plugin.multiVerse) {
-			MultiverseCore MultiversePlugin = this.plugin.multiversePlugin;
-			MultiverseWorld mvWorld = MultiversePlugin.getMVWorldManager().getMVWorld(context.getPlayer().getWorld().getName());
+			MultiverseCore mvPlug = this.plugin.multiversePlugin;
+			MultiverseWorld mvWorld = mvPlug.getMVWorldManager().getMVWorld(context.getPlayer().getWorld().getName());
 			if(mvWorld == null) {
 				output = output.replaceAll("\\{world\\}", context.getPlayer().getWorld().getName());	
 			} else {

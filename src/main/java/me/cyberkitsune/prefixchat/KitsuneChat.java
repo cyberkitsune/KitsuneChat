@@ -158,7 +158,7 @@ public class KitsuneChat extends JavaPlugin{
 		if(getServer().getPluginManager().getPlugin("Multiverse-Core") == null) {
 			return false;
 		} else {
-			multiversePlugin = new MultiverseCore();
+			multiversePlugin = (MultiverseCore) getServer().getPluginManager().getPlugin("Multiverse-Core");
 			return true;
 		}
 	}
