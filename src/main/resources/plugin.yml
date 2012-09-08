@@ -1,0 +1,32 @@
+name: KitsuneChat
+version: 1.5
+main: me.cyberkitsune.prefixchat.KitsuneChat
+authors: [CyberKitsune, Alynna]
+softdepend: [Vault]
+commands:
+     kc:
+      description: KitsuneChat commands.
+     me:
+      description: Emote
+      
+permissions:
+     kitsunechat.adminchat:
+        description: Allows use of adminchat
+        default: op
+     kitsunechat.nodefault.*:
+        description: Deny ALL the chat!
+        default: false
+        children:
+           kitsunechat.nodefault.global: true
+           kitsunechat.nodefault.world: true
+           kitsunechat.nodefault.party: true
+     kitsunechat.nodefault.global:
+        description: Denies use of using /kc to default to global chat.
+        default: false
+     kitsunechat.nodefault.world:
+        description: Denies use of using /kc to default to world chat.
+        default: false
+     kitsunechat.nodefault.party:
+        description: Denies use of using /kc to default to party chat.
+        default: false
+     
