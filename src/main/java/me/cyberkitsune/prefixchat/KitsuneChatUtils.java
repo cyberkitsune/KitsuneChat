@@ -10,6 +10,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import com.google.common.base.Joiner;
+import com.onarandombox.MultiverseCore.MultiverseCore;
+import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 
 public class KitsuneChatUtils {
 	KitsuneChat plugin;
@@ -67,7 +69,13 @@ public class KitsuneChatUtils {
 		} else {
 			output = formatString.replaceAll("\\{sender\\}", context.getPlayer().getDisplayName());
 		}
-		output = output.replaceAll("\\{world\\}", context.getPlayer().getWorld().getName());
+		if(plugin.multiVerse) {
+			MultiverseCore MultiversePlugin = this.plugin.multiversePlugin;
+			MultiverseWorld mvWorld = MultiversePlugin.getMVWorldManager().getMVWorld(context.getPlayer().getWorld());
+			output = output.replaceAll("\\{world\\}", mvWorld.getColoredWorldString());
+		} else {
+			output = output.replaceAll("\\{world\\}", context.getPlayer().getWorld().getName());	
+		}
 		output = output.replaceAll("\\{channel\\}", getChannelName(target, false));
 		output = output.replaceAll("\\{prefix\\}", getChannelName(target, true));
 		output = output.replaceAll("\\{party\\}", (plugin.party.isInAParty(context.getPlayer()) ? plugin.party.getPartyName(context.getPlayer()) : ""));

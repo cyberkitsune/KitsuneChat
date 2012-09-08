@@ -12,6 +12,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.onarandombox.MultiverseCore.MultiverseCore;
+
 public class KitsuneChat extends JavaPlugin{
 	
 	public Logger mcLog = Logger.getLogger("Minecraft");
@@ -22,6 +24,8 @@ public class KitsuneChat extends JavaPlugin{
 	public List<String> prefixes;
 	public Chat vaultChat = null;
 	public boolean vaultEnabled = false;
+	public boolean multiVerse = false;
+	public MultiverseCore multiversePlugin = null;
 	
 	@Override
 	public void onEnable() {
@@ -49,6 +53,13 @@ public class KitsuneChat extends JavaPlugin{
 		} else {
 			vaultEnabled = false;
 			mcLog.info("[KitsuneChat] Unable to link to Vault for chat! Is it installed? Prefix / Suffix support disabled!");
+		}
+		if(checkMultiverse()) {
+			multiVerse = true;
+			mcLog.info("[KitsuneChat] Multiverse found! Enabling world aliases!");
+		} else {
+			multiVerse = false;
+			mcLog.info("[KitsuneChat] Did not find Multiverse. Not enabling world aliases.");
 		}
 		this.getServer().getPluginManager().registerEvents(new ChatListener(this), this);
 		this.getServer().getPluginManager().registerEvents(new ConnectHandler(this), this);
@@ -132,6 +143,15 @@ public class KitsuneChat extends JavaPlugin{
 			vaultChat = chatProvider.getProvider();
 		}
 		return (vaultChat != null);
+	}
+	
+	private boolean checkMultiverse() {
+		if(getServer().getPluginManager().getPlugin("Multiverse-Core") == null) {
+			return false;
+		} else {
+			multiversePlugin = new MultiverseCore();
+			return true;
+		}
 	}
 
 }
