@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import net.milkbowl.vault.chat.Chat;
 
+import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -65,7 +66,15 @@ public class KitsuneChat extends JavaPlugin{
 		this.getServer().getPluginManager().registerEvents(new ConnectHandler(this), this);
 		this.getServer().getPluginManager().registerEvents(new JoinQuitListener(this), this);
 		getCommand("kc").setExecutor(exec);
-		getCommand("me").setExecutor(exec);
+		PluginCommand c = getCommand("me");
+		
+		if(c == null)
+		{
+			mcLog.info("[KitsuneChat] Unable to hook /me ! Contact whoever broke your shit.");
+		} else {
+			getCommand("me").setExecutor(exec);
+		}
+		
 		dataFile = new KitsuneChatUserData(this);
 		dataFile.loadUserData();
 		

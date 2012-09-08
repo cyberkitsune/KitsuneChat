@@ -13,6 +13,9 @@ permissions:
      kitsunechat.adminchat:
         description: Allows use of adminchat
         default: op
+     kitsunechat.staffchat:
+        description: Allows the use of staff chat.
+        default: op
      kitsunechat.nodefault.*:
         description: Deny ALL the chat!
         default: false
