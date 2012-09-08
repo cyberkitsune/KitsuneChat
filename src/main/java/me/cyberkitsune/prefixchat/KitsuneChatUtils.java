@@ -71,8 +71,12 @@ public class KitsuneChatUtils {
 		}
 		if(plugin.multiVerse) {
 			MultiverseCore MultiversePlugin = this.plugin.multiversePlugin;
-			MultiverseWorld mvWorld = MultiversePlugin.getMVWorldManager().getMVWorld(context.getPlayer().getWorld());
-			output = output.replaceAll("\\{world\\}", mvWorld.getColoredWorldString());
+			MultiverseWorld mvWorld = MultiversePlugin.getMVWorldManager().getMVWorld(context.getPlayer().getWorld().getName());
+			if(mvWorld == null) {
+				output = output.replaceAll("\\{world\\}", context.getPlayer().getWorld().getName());	
+			} else {
+				output = output.replaceAll("\\{world\\}", mvWorld.getColoredWorldString());
+			}
 		} else {
 			output = output.replaceAll("\\{world\\}", context.getPlayer().getWorld().getName());	
 		}
