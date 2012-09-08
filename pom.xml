@@ -6,7 +6,7 @@
   <name>KitsuneChat</name>
   <description>A bukkit plugin for chat.</description>
   <build>
-    <sourceDirectory>src\main\java</sourceDirectory>
+    <sourceDirectory>src/main/java</sourceDirectory>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
