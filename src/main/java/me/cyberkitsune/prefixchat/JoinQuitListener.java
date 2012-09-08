@@ -17,7 +17,7 @@ public class JoinQuitListener implements Listener{
 	public void onJoin(PlayerJoinEvent evt) {
 		if(plugin.vaultEnabled) {
 			String playername = ChatColor.translateAlternateColorCodes('&', plugin.vaultChat.getPlayerPrefix(evt.getPlayer())+evt.getPlayer().getDisplayName()+plugin.vaultChat.getPlayerSuffix(evt.getPlayer()));
-			evt.setJoinMessage(ChatColor.YELLOW+playername+" has joined the game.");
+			evt.setJoinMessage(ChatColor.YELLOW+playername+ChatColor.YELLOW+" has joined the game.");
 		}
 	}
 	
@@ -25,7 +25,7 @@ public class JoinQuitListener implements Listener{
 	public void onLeave(PlayerQuitEvent evt) {
 		if(plugin.vaultEnabled) {
 			String playername = ChatColor.translateAlternateColorCodes('&', plugin.vaultChat.getPlayerPrefix(evt.getPlayer())+evt.getPlayer().getDisplayName()+plugin.vaultChat.getPlayerSuffix(evt.getPlayer()));
-			evt.setQuitMessage(ChatColor.YELLOW+playername+" has quit the game.");
+			evt.setQuitMessage(ChatColor.YELLOW+playername+ChatColor.YELLOW+" has quit the game.");
 		}
 	}
 	
