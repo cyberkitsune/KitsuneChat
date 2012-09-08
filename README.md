@@ -36,3 +36,18 @@ KitsuneChat Permissions:
 
 KitsuneChat commands all begin with /kc. Use "/kc ?" for a help list.
 
+Building KitsuneChat
+--------------------
+
+From command line:
+
+1.	Download Maven
+2.	Clone our repo
+3.	Run `mvn clean package` on the command prompt
+4.	KitsuneChat will be built in the target folder.
+
+From Eclipse:
+
+1.	Download the Maven Eclipse plugin (m2e)
+2.	Run the saved build configuration
+3.	Plugin will be generated in the target folder.
