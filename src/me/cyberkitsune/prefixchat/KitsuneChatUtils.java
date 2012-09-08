@@ -8,7 +8,11 @@ import java.util.Set;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChatEvent;
+
+import com.google.common.base.Joiner;
 
 public class KitsuneChatUtils {
 	KitsuneChat plugin;
@@ -31,6 +35,23 @@ public class KitsuneChatUtils {
 		
 	}
 	
+	public static Set<Player> getNearbyPlayers(int radius, Player target, AsyncPlayerChatEvent event) {
+		// This function SHOULD be thread-safe.
+		Set<Player> nearbyPlayers = new HashSet<Player>();
+		nearbyPlayers.add(target);
+		
+		for(Entity ent : event.getRecipients())
+		{
+			if (ent.equals(target)) continue;
+			if (!(ent.getWorld().equals(target.getWorld()))) continue;
+			if(target.getLocation().distance(ent.getLocation()) <= radius) {
+				nearbyPlayers.add((Player) ent);
+			}
+		}
+		
+		return nearbyPlayers;
+		
+	}
 	public static String colorizeString(String target) {
 		String colorized = new String();
 		colorized = ChatColor.translateAlternateColorCodes('&', target);
@@ -42,8 +63,8 @@ public class KitsuneChatUtils {
 		return (String) target.replaceFirst("\\"+getChannelName(target, true), "");
 	}
 	
-	public String formatChatPrefixes(String target, String formatString, PlayerChatEvent context) {
-		String output ="";
+	public String formatChatPrefixes(String target, String formatString, AsyncPlayerChatEvent context) {
+		String output="";
 		if(plugin.vaultEnabled) {
 			output = formatString.replaceAll("\\{sender\\}", plugin.vaultChat.getPlayerPrefix(context.getPlayer())+context.getPlayer().getDisplayName()+plugin.vaultChat.getPlayerSuffix(context.getPlayer()));
 		} else {
@@ -63,7 +84,17 @@ public class KitsuneChatUtils {
 		output = colorizeString(output);
 		return output;
 	}
-	
+    public void chatWatcher(AsyncPlayerChatEvent event) {
+		plugin.mcLog.info(
+				"KitsuneChat "+
+				event.getEventName()+" "+
+				event.getPlayer()+" "+
+				Joiner.on(" ").join(event.getRecipients())+" "+
+				event.getFormat()+" "+
+				event.getMessage()
+				);
+		return;
+	}
 	public String getChannelName(String target, boolean displayPrefix) {
 		if(!displayPrefix) {
 			if(target.startsWith(plugin.getConfig().getString("global.prefix"))) {

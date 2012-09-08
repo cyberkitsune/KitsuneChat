@@ -2,14 +2,20 @@ package me.cyberkitsune.prefixchat;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+
+import com.google.common.base.Joiner;
 
 public class ChatListener implements Listener {
 
@@ -21,11 +27,21 @@ public class ChatListener implements Listener {
 	public ChatListener(KitsuneChat plugin) {
 		this.plugin = plugin;
 		util = new KitsuneChatUtils(plugin);
-		this.bufs = new HashMap();
+		this.bufs = new HashMap<Player, String>();
 	}
-
-	@EventHandler
-	public void playerChat(PlayerChatEvent evt) {
+	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = false)
+	public void playerEmote(PlayerCommandPreprocessEvent evt) {
+		if (!evt.getMessage().toLowerCase().startsWith("/me "))
+			return;
+		Set<Player> online = new HashSet<Player>(Arrays.asList(evt.getPlayer().getServer().getOnlinePlayers()));
+		String buf = new String(plugin.getConfig().getString("emote.prefix")+evt.getMessage().substring(4));
+		AsyncPlayerChatEvent newevt = 
+				new AsyncPlayerChatEvent(false, evt.getPlayer(), buf, online);
+		plugin.getServer().getPluginManager().callEvent(newevt);
+	}
+	// LOW priority makes this event fire before NORMAL priority, so that we can properly rewrite event messages..
+	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = false)
+	public void playerChat(AsyncPlayerChatEvent evt) {
 		evt.setCancelled(true);
 		if (evt.getMessage().endsWith("--")) {
 			if (bufs.get(evt.getPlayer())==null) {
@@ -58,16 +74,16 @@ public class ChatListener implements Listener {
 		}
 
 		if (evt.getMessage().startsWith(plugin.getConfig().getString("global.prefix"))) {
-			if(!emote) {
-			evt.setCancelled(false); // We don't need to cancel an event that goes to everyone. Let vanilla handle it.
-			evt.setMessage(plugin.util.stripPrefixes(message)); //For compatibility.
-			evt.setFormat(plugin.util.formatChatPrefixes(message, plugin.getConfig().getString(emote ? "global.meformat" : "global.sayformat"), evt));
-			} else {
+			//plugin.mcLog.info(plugin.util.formatChatPrefixes(message, plugin.getConfig().getString(emote ? "global.meformat" : "global.sayformat"), evt));
+			if (emote) { // This here is not the ideal way to handle it, but its the way that works.
 				for(Player plr : plugin.getServer().getOnlinePlayers()) {
 					plr.sendMessage(plugin.util.formatChatPrefixes(message, plugin.getConfig().getString(emote ? "global.meformat" : "global.sayformat"), evt));
 				}
-				plugin.mcLog.info(plugin.util.formatChatPrefixes(message, plugin.getConfig().getString(emote ? "global.meformat" : "global.sayformat"), evt));
 			}
+			evt.setFormat(plugin.util.formatChatPrefixes(message.replace("%", "%%"), plugin.getConfig().getString(emote ? "global.meformat" : "global.sayformat"), evt));
+			evt.setMessage(plugin.util.stripPrefixes(message)); //For compatibility.
+			evt.setCancelled(false); // We don't need to cancel an event that goes to everyone. Let vanilla handle it.
+			// util.chatWatcher(evt);
 		} else if (evt.getMessage().startsWith(plugin.getConfig().getString("world.prefix"))) {
 			List<Player> worldPlayers = evt.getPlayer().getWorld().getPlayers();
 			for (Player plr : worldPlayers) {
@@ -118,7 +134,7 @@ public class ChatListener implements Listener {
 		} else if ((evt.getMessage().startsWith(plugin.getConfig().getString(
 				"local.prefix")))) {
 			Set<Player> local = KitsuneChatUtils.getNearbyPlayers(plugin
-					.getConfig().getInt("local.radius"), evt.getPlayer());
+					.getConfig().getInt("local.radius"), evt.getPlayer(), evt);
 			for (Player plr : local) {
 				plr.sendMessage(util.formatChatPrefixes(message, plugin.getConfig().getString(emote ? "local.meformat" : "local.sayformat"), evt));
 			}
@@ -130,7 +146,6 @@ public class ChatListener implements Listener {
 					evt.getPlayer().sendMessage(ChatColor.GRAY+"(Nobody can hear you, try talking globally by starting your message with "+plugin.getConfig().getString("global.prefix")+")");
 				}
 			}
-
 		} else { //Default chat
 			List<String> prefixes = Arrays.asList(plugin.getConfig().getString("global.prefix"), plugin.getConfig().getString("local.prefix"), plugin.getConfig().getString("staff.prefix"), plugin.getConfig().getString("admin.prefix"), plugin.getConfig().getString("party.prefix"), plugin.getConfig().getString("world.prefix"));
 			boolean pass = false;
@@ -161,10 +176,5 @@ public class ChatListener implements Listener {
 			playerChat(evt);
 			return;
 		}
-		
-		
-		
-
 	}
-
 }

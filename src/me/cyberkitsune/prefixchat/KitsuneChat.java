@@ -9,6 +9,7 @@ import net.milkbowl.vault.chat.Chat;
 
 import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventPriority;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -23,10 +24,9 @@ public class KitsuneChat extends JavaPlugin{
 	public Chat vaultChat = null;
 	public boolean vaultEnabled = false;
 	
-	
 	@Override
 	public void onEnable() {
-		mcLog.info("[KitsuneChat] Enabling KitsuneChat version "+this.getDescription().getVersion());
+		mcLog.info("[KitsuneChat] Enabling KitsuneChat version "+this.getDescription().getVersion()+"a");
 		if(!(new File(getDataFolder()+"/config.yml").exists())) {
 			mcLog.info("[KitsuneChat] KitsuneChat config does not exist! Creating default config...");
 			if(!(new File(getDataFolder().toString()).isDirectory())) {
