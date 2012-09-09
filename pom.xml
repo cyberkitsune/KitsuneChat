@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>me.cyberkitsune</groupId>
   <artifactId>KitsuneChat</artifactId>
-  <version>1.5.1-SNAPSHOT</version>
+  <version>1.5.1</version>
   <name>KitsuneChat</name>
   <description>A bukkit plugin for chat.</description>
   <build>
@@ -49,4 +49,8 @@
         <url>http://repo.onarandombox.com/content/groups/public</url>
     </repository>
   </repositories>
+  <issueManagement>
+  	<system>GitHub</system>
+  	<url>https://github.com/cyberkitsune/KitsuneChat/issues</url>
+  </issueManagement>
 </project>
