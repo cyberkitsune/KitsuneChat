@@ -20,6 +20,7 @@ public class KitsuneChat extends JavaPlugin{
 	public Logger mcLog = Logger.getLogger("Minecraft");
 	public ChatParties party = new ChatParties(this);
 	public KitsuneChatCommand exec = new KitsuneChatCommand(this);
+	public UserMessaging msgExec = new UserMessaging(this);
 	public KitsuneChatUserData dataFile;
 	public KitsuneChatUtils util = new KitsuneChatUtils(this);
 	public List<String> prefixes;
@@ -66,13 +67,19 @@ public class KitsuneChat extends JavaPlugin{
 		this.getServer().getPluginManager().registerEvents(new ConnectHandler(this), this);
 		this.getServer().getPluginManager().registerEvents(new JoinQuitListener(this), this);
 		getCommand("kc").setExecutor(exec);
-		PluginCommand c = getCommand("me");
+		PluginCommand meCmd = getCommand("me");
+		PluginCommand msgCmd = getCommand("msg");
+		PluginCommand repCmd = getCommand("r");
 		
-		if(c == null)
+		if(meCmd == null)
 		{
 			mcLog.info("[KitsuneChat] Unable to hook /me ! Contact whoever broke your shit.");
 		} else {
 			getCommand("me").setExecutor(exec);
+		}
+		
+		if(msgCmd == null || repCmd == null) {
+			mcLog.info("[KitsuneChat] Unable to allocate /msg or /r, disabling PM support.");
 		}
 		
 		dataFile = new KitsuneChatUserData(this);
