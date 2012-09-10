@@ -49,7 +49,7 @@ public class UserMessaging implements CommandExecutor {
 				sender.sendMessage(ChatColor.RED+"[KitsuneChat] You have nobody to reply to.");
 				return false;
 			}
-			if(args.length < 0) {
+			if(args.length < 0 || args[0].equalsIgnoreCase("")) {
 				sender.sendMessage(ChatColor.RED+"[KitsuneChat] Usage: /r [message]");
 				return false;
 			}
