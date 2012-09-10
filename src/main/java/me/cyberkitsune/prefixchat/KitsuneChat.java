@@ -75,11 +75,14 @@ public class KitsuneChat extends JavaPlugin{
 		{
 			mcLog.info("[KitsuneChat] Unable to hook /me ! Contact whoever broke your shit.");
 		} else {
-			getCommand("me").setExecutor(exec);
+			meCmd.setExecutor(exec);
 		}
 		
 		if(msgCmd == null || repCmd == null) {
 			mcLog.info("[KitsuneChat] Unable to allocate /msg or /r, disabling PM support.");
+		} else {
+			msgCmd.setExecutor(msgExec);
+			repCmd.setExecutor(msgExec);
 		}
 		
 		dataFile = new KitsuneChatUserData(this);

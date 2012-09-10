@@ -1,13 +1,17 @@
 name: KitsuneChat
-version: 1.5.1
+version: 1.5.2
 main: me.cyberkitsune.prefixchat.KitsuneChat
 authors: [CyberKitsune, Alynna]
-softdepend: [Vault]
+softdepend: [Vault, Multiverse-Core]
 commands:
      kc:
       description: KitsuneChat commands.
      me:
-      description: Emote
+      description: Preform an action in text.
+     msg:
+      description: Send a private message.
+     r:
+      description: Reply to a message in chat.
       
 permissions:
      kitsunechat.adminchat:
