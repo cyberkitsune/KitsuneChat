@@ -102,7 +102,7 @@ public class KitsuneChat extends JavaPlugin{
 		mcLog.info("[KitsuneChat] KitsuneChat disabled! You made CK cry ;~;");
 	}
 	
-	public void loadConfig() {
+	private void loadConfig() {
 		try {
 			this.getConfig().load(getDataFolder()+"/config.yml");
 		} catch (Exception e) {
@@ -111,7 +111,7 @@ public class KitsuneChat extends JavaPlugin{
 		} 
 	}
 	
-	public void setDefaults() {
+	private void setDefaults() {
 		Configuration config = this.getConfig();
 		if(!config.isSet("global.prefix")) {
 			config.set("global.prefix", "!");
