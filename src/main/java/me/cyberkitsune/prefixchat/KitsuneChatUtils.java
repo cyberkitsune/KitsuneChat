@@ -86,9 +86,9 @@ public class KitsuneChatUtils {
 		target = target.replaceFirst("\\"+getChannelName(target, true), "");
 		target = target.replaceAll("\\$", "\\\\\\$"); //Friggen dollar signs.
 		if(context.isCancelled()) {
-			output = output.replaceAll("\\{message\\}", target);
+			output = output.replace("{message}", target);
 		} else {
-			output = output.replaceAll("\\{message\\}", "%2\\$s");
+			output = output.replace("{message}", "%2\\$s");
 		}
 		output = colorizeString(output);
 		return output;
