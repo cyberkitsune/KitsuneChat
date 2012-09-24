@@ -35,7 +35,6 @@ public class ChatListener implements Listener {
 		AsyncPlayerChatEvent newevt = 
 				new AsyncPlayerChatEvent(false, evt.getPlayer(), buf, online);
 		plugin.getServer().getPluginManager().callEvent(newevt);
-		evt.setCancelled(true);
 	}
 	// LOW priority makes this event fire before NORMAL priority, so that we can properly rewrite event messages..
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = false)
