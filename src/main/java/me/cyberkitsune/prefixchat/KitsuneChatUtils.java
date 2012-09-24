@@ -84,7 +84,7 @@ public class KitsuneChatUtils {
 		output = output.replaceAll("\\{prefix\\}", getChannelName(target, true));
 		output = output.replaceAll("\\{party\\}", (plugin.party.isInAParty(context.getPlayer()) ? plugin.party.getPartyName(context.getPlayer()) : ""));
 		target = target.replaceFirst("\\"+getChannelName(target, true), "");
-		target = target.replaceAll("\\$", "\\\\\\$"); //Friggen dollar signs.
+		target = target.replaceAll("\\$", "\\\\$"); //Friggen dollar signs.
 		if(context.isCancelled()) {
 			output = output.replace("{message}", target);
 		} else {
