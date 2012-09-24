@@ -35,6 +35,7 @@ public class ChatListener implements Listener {
 		AsyncPlayerChatEvent newevt = 
 				new AsyncPlayerChatEvent(false, evt.getPlayer(), buf, online);
 		plugin.getServer().getPluginManager().callEvent(newevt);
+		evt.setCancelled(true);
 	}
 	// LOW priority makes this event fire before NORMAL priority, so that we can properly rewrite event messages..
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = false)
@@ -76,7 +77,11 @@ public class ChatListener implements Listener {
 				for(Player plr : plugin.getServer().getOnlinePlayers()) {
 					plr.sendMessage(plugin.util.formatChatPrefixes(message, plugin.getConfig().getString(emote ? "global.meformat" : "global.sayformat"), evt));
 				}
-			}
+				evt.setCancelled(true); // Nobody else should see this as a chat event. EVER.
+				return ; // Now GTFO my listener.
+				
+			} 
+			
 			evt.setFormat(plugin.util.formatChatPrefixes(message.replace("%", "%%"), plugin.getConfig().getString(emote ? "global.meformat" : "global.sayformat"), evt));
 			evt.setMessage(plugin.util.stripPrefixes(message)); //For compatibility.
 			evt.setCancelled(false); // We don't need to cancel an event that goes to everyone. Let vanilla handle it.
