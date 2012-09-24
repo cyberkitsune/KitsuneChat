@@ -65,26 +65,26 @@ public class KitsuneChatUtils {
 	public String formatChatPrefixes(String target, String formatString, AsyncPlayerChatEvent context) {
 		String output="";
 		if(plugin.vaultEnabled) {
-			output = formatString.replaceAll("\\{sender\\}", plugin.vaultChat.getPlayerPrefix(context.getPlayer())+context.getPlayer().getDisplayName()+plugin.vaultChat.getPlayerSuffix(context.getPlayer()));
+			output = formatString.replace("{sender}", plugin.vaultChat.getPlayerPrefix(context.getPlayer())+context.getPlayer().getDisplayName()+plugin.vaultChat.getPlayerSuffix(context.getPlayer()));
 		} else {
-			output = formatString.replaceAll("\\{sender\\}", context.getPlayer().getDisplayName());
+			output = formatString.replace("{sender}", context.getPlayer().getDisplayName());
 		}
 		if(plugin.multiVerse) {
 			MultiverseCore mvPlug = this.plugin.multiversePlugin;
 			MultiverseWorld mvWorld = mvPlug.getMVWorldManager().getMVWorld(context.getPlayer().getWorld().getName());
 			if(mvWorld == null) {
-				output = output.replaceAll("\\{world\\}", context.getPlayer().getWorld().getName());	
+				output = output.replace("{world}", context.getPlayer().getWorld().getName());	
 			} else {
-				output = output.replaceAll("\\{world\\}", mvWorld.getColoredWorldString());
+				output = output.replace("{world}", mvWorld.getColoredWorldString());
 			}
 		} else {
-			output = output.replaceAll("\\{world\\}", context.getPlayer().getWorld().getName());	
+			output = output.replace("{world}", context.getPlayer().getWorld().getName());	
 		}
-		output = output.replaceAll("\\{channel\\}", getChannelName(target, false));
-		output = output.replaceAll("\\{prefix\\}", getChannelName(target, true));
-		output = output.replaceAll("\\{party\\}", (plugin.party.isInAParty(context.getPlayer()) ? plugin.party.getPartyName(context.getPlayer()) : ""));
+		output = output.replace("{channel}", getChannelName(target, false));
+		output = output.replace("{prefix}", getChannelName(target, true));
+		output = output.replace("{party}", (plugin.party.isInAParty(context.getPlayer()) ? plugin.party.getPartyName(context.getPlayer()) : ""));
 		target = target.replaceFirst("\\"+getChannelName(target, true), "");
-		target = target.replaceAll("\\$", "\\\\$"); //Friggen dollar signs.
+		//target = target.replaceAll("\\$", "\\\\$"); //Friggen dollar signs.
 		if(context.isCancelled()) {
 			output = output.replace("{message}", target);
 		} else {
