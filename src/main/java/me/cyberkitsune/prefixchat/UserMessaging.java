@@ -43,6 +43,7 @@ public class UserMessaging implements CommandExecutor {
 			plugin.mcLog.info(String.format("[%s -> %s] %s", ((Player) sender).getDisplayName(), target.getDisplayName(), joined));
 
 			replies.put(sender.getName(), target.getName());
+			replies.put(target.getName(), sender.getName());
 			return true;
 		} else if(cmd.getName().equalsIgnoreCase("r")) {
 			if(!replies.containsKey(sender.getName())) {
