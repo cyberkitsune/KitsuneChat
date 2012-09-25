@@ -30,20 +30,50 @@ public class UserMessaging implements CommandExecutor {
 				sender.sendMessage(ChatColor.RED+"[KitsuneChat] Invalid format, use: /msg [Player] [Message]");
 				return false;
 			}
-			Player target = plugin.getServer().getPlayer(args[0]);
+			if(sender.getName().equalsIgnoreCase(args[0])) {
+				sender.sendMessage(ChatColor.GRAY+"Talking to yourself is a sign of insanity.");
+				return true;
+			}
+			boolean toconsole = false;
+			Player target = null;
+			if(args[0].equalsIgnoreCase("CONSOLE")) {
+				toconsole = true;
+			} else {
+			target = plugin.getServer().getPlayer(args[0]);
+			}
+			boolean fromconsole = false;
+			if(!(sender instanceof Player)) {
+				fromconsole = true;
+			}
 			if(target == null || !target.isOnline()) {
 				sender.sendMessage(ChatColor.RED+"[KitsuneChat] I can't find "+args[0]+"! D:");
 				return false;
 			}
 			String[] message = Arrays.copyOfRange(args, 1, args.length);
 			String joined = Joiner.on(" ").join(message);
-			target.sendMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.GRAY+"["+((Player) sender).getDisplayName()+" -> Me] "+joined));
-			sender.sendMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.GRAY+"[Me -> "+target.getDisplayName()+"] "+joined));
+			if(toconsole) {
+				plugin.getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.GRAY+"["+((Player) sender).getDisplayName()+" -> Me] "+joined));
+				sender.sendMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.GRAY+"[Me -> CONSOLE] "+joined));
+			} else if(fromconsole){
+				target.sendMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.GRAY+"[CONSOLE -> Me] "+joined));
+				plugin.getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.GRAY+"[ Me -> "+((Player) sender).getDisplayName()+" "+joined));
+			} else {
+				target.sendMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.GRAY+"["+((Player) sender).getDisplayName()+" -> Me] "+joined));
+				sender.sendMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.GRAY+"[Me -> "+target.getDisplayName()+"] "+joined));
+			}
 			
 			plugin.mcLog.info(String.format("[%s -> %s] %s", ((Player) sender).getDisplayName(), target.getDisplayName(), joined));
 
+			if(toconsole) {
+				replies.put(sender.getName(), "CONSOLE");
+			} else {
 			replies.put(sender.getName(), target.getName());
-			replies.put(target.getName(), sender.getName());
+			}
+			if(fromconsole) {
+				replies.put("CONSOLE", target.getName());
+			} else {
+				replies.put(target.getName(), sender.getName());
+			}
 			return true;
 		} else if(cmd.getName().equalsIgnoreCase("r")) {
 			if(!replies.containsKey(sender.getName())) {
