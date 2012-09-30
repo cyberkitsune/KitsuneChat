@@ -45,7 +45,7 @@ public class UserMessaging implements CommandExecutor {
 			if(!(sender instanceof Player)) {
 				fromconsole = true;
 			}
-			if(target == null || !target.isOnline()) {
+			if((target == null || !target.isOnline()) && !toconsole) {
 				sender.sendMessage(ChatColor.RED+"[KitsuneChat] I can't find "+args[0]+"! D:");
 				return false;
 			}
@@ -56,26 +56,27 @@ public class UserMessaging implements CommandExecutor {
 				sender.sendMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.GRAY+"[Me -> CONSOLE] "+joined));
 			} else if(fromconsole){
 				target.sendMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.GRAY+"[CONSOLE -> Me] "+joined));
-				plugin.getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.GRAY+"[ Me -> "+((Player) sender).getDisplayName()+" "+joined));
+				plugin.getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.GRAY+"[ Me -> "+((Player) target).getDisplayName()+"] "+joined));
 			} else {
 				target.sendMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.GRAY+"["+((Player) sender).getDisplayName()+" -> Me] "+joined));
 				sender.sendMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.GRAY+"[Me -> "+target.getDisplayName()+"] "+joined));
 			}
 			
-			plugin.mcLog.info(String.format("[%s -> %s] %s", ((Player) sender).getDisplayName(), target.getDisplayName(), joined));
-
-			if(toconsole) {
-				replies.put(sender.getName(), "CONSOLE");
-			} else {
-			replies.put(sender.getName(), target.getName());
+			if(!toconsole && !fromconsole) {
+				plugin.mcLog.info(String.format("[%s -> %s] %s", ((Player) sender).getDisplayName(), target.getDisplayName(), joined));
 			}
-			if(fromconsole) {
-				replies.put("CONSOLE", target.getName());
-			} else {
+
+			if(!toconsole && !fromconsole) {
+				replies.put(sender.getName(), target.getName());
 				replies.put(target.getName(), sender.getName());
 			}
 			return true;
 		} else if(cmd.getName().equalsIgnoreCase("r")) {
+			if(!(sender instanceof Player)) {
+				sender.sendMessage(ChatColor.RED+"[KitsuneChat] Do not run /r as console! :C");
+				return false;
+			}
+			boolean logtoconsole = true;
 			if(!replies.containsKey(sender.getName())) {
 				sender.sendMessage(ChatColor.RED+"[KitsuneChat] You have nobody to reply to.");
 				return false;
@@ -84,16 +85,23 @@ public class UserMessaging implements CommandExecutor {
 				sender.sendMessage(ChatColor.RED+"[KitsuneChat] Usage: /r [message]");
 				return false;
 			}
-			Player target = plugin.getServer().getPlayer(replies.get(sender.getName()));
+
+			Player target;
+			target = plugin.getServer().getPlayer(replies.get(sender.getName()));
 			if(target == null) {
 				sender.sendMessage(ChatColor.RED+"[KitsuneChat] I can't find"+replies.get(sender.getName())+"! D:");
 				return false;
 			}
 			String joined = Joiner.on(" ").join(args);
-			target.sendMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.GRAY+"["+((Player) sender).getDisplayName()+" -> Me] "+joined));
+			if(!(sender instanceof Player)) {
+				target.sendMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.GRAY+"[CONSOLE -> Me] "+joined));
+			} else {
+				target.sendMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.GRAY+"["+((Player) sender).getDisplayName()+" -> Me] "+joined));
+			}
 			sender.sendMessage(ChatColor.translateAlternateColorCodes('&', ChatColor.GRAY+"[Me -> "+target.getDisplayName()+"] "+joined));
-			
-			plugin.mcLog.info(String.format("[%s -> %s] %s", ((Player) sender).getDisplayName(), target.getDisplayName(), joined));
+			if(logtoconsole) {
+				plugin.mcLog.info(String.format("[%s -> %s] %s", ((Player) sender).getDisplayName(), target.getDisplayName(), joined));
+			}
 		}
 		return false;
 	}
