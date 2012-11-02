@@ -66,6 +66,11 @@ public class KitsuneChatUserData {
 		}
 	}
 	
+	/**
+	 * Changes a user's channel to the specified prefix.
+	 * @param target Player that is going to be changed.
+	 * @param channel Prefix of the channel that needs changing to.
+	 */
 	public void setUserChannel(Player target, String channel) {
 		userData.set(target.getName()+".channel", channel);
 		try {
