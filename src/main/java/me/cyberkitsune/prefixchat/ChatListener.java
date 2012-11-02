@@ -30,6 +30,10 @@ public class ChatListener implements Listener {
 	public void playerEmote(PlayerCommandPreprocessEvent evt) {
 		if (!evt.getMessage().toLowerCase().startsWith("/me "))
 			return;
+		//If they aren't in non-pub, don't let other nasty plugins get a hold of the message.
+		if(!util.getChannelName(evt.getPlayer().getName(), true).equals("global.prefix")) {
+			evt.setCancelled(true);
+		}
 		Set<Player> online = new HashSet<Player>(Arrays.asList(evt.getPlayer().getServer().getOnlinePlayers()));
 		String buf = new String(plugin.getConfig().getString("emote.prefix")+evt.getMessage().substring(4));
 		AsyncPlayerChatEvent newevt = 
