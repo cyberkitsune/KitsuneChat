@@ -31,7 +31,7 @@ public class ChatListener implements Listener {
 		if (!evt.getMessage().toLowerCase().startsWith("/me "))
 			return;
 		//If they aren't in non-pub, don't let other nasty plugins get a hold of the message.
-		if(!util.getChannelName(evt.getPlayer().getName(), true).equals("global.prefix")) {
+		if(!plugin.dataFile.getUserChannel(evt.getPlayer()).equals(plugin.getConfig().getString("global.prefix"))) {
 			evt.setCancelled(true);
 		}
 		Set<Player> online = new HashSet<Player>(Arrays.asList(evt.getPlayer().getServer().getOnlinePlayers()));
