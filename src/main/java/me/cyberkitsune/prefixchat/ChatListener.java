@@ -30,15 +30,18 @@ public class ChatListener implements Listener {
 	public void playerEmote(PlayerCommandPreprocessEvent evt) {
 		if (!evt.getMessage().toLowerCase().startsWith("/me "))
 			return;
-		//If they aren't in non-pub, don't let other nasty plugins get a hold of the message.
-		if(!plugin.dataFile.getUserChannel(evt.getPlayer()).equals(plugin.getConfig().getString("global.prefix"))) {
-			evt.setCancelled(true);
-		}
+
 		Set<Player> online = new HashSet<Player>(Arrays.asList(evt.getPlayer().getServer().getOnlinePlayers()));
 		String buf = new String(plugin.getConfig().getString("emote.prefix")+evt.getMessage().substring(4));
 		AsyncPlayerChatEvent newevt = 
-				new AsyncPlayerChatEvent(false, evt.getPlayer(), buf, online);
+				new AsyncPlayerChatEvent(false, evt.getPlayer(), buf, online);		
+		//If they aren't in non-pub, don't let other nasty plugins get a hold of the message.
+		if(!plugin.dataFile.getUserChannel(evt.getPlayer()).equals(plugin.getConfig().getString("global.prefix"))) {
+			evt.setCancelled(true);
+			evt.setMessage(""); // Workaround to plugins that ignore canceled events.
+		}
 		plugin.getServer().getPluginManager().callEvent(newevt);
+		
 	}
 	// LOW priority makes this event fire before NORMAL priority, so that we can properly rewrite event messages..
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = false)
