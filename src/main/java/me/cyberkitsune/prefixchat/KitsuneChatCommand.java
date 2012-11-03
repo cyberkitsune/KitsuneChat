@@ -67,6 +67,8 @@ public class KitsuneChatCommand implements CommandExecutor {
 						} else {
 							sender.sendMessage(ChatColor.RED+"[KitsuneChat] You didn't specify a player!");
 						}
+					} else if(args[0].equalsIgnoreCase("null")) { // Dummy command for the /me full stop.
+						return true;
 					} else {
 						for(String str : plugin.prefixes) {
 								if(args[0].equalsIgnoreCase(str)) {
