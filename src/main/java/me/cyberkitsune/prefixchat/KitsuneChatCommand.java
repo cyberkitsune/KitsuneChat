@@ -33,6 +33,7 @@ public class KitsuneChatCommand implements CommandExecutor {
 										playerlist = playerlist + plr.getDisplayName()+", ";
 										playerCount++;
 									}
+									playerlist = playerlist.substring(0, playerlist.length() - 2)+".";
 									sender.sendMessage(ChatColor.YELLOW+"[KitsuneChat] "+playerCount+((playerCount == 1) ? " person " : " people ")+"in the party.");
 									sender.sendMessage(ChatColor.YELLOW+"[KitsuneChat] They are: "+playerlist+".");
 									return true;
