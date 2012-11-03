@@ -41,7 +41,7 @@ public class ChatListener implements Listener {
 		//If they aren't in non-pub, don't let other nasty plugins get a hold of the message.
 		if(!plugin.dataFile.getUserChannel(evt.getPlayer()).equals(plugin.getConfig().getString("global.prefix"))) {
 			evt.setCancelled(true);
-			evt.setMessage(""); // Workaround to plugins that ignore canceled events.
+			evt.setMessage("/kc null"); // Dummy command to make COMPLETELY SURE that the message doesn't go anywhere.
 			
 		}
 	}
