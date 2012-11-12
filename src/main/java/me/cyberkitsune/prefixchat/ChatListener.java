@@ -2,7 +2,6 @@ package me.cyberkitsune.prefixchat;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -31,7 +30,6 @@ public class ChatListener implements Listener {
 		if (!evt.getMessage().toLowerCase().startsWith("/me "))
 			return;
 
-		Set<Player> online = new HashSet<Player>(Arrays.asList(evt.getPlayer().getServer().getOnlinePlayers()));
 		String buf = new String(plugin.getConfig().getString("emote.prefix")+evt.getMessage().substring(4));
 		PlayerChatEvent newevt = 
 				new PlayerChatEvent(evt.getPlayer(), buf);		
