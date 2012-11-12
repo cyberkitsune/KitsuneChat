@@ -11,12 +11,15 @@ import org.bukkit.entity.Player;
 
 public class ChatParties {
 	
+	public HashMap<Player, String> partyData;
+	
 	private KitsuneChat plugin;
 	public ChatParties(KitsuneChat plugin) {
 		this.plugin = plugin;
+		partyData = new HashMap<Player, String>();
 	}
 
-	public HashMap<Player, String> partyData = new HashMap<Player, String>();
+	
 	
 	public void changeParty(Player target, String name) {
 		if(name == "" || name == null) {
