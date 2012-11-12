@@ -7,7 +7,7 @@ import java.util.Set;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerChatEvent;
 
 import com.google.common.base.Joiner;
 import com.onarandombox.MultiverseCore.MultiverseCore;
@@ -34,7 +34,7 @@ public class KitsuneChatUtils {
 		
 	}
 	
-	public static Set<Player> getNearbyPlayers(int radius, Player target, AsyncPlayerChatEvent event) {
+	public static Set<Player> getNearbyPlayers(int radius, Player target, PlayerChatEvent event) {
 		// This function SHOULD be thread-safe.
 		Set<Player> nearbyPlayers = new HashSet<Player>();
 		nearbyPlayers.add(target);
@@ -62,7 +62,7 @@ public class KitsuneChatUtils {
 		return (String) target.replaceFirst("\\"+getChannelName(target, true), "");
 	}
 	
-	public String formatChatPrefixes(String target, String formatString, AsyncPlayerChatEvent context) {
+	public String formatChatPrefixes(String target, String formatString, PlayerChatEvent context) {
 		String output="";
 		if(plugin.vaultEnabled) {
 			output = formatString.replace("{sender}", plugin.vaultChat.getPlayerPrefix(context.getPlayer())+context.getPlayer().getDisplayName()+plugin.vaultChat.getPlayerSuffix(context.getPlayer()));
@@ -93,7 +93,7 @@ public class KitsuneChatUtils {
 		output = colorizeString(output);
 		return output;
 	}
-    public void chatWatcher(AsyncPlayerChatEvent event) {
+    public void chatWatcher(PlayerChatEvent event) {
 		plugin.mcLog.info(
 				"KitsuneChat "+
 				event.getEventName()+" "+

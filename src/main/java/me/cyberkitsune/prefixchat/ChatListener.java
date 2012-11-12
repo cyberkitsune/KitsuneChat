@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 public class ChatListener implements Listener {
@@ -33,8 +33,8 @@ public class ChatListener implements Listener {
 
 		Set<Player> online = new HashSet<Player>(Arrays.asList(evt.getPlayer().getServer().getOnlinePlayers()));
 		String buf = new String(plugin.getConfig().getString("emote.prefix")+evt.getMessage().substring(4));
-		AsyncPlayerChatEvent newevt = 
-				new AsyncPlayerChatEvent(false, evt.getPlayer(), buf, online);		
+		PlayerChatEvent newevt = 
+				new PlayerChatEvent(evt.getPlayer(), buf);		
 		
 		plugin.getServer().getPluginManager().callEvent(newevt);
 		
@@ -47,7 +47,7 @@ public class ChatListener implements Listener {
 	}
 	// LOW priority makes this event fire before NORMAL priority, so that we can properly rewrite event messages..
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = false)
-	public void playerChat(AsyncPlayerChatEvent evt) {
+	public void playerChat(PlayerChatEvent evt) {
 		evt.setCancelled(true);
 		if (evt.getMessage().endsWith("--")) {
 			if (bufs.get(evt.getPlayer())==null) {
