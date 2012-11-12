@@ -42,7 +42,7 @@ public class KitsuneChatCommand implements CommandExecutor {
 									return true;
 								}
 							}
-							plugin.party.changeParty((Player) sender, args[1]);
+							plugin.party.changeParty((Player) sender, args[1].toLowerCase());
 							plugin.dataFile.setUserChannel((Player) sender, plugin.getConfig().getString("party.prefix"));
 							sender.sendMessage(ChatColor.YELLOW+"[KitsuneChat] You are now talking in party chat.");
 						} else {
