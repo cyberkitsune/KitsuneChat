@@ -25,7 +25,8 @@ local:
   radius: 64
   sayformat: '<{sender}&r> {message}'
   meformat: '&d*&f {sender} {message}'
-version: 1.5
+  warnifalone: true
+version: 1.6
 emote:
   prefix: '|'
 default: '!'

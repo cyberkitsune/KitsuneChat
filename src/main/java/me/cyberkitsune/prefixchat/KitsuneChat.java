@@ -111,6 +111,8 @@ public class KitsuneChat extends JavaPlugin{
 		} 
 	}
 	
+	
+	//TODO Cache config!
 	private void setDefaults() {
 		Configuration config = this.getConfig();
 		if(!config.isSet("global.prefix")) {
@@ -147,6 +149,10 @@ public class KitsuneChat extends JavaPlugin{
 		
 		if(!config.isSet("default")) {
 			config.set("default", "%");
+		}
+		
+		if(!config.isSet("local.warnifalone")) {
+			config.set("local.warnifalone", true);
 		}
 		
 		config.set("version", this.getDescription().getVersion());

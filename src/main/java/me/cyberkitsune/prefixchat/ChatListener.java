@@ -149,7 +149,7 @@ public class ChatListener implements Listener {
 				plr.sendMessage(util.formatChatPrefixes(message, plugin.getConfig().getString(emote ? "local.meformat" : "local.sayformat"), evt));
 			}
 			plugin.mcLog.info(util.formatChatPrefixes(message, plugin.getConfig().getString(emote ? "local.meformat" : "local.sayformat"), evt));
-			if(local.size() <= 1) {
+			if(local.size() <= 1 && plugin.getConfig().getBoolean("local.warnifalone")) {
 				if(!evt.getPlayer().hasPermission("kitsunechat.nodefault.global")) {
 					evt.getPlayer().sendMessage(ChatColor.GRAY+"(Nobody can hear you, try defaulting to global chat with /kc "+plugin.getConfig().getString("global.prefix")+")");
 				} else {
