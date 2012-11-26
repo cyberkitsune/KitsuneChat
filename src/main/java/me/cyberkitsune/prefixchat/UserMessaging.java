@@ -70,7 +70,7 @@ public class UserMessaging implements CommandExecutor {
 			
 			// Display message to sender
 			if(fromconsole) {
-				plugin.getServer().getConsoleSender().sendMessage(formatMessage("Me", otherPlayer, message));
+				plugin.getServer().getConsoleSender().sendMessage(formatMessage("Me", "CONSOLE", message));
 			} else {
 				sender.sendMessage(formatMessage("Me", otherPlayer, message));
 			}
@@ -84,16 +84,16 @@ public class UserMessaging implements CommandExecutor {
 		} else {
 			// Send message to player
 			if(toconsole) {
-				plugin.getServer().getConsoleSender().sendMessage(formatAction(player, otherPlayer, message));
+				plugin.getServer().getConsoleSender().sendMessage(formatAction(player, "Me", message));
 			} else {
-				target.sendMessage(formatAction(player, otherPlayer, message));
+				target.sendMessage(formatAction(player, "Me", message));
 			}
 			
 			// Display message to sender
 			if(fromconsole) {
-				plugin.getServer().getConsoleSender().sendMessage(formatAction(player, otherPlayer, message));
+				plugin.getServer().getConsoleSender().sendMessage(formatAction("Me", otherPlayer, message));
 			} else {
-				sender.sendMessage(formatAction(player, otherPlayer, message));
+				sender.sendMessage(formatAction("Me", otherPlayer, message));
 			}
 			
 			// Log message if not to and from console
@@ -103,34 +103,16 @@ public class UserMessaging implements CommandExecutor {
 		}
 		
 		// Reply functionality
-		replies.put(player, otherPlayer);
-		replies.put(otherPlayer,  player);
+		replies.put(player.toLowerCase(), otherPlayer.toLowerCase());
+		replies.put(otherPlayer.toLowerCase(),  player.toLowerCase());
 		
 		return true;
 	}
 
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
-		// /msg and /memsg commands
-		if(cmd.getName().equalsIgnoreCase("msg") || cmd.getName().equalsIgnoreCase("memsg")) {
-			
-			if(args.length < 2) {
-				if(cmd.getName().equalsIgnoreCase("msg")) {
-					sender.sendMessage(ChatColor.RED+"[KitsuneChat] Invalid format, use: /msg [Player] [Message]");
-				} else {
-					sender.sendMessage(ChatColor.RED+"[KitsuneChat] Invalid format, use: /memsg [Player] [Action]");
-				}
-				return false;
-			}
-			
-			if(sender.getName().equalsIgnoreCase(args[0])) {
-				if(cmd.getName().equalsIgnoreCase("msg")) {
-					sender.sendMessage(ChatColor.GRAY+"Talking to yourself is a sign of insanity.");
-				} else {
-					sender.sendMessage(ChatColor.GRAY+"Is this the real life? This is just fantasy.");
-				}
-				return true;
-			}
+		// /msg and /r commands
+		if(cmd.getName().equalsIgnoreCase("msg") || cmd.getName().equalsIgnoreCase("r")) {
 			
 			// Variables
 			String player = null;			// The player name of the sender
@@ -138,8 +120,11 @@ public class UserMessaging implements CommandExecutor {
 			Player target = null;
 			boolean toconsole = false;
 			boolean fromconsole = false;
+			boolean isAction = false;
+			String[] message = null;
+			String joined = null;
 			
-			// Set player name
+			// Are we from console? Get player name.
 			if(!(sender instanceof Player)) {
 				fromconsole = true;
 				player = "CONSOLE";
@@ -147,94 +132,72 @@ public class UserMessaging implements CommandExecutor {
 				player = ((Player) sender).getDisplayName();
 			}
 			
-			// Set otherPlayer name
-			if(args[0].equalsIgnoreCase("CONSOLE")) {
-				toconsole = true;
-				otherPlayer = "CONSOLE";
+			// MSG checks
+			if(cmd.getName().equalsIgnoreCase("msg")) {
+				// Argument checks
+				if(args.length < 2) {
+					sender.sendMessage(ChatColor.RED+"[KitsuneChat] Invalid format, use: /msg [Player] [Message]");
+					return false;
+				}
+			
+				// Self-talk check
+				if(sender.getName().equalsIgnoreCase(args[0])) {
+					sender.sendMessage(ChatColor.GRAY+"Talking to yourself is a sign of insanity.");
+					return true;
+				}
 				
-			// Get the player
+				// Get the receiver
+				otherPlayer = args[0];
+				
+				// Message to string form
+				message = Arrays.copyOfRange(args, 1, args.length);
+				joined = Joiner.on(" ").join(message);				
+				
+				
+			// R checks
+			} else if(cmd.getName().equalsIgnoreCase("r")) {
+				// Argument checks
+				if(args.length <= 0) {
+					sender.sendMessage(ChatColor.RED+"[KitsuneChat] Usage: /r [message]");
+					return false;
+				}
+				
+				// Get the receiver
+				if(!replies.containsKey(player.toLowerCase())) {
+					sender.sendMessage(ChatColor.RED+"[KitsuneChat] You have nobody to reply to.");
+					return false;
+				} else {
+					otherPlayer = replies.get(player.toLowerCase());
+				}
+				
+				// Message to string form
+				message = Arrays.copyOfRange(args, 0, args.length);
+				joined = Joiner.on(" ").join(message);
+			}
+			
+			// Are we sending to console? Get other player and check.
+			if(otherPlayer.equalsIgnoreCase("CONSOLE")) {
+				otherPlayer = "CONSOLE"; // Proper-cased name
+				toconsole = true;
+				
+			// Get the target if not console
 			} else {
-				target = plugin.getServer().getPlayer(args[0]);
+				target = plugin.getServer().getPlayer(otherPlayer);
 				
 				// Does the player exist/online?
 				if((target == null || !target.isOnline())) {
 					sender.sendMessage(ChatColor.RED+"[KitsuneChat] I can't find "+args[0]+"! D:");
 					return false;
+				} else {
+					otherPlayer = target.getDisplayName(); // Get proper-cased name
 				}
-				
-				otherPlayer = target.getDisplayName();
 			}
 						
-			// Message to string form
-			String[] message = Arrays.copyOfRange(args, 1, args.length);
-			String joined = Joiner.on(" ").join(message);
-			
-			// Is the message an action [simplifies checks later to just boolean comparison]
-			boolean isAction = false;
-			if(cmd.getName().equalsIgnoreCase("memsg")) {
+			// Is this message an action?
+			if(joined.startsWith(plugin.config.getString("emote.prefix"))) {
+				joined = joined.substring(1);
 				isAction = true;
 			}
-			
-			return userMessage(sender, target, player, otherPlayer, joined, isAction, fromconsole, toconsole);
-			
-		// /r and /mer commands
-		} else if(cmd.getName().equalsIgnoreCase("r") || cmd.getName().equalsIgnoreCase("mer")) {
-			
-			// Variables
-			String player = null;			// The player name of the sender
-			String otherPlayer = null;		// The player name of the receiver
-			Player target = null;
-			boolean toconsole = false;
-			boolean fromconsole = false;
-			boolean isAction = false;
-			
-			// Is it an action reply?
-			if(cmd.getName().equalsIgnoreCase("mer")) {
-				isAction = true;
-			}
-			
-			// Incorrect usage catch
-			if(args.length <= 0) {
-				if(!isAction) {
-					sender.sendMessage(ChatColor.RED+"[KitsuneChat] Usage: /r [message]");
-				} else {
-					sender.sendMessage(ChatColor.RED+"[KitsuneChat] Usage: /mer [action]");
-				}
-				return false;
-			}
-			
-			// Is the sender console?			
-			if(!(sender instanceof Player)) {
-				fromconsole = true;
-				player = "CONSOLE";
-			} else {
-				player = sender.getName();
-			}
-
-			
-			// Get the receiver
-			if(!replies.containsKey(player)) {
-				sender.sendMessage(ChatColor.RED+"[KitsuneChat] You have nobody to reply to.");
-				return false;
-			} else {
-				otherPlayer = replies.get(player);
-				if(otherPlayer.equalsIgnoreCase("CONSOLE")) {
-					toconsole = true;
-				}
-			}
-
-			// If we're not sending to a console, check if online
-			if(!toconsole) {
-				target = plugin.getServer().getPlayer(otherPlayer);
-			
-				if(target == null) {
-					sender.sendMessage(ChatColor.RED+"[KitsuneChat] I can't find "+otherPlayer+"! D:");
-					return false;
-				}
-			}
-			
-			
-			String joined = Joiner.on(" ").join(args);
 			
 			return userMessage(sender, target, player, otherPlayer, joined, isAction, fromconsole, toconsole);
 		}

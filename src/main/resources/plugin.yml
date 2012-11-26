@@ -10,12 +10,8 @@ commands:
       description: Perform an action in text.
      msg:
       description: Send a private message.
-     memsg:
-      description: Send a private action.
      r:
       description: Reply to a message in chat.
-     mer:
-      description: Reply to a message in chat with an action.
       
 permissions:
      kitsunechat.adminchat:
