@@ -28,6 +28,7 @@ public class KitsuneChat extends JavaPlugin{
 	public boolean vaultEnabled = false;
 	public boolean multiVerse = false;
 	public MultiverseCore multiversePlugin = null;
+	public Configuration config = null;
 	
 	@Override
 	public void onEnable() {
@@ -70,8 +71,6 @@ public class KitsuneChat extends JavaPlugin{
 		PluginCommand meCmd = getCommand("me");
 		PluginCommand msgCmd = getCommand("msg");
 		PluginCommand repCmd = getCommand("r");
-		PluginCommand memsgCmd = getCommand("memsg");
-		PluginCommand merepCmd = getCommand("mer");
 		
 		if(meCmd == null)
 		{
@@ -85,13 +84,6 @@ public class KitsuneChat extends JavaPlugin{
 		} else {
 			msgCmd.setExecutor(msgExec);
 			repCmd.setExecutor(msgExec);
-		}
-		
-		if(memsgCmd == null || merepCmd == null) {
-			mcLog.info("[KitsuneChat] Unable to allocate /memsg or /mer, disabling PM action support.");
-		} else {
-			memsgCmd.setExecutor(msgExec);
-			merepCmd.setExecutor(msgExec);
 		}
 		
 		dataFile = new KitsuneChatUserData(this);
@@ -123,7 +115,7 @@ public class KitsuneChat extends JavaPlugin{
 	
 	//TODO Cache config!
 	private void setDefaults() {
-		Configuration config = this.getConfig();
+		config = this.getConfig();
 		if(!config.isSet("global.prefix")) {
 			config.set("global.prefix", "!");
 			config.set("world.prefix", "#");
@@ -165,7 +157,7 @@ public class KitsuneChat extends JavaPlugin{
 		}
 		
 		config.set("version", this.getDescription().getVersion());
-		this.saveConfig();	
+		this.saveConfig();
 	}
 	
 	private boolean setupVaultChat() {
