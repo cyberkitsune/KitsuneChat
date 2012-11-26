@@ -70,6 +70,8 @@ public class KitsuneChat extends JavaPlugin{
 		PluginCommand meCmd = getCommand("me");
 		PluginCommand msgCmd = getCommand("msg");
 		PluginCommand repCmd = getCommand("r");
+		PluginCommand memsgCmd = getCommand("memsg");
+		PluginCommand merepCmd = getCommand("mer");
 		
 		if(meCmd == null)
 		{
@@ -83,6 +85,13 @@ public class KitsuneChat extends JavaPlugin{
 		} else {
 			msgCmd.setExecutor(msgExec);
 			repCmd.setExecutor(msgExec);
+		}
+		
+		if(memsgCmd == null || merepCmd == null) {
+			mcLog.info("[KitsuneChat] Unable to allocate /memsg or /mer, disabling PM action support.");
+		} else {
+			memsgCmd.setExecutor(msgExec);
+			merepCmd.setExecutor(msgExec);
 		}
 		
 		dataFile = new KitsuneChatUserData(this);
