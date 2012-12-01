@@ -29,6 +29,7 @@ public class KitsuneChat extends JavaPlugin{
 	public boolean vaultEnabled = false;
 	public boolean multiVerse = false;
 	public MultiverseCore multiversePlugin = null;
+	public Configuration config = null;
 	
 	@Override
 	public void onEnable() {
@@ -125,7 +126,7 @@ public class KitsuneChat extends JavaPlugin{
 	
 	//TODO Cache config!
 	private void setDefaults() {
-		Configuration config = this.getConfig();
+		config = this.getConfig();
 		if(!config.isSet("global.prefix")) {
 			config.set("global.prefix", "!");
 			config.set("world.prefix", "#");
@@ -175,7 +176,7 @@ public class KitsuneChat extends JavaPlugin{
 		}
 		
 		config.set("version", this.getDescription().getVersion());
-		this.saveConfig();	
+		this.saveConfig();
 	}
 	
 	private boolean setupVaultChat() {

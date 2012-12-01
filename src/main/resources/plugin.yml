@@ -7,7 +7,7 @@ commands:
      kc:
       description: KitsuneChat commands.
      me:
-      description: Preform an action in text.
+      description: Perform an action in text.
      msg:
       description: Send a private message.
      r:
