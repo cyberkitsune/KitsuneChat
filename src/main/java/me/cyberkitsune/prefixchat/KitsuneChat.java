@@ -1,6 +1,7 @@
 package me.cyberkitsune.prefixchat;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
@@ -93,7 +94,17 @@ public class KitsuneChat extends JavaPlugin{
 		for(Player plr : online) {
 			party.changeParty(plr, dataFile.getPartyDataForUser(plr));
 		}
-		prefixes = Arrays.asList(this.getConfig().getString("global.prefix"), this.getConfig().getString("local.prefix"), this.getConfig().getString("staff.prefix"), this.getConfig().getString("admin.prefix"), this.getConfig().getString("party.prefix"), this.getConfig().getString("world.prefix"));
+		List<String> channelList = Arrays.asList("global" , "local" , "staff" , "admin" , "party" , "world");
+		prefixes = new ArrayList<String>();
+		for(String channel : channelList) {
+			if(channel != "global") {
+				if(getConfig().getBoolean(channel+".enabled")) {
+					prefixes.add(getConfig().getString(channel+".prefix"));
+				}
+			} else {
+				prefixes.add(getConfig().getString(channel+".prefix"));
+			}
+		}
 	}
 	
 	@Override
@@ -153,6 +164,14 @@ public class KitsuneChat extends JavaPlugin{
 		
 		if(!config.isSet("local.warnifalone")) {
 			config.set("local.warnifalone", true);
+		}
+		
+		if(!config.isSet("local.enabled")) {
+			config.set("local.enabled", true);
+			config.set("world.enabled", true);
+			config.set("staff.enabled", true);
+			config.set("admin.enabled", true);
+			config.set("party.enabled", true);
 		}
 		
 		config.set("version", this.getDescription().getVersion());

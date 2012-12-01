@@ -94,14 +94,13 @@ public class ChatListener implements Listener {
 			evt.setMessage(plugin.util.stripPrefixes(message)); //For compatibility.
 			evt.setCancelled(false); // We don't need to cancel an event that goes to everyone. Let vanilla handle it.
 			// util.chatWatcher(evt);
-		} else if (evt.getMessage().startsWith(plugin.getConfig().getString("world.prefix"))) {
+		} else if (evt.getMessage().startsWith(plugin.getConfig().getString("world.prefix")) && plugin.getConfig().getBoolean("world.enabled")) {
 			List<Player> worldPlayers = evt.getPlayer().getWorld().getPlayers();
 			for (Player plr : worldPlayers) {
 				plr.sendMessage(util.formatChatPrefixes(message, plugin.getConfig().getString(emote ? "world.meformat" : "world.sayformat"), evt));
 			}
 			plugin.mcLog.info(util.formatChatPrefixes(message, plugin.getConfig().getString(emote ? "world.meformat" : "world.sayformat"), evt));
-		} else if (evt.getMessage().startsWith(
-				plugin.getConfig().getString("admin.prefix"))) {
+		} else if (evt.getMessage().startsWith(plugin.getConfig().getString("admin.prefix")) && plugin.getConfig().getBoolean("admin.enabled")) {
 			if (evt.getPlayer().hasPermission("kitsunechat.adminchat")) {
 				for (Player plr : plugin.getServer().getOnlinePlayers()) {
 					if (plr.hasPermission("kitsunechat.adminchat")) {
@@ -113,7 +112,7 @@ public class ChatListener implements Listener {
 				evt.getPlayer().sendMessage(ChatColor.RED+ "You do not have permissions to use admin chat.");
 			}
 		} else if (evt.getMessage().startsWith(
-				plugin.getConfig().getString("staff.prefix"))) {
+				plugin.getConfig().getString("staff.prefix")) && plugin.getConfig().getBoolean("staff.enabled")) {
 			if (evt.getPlayer().hasPermission("kitsunechat.staffchat")) {
 				for (Player plr : plugin.getServer().getOnlinePlayers()) {
 					if (plr.hasPermission("kitsunechat.staffchat")) {
@@ -124,8 +123,7 @@ public class ChatListener implements Listener {
 			} else {
 				evt.getPlayer().sendMessage(ChatColor.RED+ "You do not have permissions to use staff chat.");
 			}
-		} else if (evt.getMessage().startsWith(
-				plugin.getConfig().getString("party.prefix"))) {
+		} else if (evt.getMessage().startsWith(plugin.getConfig().getString("party.prefix")) && plugin.getConfig().getBoolean("party.enabled")) {
 			if (plugin.party.isInAParty(evt.getPlayer())) {
 				Set<Player> channelPlayers = plugin.party
 						.getPartyMembers(plugin.party.getPartyName(evt
@@ -141,8 +139,7 @@ public class ChatListener implements Listener {
 										+ "[KitsuneChat] You are not currently in a channel.");
 			}
 
-		} else if ((evt.getMessage().startsWith(plugin.getConfig().getString(
-				"local.prefix")))) {
+		} else if ((evt.getMessage().startsWith(plugin.getConfig().getString("local.prefix"))) && plugin.getConfig().getBoolean("local.enabled")) {
 			Set<Player> local = KitsuneChatUtils.getNearbyPlayers(plugin
 					.getConfig().getInt("local.radius"), evt.getPlayer(), evt);
 			for (Player plr : local) {
@@ -157,9 +154,9 @@ public class ChatListener implements Listener {
 				}
 			}
 		} else { //Default chat
-			List<String> prefixes = Arrays.asList(plugin.getConfig().getString("global.prefix"), plugin.getConfig().getString("local.prefix"), plugin.getConfig().getString("staff.prefix"), plugin.getConfig().getString("admin.prefix"), plugin.getConfig().getString("party.prefix"), plugin.getConfig().getString("world.prefix"));
+			//List<String> prefixes = Arrays.asList(plugin.getConfig().getString("global.prefix"), plugin.getConfig().getString("local.prefix"), plugin.getConfig().getString("staff.prefix"), plugin.getConfig().getString("admin.prefix"), plugin.getConfig().getString("party.prefix"), plugin.getConfig().getString("world.prefix"));
 			boolean pass = false;
-			for(String str : prefixes ) {
+			for(String str : plugin.prefixes ) {
 				if(plugin.dataFile.getUserChannel(evt.getPlayer()).equals(str)) {
 					if(evt.getPlayer().hasPermission("kitsunechat.nodefault."+plugin.util.getChannelName(str, false)) && !plugin.util.getChannelName(str, false).equalsIgnoreCase("local")) { //Local failsafe
 						evt.getPlayer().sendMessage(ChatColor.GRAY+"(You do not have permission to talk in "+plugin.util.getChannelName(str, false)+" by default. Changing you to local chat.)");
@@ -169,6 +166,7 @@ public class ChatListener implements Listener {
 					}
 				}
 			}
+			//plugin.mcLog.info("Pass is "+pass);
 			if(pass) {
 				if(!emote) {
 				evt.setMessage(plugin.dataFile.getUserChannel(evt.getPlayer())+message);
@@ -176,7 +174,15 @@ public class ChatListener implements Listener {
 				evt.setMessage(plugin.dataFile.getUserChannel(evt.getPlayer())+plugin.getConfig().getString("emote.prefix")+message);
 				}
 			} else {
-				//Stupid admin check :P
+				//Stupid admin checks :P
+				if(!plugin.getConfig().getBoolean(util.getChannelName(plugin.getConfig().getString("default"), false)+".enabled") &&
+						util.getChannelName(plugin.getConfig().getString("default"), false) != "global") {
+							evt.getPlayer().sendMessage(ChatColor.RED+"[KitsuneChat] Your server admin has disabled the default chat channel!");
+							evt.getPlayer().sendMessage(ChatColor.RED+"[KitsuneChat] We can't find a channel to put you in as a result. Try to find one with /kc ?");
+							evt.getPlayer().sendMessage(ChatColor.RED+"[KitsuneChat] Also, be sure to tell the admin that they are doing it wrong! :3");
+							plugin.mcLog.info("[KitsuneChat] Default channel not enabled? FUCK YOU.");
+							return;
+				}
 				if(evt.getPlayer().hasPermission("kitsunechat.nodefault."+util.getChannelName(plugin.getConfig().getString("default"), false))) {
 					plugin.dataFile.setUserChannel(evt.getPlayer(), plugin.getConfig().getString("local.prefix"));
 				} else {
