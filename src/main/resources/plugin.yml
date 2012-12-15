@@ -1,7 +1,7 @@
 name: KitsuneChat
 version: 1.6.2-SNAPSHOT
 main: me.cyberkitsune.prefixchat.KitsuneChat
-authors: [CyberKitsune, Alynna]
+authors: [CyberKitsune, Alynna, Snooper]
 softdepend: [Vault, Multiverse-Core]
 commands:
      kc:
@@ -35,5 +35,8 @@ permissions:
         default: false
      kitsunechat.nodefault.party:
         description: Denies use of using /kc to default to party chat.
+        default: false
+     kitsunechat.ignoreradius:
+        description: Allows the user to hear ALL local chat.
         default: false
      
