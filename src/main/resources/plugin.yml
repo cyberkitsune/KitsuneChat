@@ -39,4 +39,7 @@ permissions:
      kitsunechat.ignoreradius:
         description: Allows the user to hear ALL local chat.
         default: false
+     kitsunechat.nick:
+        description: Allows you to change your nickname.
+        default: false
      
