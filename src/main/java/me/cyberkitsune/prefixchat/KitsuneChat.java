@@ -22,6 +22,7 @@ public class KitsuneChat extends JavaPlugin{
 	public ChatParties party = new ChatParties(this);
 	public KitsuneChatCommand exec = new KitsuneChatCommand(this);
 	public UserMessaging msgExec = new UserMessaging(this);
+	public NicknameChanger nickExec = new NicknameChanger();
 	public KitsuneChatUserData dataFile;
 	public KitsuneChatUtils util = new KitsuneChatUtils(this);
 	public List<String> prefixes;
@@ -72,6 +73,7 @@ public class KitsuneChat extends JavaPlugin{
 		PluginCommand meCmd = getCommand("me");
 		PluginCommand msgCmd = getCommand("msg");
 		PluginCommand repCmd = getCommand("r");
+		PluginCommand nickCmd = getCommand("nick");
 		
 		if(meCmd == null)
 		{
@@ -85,6 +87,12 @@ public class KitsuneChat extends JavaPlugin{
 		} else {
 			msgCmd.setExecutor(msgExec);
 			repCmd.setExecutor(msgExec);
+		}
+		
+		if(nickCmd == null) {
+			mcLog.info("[KitsuneChat] Unable to hook /nick! Disabling nickname support");
+		} else {
+			nickCmd.setExecutor(nickExec);
 		}
 		
 		dataFile = new KitsuneChatUserData(this);
