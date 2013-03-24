@@ -12,6 +12,8 @@ commands:
       description: Send a private message.
      r:
       description: Reply to a message in chat.
+     nick:
+      description: Change your nickname.
       
 permissions:
      kitsunechat.adminchat:
