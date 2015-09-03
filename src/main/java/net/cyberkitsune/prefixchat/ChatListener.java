@@ -31,10 +31,10 @@ public class ChatListener implements Listener {
 		if (!evt.getMessage().toLowerCase().startsWith("/me "))
 			return;
 
-		Set<Player> online = new HashSet<Player>(Arrays.asList(evt.getPlayer().getServer().getOnlinePlayers()));
+		Player[] online = (Player[])evt.getPlayer().getServer().getOnlinePlayers().toArray();
 		String buf = new String(plugin.getConfig().getString("emote.prefix")+evt.getMessage().substring(4));
 		AsyncPlayerChatEvent newevt = 
-				new AsyncPlayerChatEvent(false, evt.getPlayer(), buf, online);		
+				new AsyncPlayerChatEvent(false, evt.getPlayer(), buf, new HashSet<Player>(Arrays.asList(online)));
 		
 		plugin.getServer().getPluginManager().callEvent(newevt);
 		
