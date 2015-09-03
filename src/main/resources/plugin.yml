@@ -1,6 +1,6 @@
 name: KitsuneChat
-version: 1.6.2-SNAPSHOT
-main: KitsuneChat
+version: 1.7.0-SNAPSHOT
+main: net.cyberkitsune.prefixchat.KitsuneChat
 authors: [CyberKitsune, Alynna, Snooper]
 softdepend: [Vault, Multiverse-Core]
 commands:
