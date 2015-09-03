@@ -143,6 +143,7 @@ public class KitsuneChat extends JavaPlugin{
 			config.set("local.prefix", "%");
 			config.set("party.cost", 0);
 			config.set("local.radius", 128);
+			config.set("skipvault", false);
 		}
 		if(!config.isSet("global.sayformat")) {
 			config.set("global.sayformat", "[{world}] {sender}: {message}");
@@ -187,7 +188,7 @@ public class KitsuneChat extends JavaPlugin{
 	}
 	
 	private boolean setupVaultChat() {
-		if(getServer().getPluginManager().getPlugin("Vault") == null) {
+		if(getServer().getPluginManager().getPlugin("Vault") == null || getConfig().getBoolean("skipvault")) {
 			return false;
 		}
 		RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);

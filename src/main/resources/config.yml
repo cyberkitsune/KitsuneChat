@@ -34,3 +34,4 @@ version: 1.6
 emote:
   prefix: '|'
 default: '!'
+skipvault: false
