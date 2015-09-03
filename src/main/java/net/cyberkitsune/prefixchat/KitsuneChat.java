@@ -97,10 +97,9 @@ public class KitsuneChat extends JavaPlugin{
 		
 		dataFile = new KitsuneChatUserData(this);
 		dataFile.loadUserData();
-		
-		Player[] online = (Player[]) getServer().getOnlinePlayers().toArray();
+
 		//Put any online users back into their parties (in the event of a reload)
-		for(Player plr : online) {
+		for(Player plr : getServer().getOnlinePlayers()) {
 			party.changeParty(plr, dataFile.getPartyDataForUser(plr));
 		}
 		List<String> channelList = Arrays.asList("global" , "local" , "staff" , "admin" , "party" , "world");
