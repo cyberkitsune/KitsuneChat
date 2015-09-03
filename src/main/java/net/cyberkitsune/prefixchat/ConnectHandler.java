@@ -1,4 +1,4 @@
-package me.cyberkitsune.prefixchat;
+package net.cyberkitsune.prefixchat;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
