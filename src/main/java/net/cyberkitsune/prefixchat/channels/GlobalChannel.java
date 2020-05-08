@@ -16,11 +16,6 @@ public class GlobalChannel implements KitsuneChannel {
     }
 
     @Override
-    public boolean onMessage(String message, AsyncPlayerChatEvent context) {
-        return false;
-    }
-
-    @Override
     public String getChannelName() {
         return "global";
     }
