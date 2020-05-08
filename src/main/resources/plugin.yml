@@ -1,5 +1,5 @@
 name: KitsuneChat
-version: 1.7.0-SNAPSHOT
+version: 2.0.0-SNAPSHOT
 main: net.cyberkitsune.prefixchat.KitsuneChat
 api-version: "1.15"
 authors: [CyberKitsune, Alynna, Snooper]
