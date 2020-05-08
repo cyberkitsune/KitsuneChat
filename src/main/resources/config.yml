@@ -4,6 +4,7 @@ channels:
     prefix: '!'
     sayformat: '&b[{world}]&f {sender}:&f {message}'
     meformat: '&b[{world}] &d*&f {sender} {message}'
+    enabled: true
   world:
     prefix: '#'
     sayformat: '&a[{prefix}]&f {sender}:&f {message}'

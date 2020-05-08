@@ -10,6 +10,7 @@ import net.milkbowl.vault.chat.Chat;
 
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -155,56 +156,7 @@ public class KitsuneChat extends JavaPlugin {
 	//TODO Cache config!
 	private void setDefaults() {
 		config = this.getConfig();
-		if(!config.isSet("channels.global.prefix")) {
-			config.set("channels.global.prefix", "!");
-			config.set("channels.world.prefix", "#");
-			config.set("channels.admin.prefix", "@");
-			config.set("channels.staff.prefix", "^");
-			config.set("channels.party.prefix", "$");
-			config.set("channels.local.prefix", "%");
-			config.set("channels.party.cost", 0);
-			config.set("channels.local.radius", 128);
-			config.set("skipvault", false);
-		}
-		if(!config.isSet("channels.global.sayformat")) {
-			config.set("channels.global.sayformat", "[{world}] {sender}: {message}");
-			config.set("channels.admin.sayformat", "[{prefix}] {sender}: {message}");
-			config.set("channels.staff.sayformat", "[{prefix}] {sender}: {message}");
-			config.set("channels.world.sayformat", "[{prefix}] {sender}: {message}");
-			config.set("channels.party.sayformat", "[{party}] {sender}: {message}");
-			config.set("channels.local.sayformat", "{sender}: {message}");
-		}
-		
-		if(!config.isSet("channels.global.meformat")) {
-			config.set("channels.global.meformat", "[{world}] * {sender} {message}");
-			config.set("channels.admin.meformat", "[{prefix}] * {sender} {message}");
-			config.set("channels.staff.meformat", "[{prefix}] * {sender} {message}");
-			config.set("channels.world.meformat", "[{prefix}] * {sender} {message}");
-			config.set("channels.party.meformat", "[{party}] * {sender} {message}");
-			config.set("channels.local.meformat", "* {sender} {message}");
-		}
-		
-		if(!config.isSet("emote.prefix")) {
-			config.set("emote.prefix", "|");
-		}
-		
-		if(!config.isSet("default")) {
-			config.set("default", "%");
-		}
-		
-		if(!config.isSet("channels.local.warnifalone")) {
-			config.set("channels.local.warnifalone", true);
-		}
-		
-		if(!config.isSet("channels.local.enabled")) {
-			config.set("channels.local.enabled", true);
-			config.set("channels.world.enabled", true);
-			config.set("channels.staff.enabled", true);
-			config.set("channels.admin.enabled", true);
-			config.set("channels.party.enabled", true);
-		}
-		
-		config.set("version", this.getDescription().getVersion());
+		config.options().copyDefaults(true);
 		this.saveConfig();
 	}
 	
