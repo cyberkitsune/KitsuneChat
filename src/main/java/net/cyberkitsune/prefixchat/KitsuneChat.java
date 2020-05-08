@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 import net.milkbowl.vault.chat.Chat;
@@ -34,20 +35,22 @@ public class KitsuneChat extends JavaPlugin{
 	
 	@Override
 	public void onEnable() {
-		mcLog.info("[KitsuneChat] Enabling KitsuneChat version "+this.getDescription().getVersion()+"a");
+		mcLog.info("[KitsuneChat] Enabling KitsuneChat version "+ this.getDescription().getVersion());
 		if(!(new File(getDataFolder()+"/config.yml").exists())) {
 			mcLog.info("[KitsuneChat] KitsuneChat config does not exist! Creating default config...");
-			if(!(new File(getDataFolder().toString()).isDirectory())) {
-				new File(getDataFolder().toString()).mkdir();
+			if(!getDataFolder().exists()) {
+				boolean succ = getDataFolder().mkdir();
+				if(!succ)
+					mcLog.severe("[KitsuneChat] KitsuneChat could not make data folder...");
 			}
 			try {
-				new File(getDataFolder()+"/config.yml").createNewFile();
+				boolean succ = new File(getDataFolder()+"/config.yml").createNewFile();
+				if(!succ)
+					mcLog.warning("[KitsuneChat] Config file already exists...");
 			} catch (Exception e) {
 				mcLog.severe("[KitsuneChat] KitsuneChat could NOT create config file!!");
 				e.printStackTrace();
 			}
-			loadConfig();
-			setDefaults();
 		}
 		loadConfig();
 		setDefaults();
@@ -66,11 +69,14 @@ public class KitsuneChat extends JavaPlugin{
 			multiVerse = false;
 			mcLog.info("[KitsuneChat] Did not find Multiverse. Not enabling world aliases.");
 		}
-		this.getServer().getPluginManager().registerEvents(new ChatListener(this), this);
-		this.getServer().getPluginManager().registerEvents(new ConnectHandler(this), this);
-		this.getServer().getPluginManager().registerEvents(new JoinQuitListener(this), this);
-		getCommand("kc").setExecutor(exec);
-		getCommand("kc").setTabCompleter(exec);
+		// Listeners
+		getServer().getPluginManager().registerEvents(new ChatListener(this), this);
+		getServer().getPluginManager().registerEvents(new ConnectHandler(this), this);
+		getServer().getPluginManager().registerEvents(new JoinQuitListener(this), this);
+
+		// Commands
+		Objects.requireNonNull(getCommand("kc")).setExecutor(exec);
+		Objects.requireNonNull(getCommand("kc")).setTabCompleter(exec);
 		PluginCommand meCmd = getCommand("me");
 		PluginCommand msgCmd = getCommand("msg");
 		PluginCommand repCmd = getCommand("r");
@@ -104,9 +110,9 @@ public class KitsuneChat extends JavaPlugin{
 			party.changeParty(plr, dataFile.getPartyDataForUser(plr));
 		}
 		List<String> channelList = Arrays.asList("global" , "local" , "staff" , "admin" , "party" , "world");
-		prefixes = new ArrayList<String>();
+		prefixes = new ArrayList<>();
 		for(String channel : channelList) {
-			if(channel != "global") {
+			if(!channel.equals("global")) {
 				if(getConfig().getBoolean(channel+".enabled")) {
 					prefixes.add(getConfig().getString(channel+".prefix"));
 				}
@@ -192,7 +198,7 @@ public class KitsuneChat extends JavaPlugin{
 		if(getServer().getPluginManager().getPlugin("Vault") == null || getConfig().getBoolean("skipvault")) {
 			return false;
 		}
-		RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
+		RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(Chat.class);
 		if(chatProvider != null) {
 			vaultChat = chatProvider.getProvider();
 		}
