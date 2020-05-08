@@ -88,6 +88,23 @@ public class ChatListener implements Listener {
 		// Finally, process the message. (Should probably throw an exception if the channel isn't there anymore.)
 		KitsuneChannel target_channel = KitsuneChat.getInstance().channels.get(channel_prefix);
 
+		if (target_channel == null)
+		{
+			// Try and move the user into the default
+			String default_prefix = KitsuneChat.getInstance().getConfig().getString("channels.default");
+			KitsuneChannel default_channel = KitsuneChat.getInstance().channels.get(default_prefix);
+			if (default_channel == null)
+			{
+				KitsuneChat.getInstance().mcLog.severe("[KitsuneChat] Default channel doesn't actually exist! Check your config!");
+				evt.getPlayer().sendMessage(ChatColor.RED + "[KitsuneChat] You tried to talk in a channel that doesn't exist, and the default doesn't exist either." +
+						" This is a configuration issue, ask your server admin.");
+				evt.setCancelled(true);
+				return;
+			}
+			KitsuneChatUserData.getInstance().setUserChannel(evt.getPlayer(), default_channel.getPrefix());
+			target_channel = default_channel;
+		}
+
 		if (target_channel.onMessage(message, evt)) {
 			message = target_channel.formatMessage(message, evt, emote);
 			if (target_channel.willCancel()) {
@@ -105,7 +122,7 @@ public class ChatListener implements Listener {
 		} else {
 			// OnMessage should handle any permissions / other warnings
 			evt.setCancelled(true);
-			return;
+
 		}
 	}
 }
