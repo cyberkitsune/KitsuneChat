@@ -1,8 +1,6 @@
 KitsuneChat
 ===========
 
-(Quick Download: [stable build](http://dev.bukkit.org/bukkit-plugins/kitsunechat/files/3-kitsune-chat-1-6-1/) or [unstable build](http://ci.cyberkitsune.net/job/KitsuneChat/lastSuccessfulBuild/artifact/target/KitsuneChat-1.6.2-SNAPSHOT.jar))
-
 Making chat RP-Safe and Customizable for all!
 ---------------------------------------------
 
