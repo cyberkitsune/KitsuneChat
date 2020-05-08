@@ -115,38 +115,43 @@ public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
-		ArrayList<String> possibleCompletions = new ArrayList<>(Arrays.asList("?", "party"));
-		possibleCompletions.addAll(KitsuneChat.getInstance().prefixes);
-
-		final List<String> completions = new ArrayList<>();
-		int checkIndex = 0;
-		if(strings[0].equals("party"))
+		if (command.getName().equalsIgnoreCase("kc"))
 		{
-			possibleCompletions = new ArrayList<>(Arrays.asList("join", "list", "leave", "invite"));
-			if(strings.length > 1)
+			ArrayList<String> possibleCompletions = new ArrayList<>(Arrays.asList("?", "party"));
+			possibleCompletions.addAll(KitsuneChat.getInstance().prefixes);
+
+			final List<String> completions = new ArrayList<>();
+			int checkIndex = 0;
+			if(strings[0].equals("party"))
 			{
-				checkIndex = 1;
-				switch (strings[1]) {
-					case "join":
-						return Collections.singletonList("<party_name>");
-					case "invite":
-						return null;
-					case "leave":
-					case "list":
-						return Collections.singletonList("");
+				possibleCompletions = new ArrayList<>(Arrays.asList("join", "list", "leave", "invite"));
+				if(strings.length > 1)
+				{
+					checkIndex = 1;
+					switch (strings[1]) {
+						case "join":
+							return Collections.singletonList("<party_name>");
+						case "invite":
+							return null;
+						case "leave":
+						case "list":
+							return Collections.singletonList("");
+					}
 				}
+
+			} else if(strings.length > 1)
+			{
+				possibleCompletions = new ArrayList<>();
 			}
 
-		} else if(strings.length > 1)
-		{
-			possibleCompletions = new ArrayList<>();
+
+			StringUtil.copyPartialMatches(strings[checkIndex], possibleCompletions, completions);
+
+			Collections.sort(completions);
+
+			return completions;
 		}
 
-
-		StringUtil.copyPartialMatches(strings[checkIndex], possibleCompletions, completions);
-
-		Collections.sort(completions);
-
-		return completions;
+		return null;
 	}
 }
