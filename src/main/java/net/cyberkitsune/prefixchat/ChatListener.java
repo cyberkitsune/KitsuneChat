@@ -44,21 +44,20 @@ public class ChatListener implements Listener {
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = false)
 	public void playerChat(AsyncPlayerChatEvent evt) {
 		evt.setCancelled(true);
-		// TODO check if this needs cleaning
+
 		if (evt.getMessage().endsWith("--")) {
 			if (bufs.get(evt.getPlayer()) == null) {
 				bufs.put(evt.getPlayer(), evt.getMessage().substring(0, evt.getMessage().length() - 2));
-				return;
 			} else {
 				bufs.put(evt.getPlayer(),
-						bufs.get(evt.getPlayer()) + " " +
-								KitsuneChatUtils.getInstance().stripPrefixes(evt.getMessage().substring(0, evt.getMessage().length() - 2))
-				);
-				return;
+						bufs.get(evt.getPlayer()) + " " + evt.getMessage().substring(0, evt.getMessage().length() - 2));
 			}
+			evt.getPlayer().sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC
+					+ "(Your message ended with --, will append next message to it.)");
+			return;
 		} else {
 			if (bufs.get(evt.getPlayer()) != null)
-				evt.setMessage(bufs.get(evt.getPlayer()) + " " + KitsuneChatUtils.getInstance().stripPrefixes(evt.getMessage()));
+				evt.setMessage(bufs.get(evt.getPlayer()) + " " + evt.getMessage());
 			bufs.put(evt.getPlayer(), null);
 		}
 		String message = KitsuneChatUtils.getInstance().colorizeString(evt.getMessage());

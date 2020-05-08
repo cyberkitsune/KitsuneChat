@@ -62,12 +62,12 @@ public interface KitsuneChannel {
         String formatted;
         if(emote)
         {
-            formatted = KitsuneChatUtils.getInstance().formatChatPrefixes(message, KitsuneChat.getInstance().getConfig()
+            formatted = KitsuneChatUtils.getInstance().formatChatPrefixes(this, message, KitsuneChat.getInstance().getConfig()
                     .getString("channels."+getChannelName()+".meformat"), context);
         }
         else
         {
-            formatted = KitsuneChatUtils.getInstance().formatChatPrefixes(message, KitsuneChat.getInstance().getConfig()
+            formatted = KitsuneChatUtils.getInstance().formatChatPrefixes(this, message, KitsuneChat.getInstance().getConfig()
                     .getString("channels."+getChannelName()+".sayformat"), context);
         }
         return formatted;

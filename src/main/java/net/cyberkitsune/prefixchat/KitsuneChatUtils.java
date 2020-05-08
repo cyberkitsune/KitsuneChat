@@ -65,11 +65,11 @@ public class KitsuneChatUtils {
 		return colorized;
 	}
 	
-	public String stripPrefixes(String target) {
-		return (String) target.replaceFirst("\\\\"+getChannelName(target, true), "");
+	public String stripPrefixes(KitsuneChannel channel, String target) {
+		return (String) target.replaceFirst("\\\\"+channel.getPrefix(), "");
 	}
 	
-	public String formatChatPrefixes(String target, String formatString, AsyncPlayerChatEvent context) {
+	public String formatChatPrefixes(KitsuneChannel channel, String target, String formatString, AsyncPlayerChatEvent context) {
 		String output;
 		if(KitsuneChat.getInstance().vaultEnabled) {
 			output = formatString.replace("{sender}",
@@ -90,8 +90,8 @@ public class KitsuneChatUtils {
 		} else {
 			output = output.replace("{world}", context.getPlayer().getWorld().getName());	
 		}
-		output = output.replace("{channel}", getChannelName(target, false));
-		output = output.replace("{prefix}", getChannelName(target, true));
+		output = output.replace("{channel}", channel.getChannelName());
+		output = output.replace("{prefix}", channel.getPrefix());
 		output = output.replace("{party}", (ChatParties.getInstance().isInAParty(context.getPlayer()) ?
 				ChatParties.getInstance().getPartyName(context.getPlayer()) : ""));
 		if(context.isCancelled()) {
@@ -111,18 +111,5 @@ public class KitsuneChatUtils {
 				event.getFormat()+" "+
 				event.getMessage()
 				);
-	}
-	public String getChannelName(String prefix, boolean displayPrefix) {
-		KitsuneChannel channel = KitsuneChat.getInstance().channels.get(prefix);
-		if (channel == null)
-		{
-			// throw new ChannelNotFoundException();
-			return "";
-		}
-		if(!displayPrefix) {
-			return channel.getChannelName();
-		} else {
-			return channel.getPrefix();
-		}
 	}
 }
