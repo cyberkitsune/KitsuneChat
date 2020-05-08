@@ -70,7 +70,7 @@ public class KitsuneChatUtils {
 	}
 	
 	public String formatChatPrefixes(String target, String formatString, AsyncPlayerChatEvent context) {
-		String output="";
+		String output;
 		if(KitsuneChat.getInstance().vaultEnabled) {
 			output = formatString.replace("{sender}",
 					KitsuneChat.getInstance().vaultChat.getPlayerPrefix(
@@ -94,8 +94,6 @@ public class KitsuneChatUtils {
 		output = output.replace("{prefix}", getChannelName(target, true));
 		output = output.replace("{party}", (ChatParties.getInstance().isInAParty(context.getPlayer()) ?
 				ChatParties.getInstance().getPartyName(context.getPlayer()) : ""));
-		target = target.replaceFirst("\\\\"+getChannelName(target, true), "");
-		//target = target.replaceAll("\\$", "\\\\$"); //Friggen dollar signs.
 		if(context.isCancelled()) {
 			output = output.replace("{message}", target);
 		} else {
