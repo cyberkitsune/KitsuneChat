@@ -4,6 +4,7 @@ package net.cyberkitsune.prefixchat;
 import java.util.HashSet;
 import java.util.Set;
 
+import net.cyberkitsune.prefixchat.channels.KitsuneChannel;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -113,40 +114,17 @@ public class KitsuneChatUtils {
 				event.getMessage()
 				);
 	}
-	public String getChannelName(String target, boolean displayPrefix) {
-		if(!displayPrefix) {
-			if(target.startsWith(KitsuneChat.getInstance().getConfig().getString("global.prefix"))) {
-				return "global";
-			} else if(target.startsWith(KitsuneChat.getInstance().getConfig().getString("admin.prefix"))) {
-				return "admin";
-			} else if(target.startsWith(KitsuneChat.getInstance().getConfig().getString("staff.prefix"))) {
-				return "staff";
-			} else if(target.startsWith(KitsuneChat.getInstance().getConfig().getString("world.prefix"))) {
-				return "world";
-			} else if(target.startsWith(KitsuneChat.getInstance().getConfig().getString("party.prefix"))) {
-				return "party";
-			} else if(target.startsWith(KitsuneChat.getInstance().getConfig().getString("local.prefix"))) {
-				return "local";
-			} else {
-				return "local";
-			}
-		} else {
-			if(target.startsWith(KitsuneChat.getInstance().getConfig().getString("global.prefix"))) {
-				return KitsuneChat.getInstance().getConfig().getString("global.prefix");
-			} else if(target.startsWith(KitsuneChat.getInstance().getConfig().getString("admin.prefix"))) {
-				return KitsuneChat.getInstance().getConfig().getString("admin.prefix");
-			} else if(target.startsWith(KitsuneChat.getInstance().getConfig().getString("staff.prefix"))) {
-				return KitsuneChat.getInstance().getConfig().getString("staff.prefix");
-			} else if(target.startsWith(KitsuneChat.getInstance().getConfig().getString("world.prefix"))) {
-				return KitsuneChat.getInstance().getConfig().getString("world.prefix");
-			} else if(target.startsWith(KitsuneChat.getInstance().getConfig().getString("party.prefix"))) {
-				return KitsuneChat.getInstance().getConfig().getString("party.prefix");
-			} else if(target.startsWith(KitsuneChat.getInstance().getConfig().getString("local.prefix"))) {
-				return KitsuneChat.getInstance().getConfig().getString("local.prefix");
-			} else {
-				return KitsuneChat.getInstance().getConfig().getString("local.prefix");
-			}
+	public String getChannelName(String prefix, boolean displayPrefix) {
+		KitsuneChannel channel = KitsuneChat.getInstance().channels.get(prefix);
+		if (channel == null)
+		{
+			// throw new ChannelNotFoundException();
+			return "";
 		}
-		
+		if(!displayPrefix) {
+			return channel.getChannelName();
+		} else {
+			return channel.getPrefix();
+		}
 	}
 }
