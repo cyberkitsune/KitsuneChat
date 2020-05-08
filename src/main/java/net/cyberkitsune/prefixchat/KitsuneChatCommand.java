@@ -84,7 +84,7 @@ public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 								if (args[0].equalsIgnoreCase(channel.getPrefix())) {
 									if (sender.hasPermission("kitsunechat.no." + channel.getChannelName()))
 									{
-										sender.sendMessage(ChatColor.RED + "[KitsuneChat] You do not have permission to use the" + channel.getChannelName() + " channel.");
+										sender.sendMessage(ChatColor.RED + "[KitsuneChat] You do not have permission to use the " + channel.getChannelName() + " channel.");
 										return true;
 									}
 									KitsuneChatUserData.getInstance().setUserChannel((Player) sender, channel.getPrefix());
