@@ -70,6 +70,7 @@ public class KitsuneChat extends JavaPlugin{
 		this.getServer().getPluginManager().registerEvents(new ConnectHandler(this), this);
 		this.getServer().getPluginManager().registerEvents(new JoinQuitListener(this), this);
 		getCommand("kc").setExecutor(exec);
+		getCommand("kc").setTabCompleter(exec);
 		PluginCommand meCmd = getCommand("me");
 		PluginCommand msgCmd = getCommand("msg");
 		PluginCommand repCmd = getCommand("r");

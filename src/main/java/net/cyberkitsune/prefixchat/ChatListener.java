@@ -1,10 +1,6 @@
 package net.cyberkitsune.prefixchat;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -31,10 +27,10 @@ public class ChatListener implements Listener {
 		if (!evt.getMessage().toLowerCase().startsWith("/me "))
 			return;
 
-		Player[] online = (Player[])evt.getPlayer().getServer().getOnlinePlayers().toArray();
 		String buf = new String(plugin.getConfig().getString("emote.prefix")+evt.getMessage().substring(4));
 		AsyncPlayerChatEvent newevt = 
-				new AsyncPlayerChatEvent(false, evt.getPlayer(), buf, new HashSet<Player>(Arrays.asList(online)));
+				new AsyncPlayerChatEvent(false, evt.getPlayer(), buf,
+						new HashSet<Player>(plugin.getServer().getOnlinePlayers()));
 		
 		plugin.getServer().getPluginManager().callEvent(newevt);
 		

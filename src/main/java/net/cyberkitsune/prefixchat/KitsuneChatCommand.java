@@ -4,9 +4,16 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.util.StringUtil;
 
-public class KitsuneChatCommand implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 
 	private KitsuneChat plugin;
 
@@ -110,4 +117,17 @@ public class KitsuneChatCommand implements CommandExecutor {
 		}
 	}
 
+	@Override
+	public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
+		ArrayList<String> possibleCompletions = new ArrayList<String>(Arrays.asList("?", "party", "leaveparty", "invite"));
+		possibleCompletions.addAll(plugin.prefixes);
+
+		final List<String> completions = new ArrayList<String>();
+
+		StringUtil.copyPartialMatches(strings[0], possibleCompletions, completions);
+
+		Collections.sort(completions);
+
+		return completions;
+	}
 }
