@@ -201,6 +201,12 @@ public class KitsuneChat extends JavaPlugin {
 		if (channels.size() == 0)
 			mcLog.warning("[KitsuneChat] No channels were loaded, and nobody will be able to talk." +
 					" Do you have any enabled in config.yml?");
+
+		// Check default
+		String defaultChannel = getConfig().getString("channels.default");
+		if (!channels.containsKey(defaultChannel))
+			mcLog.warning("[KitsuneChat] Your set default channel does not exist or is not enabled. Make sure to " +
+					"fix this in the config.yml");
 	}
 
 }
