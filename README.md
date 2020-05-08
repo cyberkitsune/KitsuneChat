@@ -1,5 +1,6 @@
 KitsuneChat
 ===========
+[![Build Status](https://travis-ci.org/cyberkitsune/KitsuneChat.svg?branch=master)](https://travis-ci.org/cyberkitsune/KitsuneChat)
 
 Making chat RP-Safe and Customizable for all!
 ---------------------------------------------
