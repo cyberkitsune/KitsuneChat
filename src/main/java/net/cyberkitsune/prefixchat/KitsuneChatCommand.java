@@ -119,12 +119,23 @@ public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 
 	@Override
 	public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
-		ArrayList<String> possibleCompletions = new ArrayList<String>(Arrays.asList("?", "party", "leaveparty", "invite"));
+		ArrayList<String> possibleCompletions = new ArrayList<>(Arrays.asList("?", "party", "leaveparty", "invite"));
 		possibleCompletions.addAll(plugin.prefixes);
 
-		final List<String> completions = new ArrayList<String>();
+		final List<String> completions = new ArrayList<>();
+		int checkIndex = 0;
+		if(strings[0].equals("party"))
+		{
+			possibleCompletions = new ArrayList<>(Arrays.asList("list", "leave", "invite"));
+			if(strings.length > 1)
+				checkIndex = 1;
+		} else if(strings.length > 1)
+		{
+			possibleCompletions = new ArrayList<>();
+		}
 
-		StringUtil.copyPartialMatches(strings[0], possibleCompletions, completions);
+
+		StringUtil.copyPartialMatches(strings[checkIndex], possibleCompletions, completions);
 
 		Collections.sort(completions);
 
