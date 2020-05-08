@@ -190,7 +190,6 @@ public class KitsuneChat extends JavaPlugin {
 			try {
 				KitsuneChannel ci = channel.getDeclaredConstructor().newInstance();
 				if(getConfig().getBoolean("channels."+ ci.getChannelName() + ".enabled")) {
-					mcLog.info("[KitsuneChat] Adding channel type " + channel.getName());
 					channels.put(ci.getPrefix(), ci);
 				}
 			} catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
@@ -201,6 +200,13 @@ public class KitsuneChat extends JavaPlugin {
 		if (channels.size() == 0)
 			mcLog.warning("[KitsuneChat] No channels were loaded, and nobody will be able to talk." +
 					" Do you have any enabled in config.yml?");
+		else
+		{
+			StringJoiner sd = new StringJoiner(", ");
+			for (KitsuneChannel c : channels.values())
+				sd.add(c.getChannelName());
+			mcLog.info("[KitsuneChat] Loaded and enabled channels: " + sd);
+		}
 
 		// Check default
 		String defaultChannel = getConfig().getString("channels.default");
