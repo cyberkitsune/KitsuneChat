@@ -9,10 +9,7 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 	
@@ -55,7 +52,7 @@ public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 								} else if (args[1].equalsIgnoreCase("invite")) {
 									if (args.length > 2) {
 										if (ChatParties.getInstance().isInAParty((Player) sender)) {
-											Player target = KitsuneChat.getInstance().getServer().getPlayer(args[1]);
+											Player target = KitsuneChat.getInstance().getServer().getPlayer(args[2]);
 											if (target != null) {
 												target.sendMessage(ChatColor.GREEN + "[KitsuneChat] " + sender.getName() + " has invited you to a party! Type /kc p " + ChatParties.getInstance().getPartyName((Player) sender) + " to join!");
 												ChatParties.getInstance().notifyParty(ChatParties.getInstance().getPartyName((Player) sender), ChatColor.GREEN + "[KitsuneChat] " + sender.getName() + " invited " + target.getDisplayName() + ChatColor.GREEN + " to the party.");
@@ -129,8 +126,15 @@ public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 			if(strings.length > 1)
 			{
 				checkIndex = 1;
-				if(strings[1].equals("join"))
-					return Collections.singletonList("[<party_name>]");
+				switch (strings[1]) {
+					case "join":
+						return Collections.singletonList("<party_name>");
+					case "invite":
+						return null;
+					case "leave":
+					case "list":
+						return Collections.singletonList("");
+				}
 			}
 
 		} else if(strings.length > 1)
