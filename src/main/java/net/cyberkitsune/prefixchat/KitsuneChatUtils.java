@@ -14,12 +14,18 @@ import com.onarandombox.MultiverseCore.MultiverseCore;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 
 public class KitsuneChatUtils {
-	KitsuneChat plugin;
-	public KitsuneChatUtils(KitsuneChat plugin) {
-		this.plugin = plugin;
+	private static KitsuneChatUtils instance;
+	public KitsuneChatUtils() {
+	}
+
+	public static KitsuneChatUtils getInstance()
+	{
+		if (instance == null)
+			instance = new KitsuneChatUtils();
+		return instance;
 	}
 	
-	public static Set<Player> getNearbyPlayers(int radius, Player target) {
+	public Set<Player> getNearbyPlayers(int radius, Player target) {
 		Set<Player> nearbyPlayers = new HashSet<Player>();
 		nearbyPlayers.add(target);
 		
@@ -34,9 +40,9 @@ public class KitsuneChatUtils {
 		
 	}
 	
-	public static Set<Player> getNearbyPlayers(int radius, Player target, AsyncPlayerChatEvent event) {
+	public Set<Player> getNearbyPlayers(int radius, Player target, AsyncPlayerChatEvent event) {
 		// This function SHOULD be thread-safe.
-		Set<Player> nearbyPlayers = new HashSet<Player>();
+		Set<Player> nearbyPlayers = new HashSet<>();
 		nearbyPlayers.add(target);
 		
 		for(Entity ent : event.getRecipients())
@@ -51,7 +57,7 @@ public class KitsuneChatUtils {
 		return nearbyPlayers;
 		
 	}
-	public static String colorizeString(String target) {
+	public String colorizeString(String target) {
 		String colorized = new String();
 		colorized = ChatColor.translateAlternateColorCodes('&', target);
 		
@@ -59,18 +65,21 @@ public class KitsuneChatUtils {
 	}
 	
 	public String stripPrefixes(String target) {
-		return (String) target.replaceFirst("\\"+getChannelName(target, true), "");
+		return (String) target.replaceFirst("\\\\"+getChannelName(target, true), "");
 	}
 	
 	public String formatChatPrefixes(String target, String formatString, AsyncPlayerChatEvent context) {
 		String output="";
-		if(plugin.vaultEnabled) {
-			output = formatString.replace("{sender}", plugin.vaultChat.getPlayerPrefix(context.getPlayer())+context.getPlayer().getDisplayName()+plugin.vaultChat.getPlayerSuffix(context.getPlayer()));
+		if(KitsuneChat.getInstance().vaultEnabled) {
+			output = formatString.replace("{sender}",
+					KitsuneChat.getInstance().vaultChat.getPlayerPrefix(
+							context.getPlayer()) + context.getPlayer().getDisplayName() +
+							KitsuneChat.getInstance().vaultChat.getPlayerSuffix(context.getPlayer()));
 		} else {
 			output = formatString.replace("{sender}", context.getPlayer().getDisplayName());
 		}
-		if(plugin.multiVerse) {
-			MultiverseCore mvPlug = this.plugin.multiversePlugin;
+		if(KitsuneChat.getInstance().multiVerse) {
+			MultiverseCore mvPlug = KitsuneChat.getInstance().multiversePlugin;
 			MultiverseWorld mvWorld = mvPlug.getMVWorldManager().getMVWorld(context.getPlayer().getWorld().getName());
 			if(mvWorld == null) {
 				output = output.replace("{world}", context.getPlayer().getWorld().getName());	
@@ -82,8 +91,9 @@ public class KitsuneChatUtils {
 		}
 		output = output.replace("{channel}", getChannelName(target, false));
 		output = output.replace("{prefix}", getChannelName(target, true));
-		output = output.replace("{party}", (plugin.party.isInAParty(context.getPlayer()) ? plugin.party.getPartyName(context.getPlayer()) : ""));
-		target = target.replaceFirst("\\"+getChannelName(target, true), "");
+		output = output.replace("{party}", (ChatParties.getInstance().isInAParty(context.getPlayer()) ?
+				ChatParties.getInstance().getPartyName(context.getPlayer()) : ""));
+		target = target.replaceFirst("\\\\"+getChannelName(target, true), "");
 		//target = target.replaceAll("\\$", "\\\\$"); //Friggen dollar signs.
 		if(context.isCancelled()) {
 			output = output.replace("{message}", target);
@@ -94,7 +104,7 @@ public class KitsuneChatUtils {
 		return output;
 	}
     public void chatWatcher(AsyncPlayerChatEvent event) {
-		plugin.mcLog.info(
+		KitsuneChat.getInstance().mcLog.info(
 				"KitsuneChat "+
 				event.getEventName()+" "+
 				event.getPlayer()+" "+
@@ -102,40 +112,39 @@ public class KitsuneChatUtils {
 				event.getFormat()+" "+
 				event.getMessage()
 				);
-		return;
 	}
 	public String getChannelName(String target, boolean displayPrefix) {
 		if(!displayPrefix) {
-			if(target.startsWith(plugin.getConfig().getString("global.prefix"))) {
+			if(target.startsWith(KitsuneChat.getInstance().getConfig().getString("global.prefix"))) {
 				return "global";
-			} else if(target.startsWith(plugin.getConfig().getString("admin.prefix"))) {
+			} else if(target.startsWith(KitsuneChat.getInstance().getConfig().getString("admin.prefix"))) {
 				return "admin";
-			} else if(target.startsWith(plugin.getConfig().getString("staff.prefix"))) {
+			} else if(target.startsWith(KitsuneChat.getInstance().getConfig().getString("staff.prefix"))) {
 				return "staff";
-			} else if(target.startsWith(plugin.getConfig().getString("world.prefix"))) {
+			} else if(target.startsWith(KitsuneChat.getInstance().getConfig().getString("world.prefix"))) {
 				return "world";
-			} else if(target.startsWith(plugin.getConfig().getString("party.prefix"))) {
+			} else if(target.startsWith(KitsuneChat.getInstance().getConfig().getString("party.prefix"))) {
 				return "party";
-			} else if(target.startsWith(plugin.getConfig().getString("local.prefix"))) {
+			} else if(target.startsWith(KitsuneChat.getInstance().getConfig().getString("local.prefix"))) {
 				return "local";
 			} else {
 				return "local";
 			}
 		} else {
-			if(target.startsWith(plugin.getConfig().getString("global.prefix"))) {
-				return plugin.getConfig().getString("global.prefix");
-			} else if(target.startsWith(plugin.getConfig().getString("admin.prefix"))) {
-				return plugin.getConfig().getString("admin.prefix");
-			} else if(target.startsWith(plugin.getConfig().getString("staff.prefix"))) {
-				return plugin.getConfig().getString("staff.prefix");
-			} else if(target.startsWith(plugin.getConfig().getString("world.prefix"))) {
-				return plugin.getConfig().getString("world.prefix");
-			} else if(target.startsWith(plugin.getConfig().getString("party.prefix"))) {
-				return plugin.getConfig().getString("party.prefix");
-			} else if(target.startsWith(plugin.getConfig().getString("local.prefix"))) {
-				return plugin.getConfig().getString("local.prefix");
+			if(target.startsWith(KitsuneChat.getInstance().getConfig().getString("global.prefix"))) {
+				return KitsuneChat.getInstance().getConfig().getString("global.prefix");
+			} else if(target.startsWith(KitsuneChat.getInstance().getConfig().getString("admin.prefix"))) {
+				return KitsuneChat.getInstance().getConfig().getString("admin.prefix");
+			} else if(target.startsWith(KitsuneChat.getInstance().getConfig().getString("staff.prefix"))) {
+				return KitsuneChat.getInstance().getConfig().getString("staff.prefix");
+			} else if(target.startsWith(KitsuneChat.getInstance().getConfig().getString("world.prefix"))) {
+				return KitsuneChat.getInstance().getConfig().getString("world.prefix");
+			} else if(target.startsWith(KitsuneChat.getInstance().getConfig().getString("party.prefix"))) {
+				return KitsuneChat.getInstance().getConfig().getString("party.prefix");
+			} else if(target.startsWith(KitsuneChat.getInstance().getConfig().getString("local.prefix"))) {
+				return KitsuneChat.getInstance().getConfig().getString("local.prefix");
 			} else {
-				return plugin.getConfig().getString("local.prefix");
+				return KitsuneChat.getInstance().getConfig().getString("local.prefix");
 			}
 		}
 		

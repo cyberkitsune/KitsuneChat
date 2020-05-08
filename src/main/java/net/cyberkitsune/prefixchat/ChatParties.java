@@ -11,9 +11,15 @@ import org.bukkit.entity.Player;
 
 public class ChatParties {
 	
-	private KitsuneChat plugin;
-	public ChatParties(KitsuneChat plugin) {
-		this.plugin = plugin;
+	private static ChatParties instance;
+	public ChatParties() {
+	}
+
+	public static ChatParties getInstance() {
+		if (instance == null)
+			instance = new ChatParties();
+
+		return instance;
 	}
 
 	public HashMap<Player, String> partyData = new HashMap<Player, String>();
@@ -56,7 +62,7 @@ public class ChatParties {
 			target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] "+channelPeople.size()+((channelPeople.size() == 1) ? " person " : " people ")+"in the party.");
 			target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] They are: "+memberList+".");
 		}
-		plugin.dataFile.setUserParty(target, name);
+		KitsuneChatUserData.getInstance().setUserParty(target, name);
 		
 	}
 	
@@ -83,12 +89,12 @@ public class ChatParties {
 		String party = getPartyName(target);
 		
 		if(disconnect) {
-			plugin.dataFile.setUserParty(target, getPartyName(target));
+			KitsuneChatUserData.getInstance().setUserParty(target, getPartyName(target));
 			partyData.remove(target);
 			
 		} else {
 			partyData.remove(target);
-			plugin.dataFile.setUserParty(target, "");
+			KitsuneChatUserData.getInstance().setUserParty(target, "");
 		}
 		notifyParty(party, ChatColor.YELLOW+"[KitsuneChat] "+target.getDisplayName()+" has left "+party+".");
 	}
