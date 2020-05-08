@@ -65,10 +65,6 @@ public class KitsuneChatUtils {
 		return colorized;
 	}
 	
-	public String stripPrefixes(KitsuneChannel channel, String target) {
-		return (String) target.replaceFirst("\\\\"+channel.getPrefix(), "");
-	}
-	
 	public String formatChatPrefixes(KitsuneChannel channel, String target, String formatString, AsyncPlayerChatEvent context) {
 		String output;
 		if(KitsuneChat.getInstance().vaultEnabled) {

@@ -22,14 +22,13 @@ public class LocalChannel implements KitsuneChannel {
 
     @Override
     public void postMessage(String message, AsyncPlayerChatEvent evt) {
-        Set<Player> sentPlayers = KitsuneChatUtils.getInstance().getNearbyPlayers(KitsuneChat.getInstance().getConfig().getInt("channel.local.radius"), evt.getPlayer(), evt);
-        if (sentPlayers.size() <= 1 && KitsuneChat.getInstance().getConfig().getBoolean("channels.local.warnifalone"))
+        if (getRecipients(message, evt).size() <= 1 && KitsuneChat.getInstance().getConfig().getBoolean("channels.local.warnifalone"))
         {
             evt.getPlayer().sendMessage(ChatColor.GRAY+"(Nobody can hear you, try talking in a different channel. Use /kc ? for help.)");
         }
         for(Player p : KitsuneChat.getInstance().getServer().getOnlinePlayers())
         {
-            if (p.hasPermission("kitsunechat.ignoreradius") && !sentPlayers.contains(p))
+            if (p.hasPermission("kitsunechat.ignoreradius") && !getRecipients(message, evt).contains(p))
                 p.sendMessage(message);
         }
     }
