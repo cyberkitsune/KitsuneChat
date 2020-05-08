@@ -33,4 +33,9 @@ public class AdminChannel implements KitsuneChannel {
     public boolean willCancel() {
         return true;
     }
+
+    @Override
+    public boolean hasPermission(Player p) {
+        return p.hasPermission("kitsunechat.adminchat");
+    }
 }

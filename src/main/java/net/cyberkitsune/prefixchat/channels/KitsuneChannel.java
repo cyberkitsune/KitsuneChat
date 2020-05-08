@@ -27,7 +27,7 @@ public interface KitsuneChannel {
     boolean willCancel();
     default boolean onMessage(String message, AsyncPlayerChatEvent context)
     {
-        boolean hasPerms = !(context.getPlayer().hasPermission("kitsunechat.no." + getChannelName()));
+        boolean hasPerms = hasPermission(context.getPlayer());
         if (!hasPerms)
         {
             // Step 1, see if the user was trying to talk here by default, move em.
@@ -49,9 +49,17 @@ public interface KitsuneChannel {
     {
         return KitsuneChat.getInstance().getConfig().getString(String.format("channels.%s.prefix", getChannelName()));
     }
+
+    /***
+     * Formats a string for a given chat channel. String should not contain any prefixes, but can contain placeholders.
+     * @param message unformatted string to format.
+     * @param context chat event used for context
+     * @param emote true if the message is a "/me" style message
+     * @return formatted message, ready to send to players
+     */
     default String formatMessage(String message, AsyncPlayerChatEvent context, boolean emote)
     {
-        String formatted = "";
+        String formatted;
         if(emote)
         {
             formatted = KitsuneChatUtils.getInstance().formatChatPrefixes(message, KitsuneChat.getInstance().getConfig()
@@ -63,6 +71,16 @@ public interface KitsuneChannel {
                     .getString("channels."+getChannelName()+".sayformat"), context);
         }
         return formatted;
+    }
+
+    /***
+     * Checks weather or not a player has permission to talk in this channel.
+     * @param p Player to check perms on
+     * @return true if a player can use this channel
+     */
+    default boolean hasPermission(Player p)
+    {
+        return  !(p.hasPermission("kitsunechat.no." + getChannelName()));
     }
 
 }
