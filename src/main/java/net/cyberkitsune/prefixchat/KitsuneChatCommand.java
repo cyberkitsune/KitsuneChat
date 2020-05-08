@@ -82,7 +82,7 @@ public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 						} else {
 							for (KitsuneChannel channel : KitsuneChat.getInstance().channels.values()) {
 								if (args[0].equalsIgnoreCase(channel.getPrefix())) {
-									if (sender.hasPermission("kitsunechat.no." + channel.getChannelName()))
+									if (!channel.hasPermission((Player)sender))
 									{
 										sender.sendMessage(ChatColor.RED + "[KitsuneChat] You do not have permission to use the " + channel.getChannelName() + " channel.");
 										return true;
@@ -112,7 +112,8 @@ public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc party leave - Leaves your current party. ");
 		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc party invite <player> - Invites <player> to your current party.");
 		for(KitsuneChannel channel : KitsuneChat.getInstance().channels.values()) {
-			target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc "+channel.getPrefix()+" - Change default channel to "+channel.getChannelName()+".");
+			if (channel.hasPermission(target))
+				target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc "+channel.getPrefix()+" - Change default channel to "+channel.getChannelName()+".");
 		}
 	}
 
