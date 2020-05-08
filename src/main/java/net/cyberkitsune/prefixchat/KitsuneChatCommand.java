@@ -127,7 +127,12 @@ public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 		{
 			possibleCompletions = new ArrayList<>(Arrays.asList("join", "list", "leave", "invite"));
 			if(strings.length > 1)
+			{
 				checkIndex = 1;
+				if(strings[1].equals("join"))
+					return Collections.singletonList("[<party_name>]");
+			}
+
 		} else if(strings.length > 1)
 		{
 			possibleCompletions = new ArrayList<>();
