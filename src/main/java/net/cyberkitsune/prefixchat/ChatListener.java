@@ -32,12 +32,7 @@ public class ChatListener implements Listener {
 
 		KitsuneChat.getInstance().getServer().getPluginManager().callEvent(newevt);
 
-		//If they aren't in non-pub, don't let other nasty plugins get a hold of the message.
-		if (!KitsuneChatUserData.getInstance().getUserChannel(evt.getPlayer()).equals(KitsuneChat.getInstance().getConfig().getString("global.prefix"))) {
-			evt.setCancelled(true);
-			evt.setMessage("/kc null"); // Dummy command to make COMPLETELY SURE that the message doesn't go anywhere.
-
-		}
+		evt.setCancelled(true);
 	}
 
 	// LOW priority makes this event fire before NORMAL priority, so that we can properly rewrite event messages..
@@ -80,7 +75,7 @@ public class ChatListener implements Listener {
 		// Now, check if we're an emote message. If yes, flag and strip. (Should this logic go here?)
 		if (message.startsWith(Objects.requireNonNull(KitsuneChat.getInstance().getConfig().getString("emote.prefix")))) {
 			emote = true;
-			message = message.replaceFirst("\\\\" + KitsuneChat.getInstance().getConfig().getString("emote.prefix"), "");
+			message = message.replaceFirst(String.format("\\%s", KitsuneChat.getInstance().getConfig().getString("emote.prefix")), "");
 		}
 
 

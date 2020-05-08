@@ -16,8 +16,7 @@ import java.util.List;
 
 public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 	
-	public KitsuneChatCommand()
-	{}
+	public KitsuneChatCommand() {}
 
 	public boolean onCommand(CommandSender sender, Command command,
 			String label, String[] args) {
