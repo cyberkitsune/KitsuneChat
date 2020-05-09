@@ -48,6 +48,7 @@ public class MessageTagger {
             String[] holders = placeholders.split(",");
             for (String p_holder : holders)
             {
+                KitsuneChat.getInstance().mcLog.info(String.format("[KitsuneChat] Registering %s to handle placeholder {%s}", tagClass.getSimpleName(), p_holder));
                 taggers.put(p_holder, tagClass);
             }
 
@@ -69,9 +70,10 @@ public class MessageTagger {
                 if (taggers.containsKey(just_placeholder))
                 {
                     Class<? extends ChatTag> tagClass = taggers.get(just_placeholder);
+                    KitsuneChat.getInstance().mcLog.info(String.format("[KitsuneChat] {%s} being handled by %s", just_placeholder, tagClass.getSimpleName()));
                     try {
                         ChatTag tagFormatter = tagClass.getDeclaredConstructor().newInstance();
-                        formatted_message.add(tagFormatter.formatPlaceholder(message, channel, context));
+                        formatted_message.add(tagFormatter.getReplacement(message, channel, context));
                     } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                         KitsuneChat.getInstance().mcLog.warning(String.format("Unable to create ChatTag %s", tagClass.getSimpleName()));
                         e.printStackTrace();
@@ -83,7 +85,7 @@ public class MessageTagger {
                 formatted_message.add(part);
             }
         }
-        return String.join("", formatted_message);
+        return KitsuneChatUtils.getInstance().colorizeString(String.join("", formatted_message));
     }
 
     public static MessageTagger getInstance()

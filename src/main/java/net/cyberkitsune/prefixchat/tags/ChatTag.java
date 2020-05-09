@@ -13,10 +13,6 @@ public interface ChatTag {
     };
     String getPlaceholder();
     String getReplacement(String message, KitsuneChannel channel, AsyncPlayerChatEvent context);
-    default String formatPlaceholder(String message, KitsuneChannel channel, AsyncPlayerChatEvent context)
-    {
-        return message.replace("{" + getPlaceholder() + "}", getReplacement(message, channel, context));
-    }
     default TagPriority getPriority()
     {
         return TagPriority.NORMAL;
