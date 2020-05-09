@@ -87,7 +87,8 @@ public class KitsuneChat extends JavaPlugin {
 		// Listeners
 		getServer().getPluginManager().registerEvents(new ChatListener(), this);
 		getServer().getPluginManager().registerEvents(new ConnectHandler(), this);
-		getServer().getPluginManager().registerEvents(new JoinQuitListener(), this);
+		if (getConfig().getBoolean("modify-join-leave"))
+			getServer().getPluginManager().registerEvents(new JoinQuitListener(), this);
 
 		// Bungee
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "bungee:kitsunechat");

@@ -40,3 +40,4 @@ emote:
 skipvault: false
 bungee-tag: "default"
 bungee-receive: false
+modify-join-leave: true
