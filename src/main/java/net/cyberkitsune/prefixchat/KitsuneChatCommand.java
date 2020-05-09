@@ -86,17 +86,17 @@ public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 						} else if (args[0].equalsIgnoreCase("null")) { // Dummy command for the /me full stop.
 							return true;
 						} else if (args[0].equalsIgnoreCase("reload")) {
-							if (sender.hasPermission("kitsunechat.reload")) {
-								KitsuneChat.getInstance().reload();
-								return true;
-							}
-							else
+								if (sender.hasPermission("kitsunechat.reload"))
+								{
+									KitsuneChat.getInstance().reload();
+								}
+								else
 								{
 									sender.sendMessage(ChatColor.RED+"[KitsuneChat] You do not have permission to reload.");
-									return true;
-							}
+								}
+						return true;
 
-						} else {
+					} else {
 							for (KitsuneChannel channel : KitsuneChat.getInstance().channels.values()) {
 								if (args[0].equalsIgnoreCase(channel.getPrefix())) {
 									if (!channel.hasPermission((Player)sender))
