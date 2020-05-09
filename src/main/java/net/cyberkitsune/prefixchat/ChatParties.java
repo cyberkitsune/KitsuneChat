@@ -34,34 +34,15 @@ public class ChatParties {
 		}
 		if(!partyData.containsKey(target))
 		{
-			
 			notifyParty(name, ChatColor.YELLOW+"[KitsuneChat] "+target.getDisplayName()+" has joined the party "+name);
-			partyData.put(target, name);
-			Set<Player> channelPeople = getKeysByValue(partyData, name);
-			String memberList = "";
-			for(Player plr : channelPeople)
-			{
-				memberList = memberList + plr.getDisplayName()+", ";
-			}
-			memberList = memberList.substring(0, memberList.length() - 2)+".";
-			target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] "+channelPeople.size()+((channelPeople.size() == 1) ? " person " : " people ")+"in the party.");
-			target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] They are: "+memberList);
 		} else {
 			target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] Changing party from "+partyData.get(target)+" to "+name);
 			notifyParty(partyData.get(target), ChatColor.YELLOW+"[KitsuneChat] "+target.getDisplayName()+" has left "+partyData.get(target));
 			notifyParty(name, ChatColor.YELLOW+"[KitsuneChat] "+target.getDisplayName()+" has joined "+name);
 			partyData.remove(target);
-			partyData.put(target, name);
-			Set<Player> channelPeople = getKeysByValue(partyData, name);
-			String memberList = "";
-			for(Player plr : channelPeople)
-			{
-				memberList = memberList + plr.getDisplayName()+", ";
-			}
-			memberList = memberList.substring(0, memberList.length() - 2)+".";
-			target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] "+channelPeople.size()+((channelPeople.size() == 1) ? " person " : " people ")+"in the party.");
-			target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] They are: "+memberList+".");
+
 		}
+		partyData.put(target, name);
 		KitsuneChatUserData.getInstance().setUserParty(target, name);
 		
 	}
