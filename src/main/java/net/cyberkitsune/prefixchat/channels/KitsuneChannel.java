@@ -3,12 +3,14 @@ package net.cyberkitsune.prefixchat.channels;
 import net.cyberkitsune.prefixchat.KitsuneChat;
 import net.cyberkitsune.prefixchat.KitsuneChatUserData;
 import net.cyberkitsune.prefixchat.KitsuneChatUtils;
+import net.cyberkitsune.prefixchat.MessageTagger;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 //if (evt.getMessage().startsWith(plugin.getConfig().getString("channels.global.prefix"))) {
 //			//plugin.mcLog.info(plugin.util.formatChatPrefixes(message, plugin.getConfig().getString(emote ? "global.meformat" : "global.sayformat"), evt));
@@ -62,13 +64,13 @@ public interface KitsuneChannel {
         String formatted;
         if(emote)
         {
-            formatted = KitsuneChatUtils.getInstance().formatChatPrefixes(this, message, KitsuneChat.getInstance().getConfig()
-                    .getString("channels."+getChannelName()+".meformat"), context);
+            formatted = MessageTagger.getInstance().formatMessage(Objects.requireNonNull(KitsuneChat.getInstance().getConfig()
+                    .getString("channels." + getChannelName() + ".meformat")), message, this, context);
         }
         else
         {
-            formatted = KitsuneChatUtils.getInstance().formatChatPrefixes(this, message, KitsuneChat.getInstance().getConfig()
-                    .getString("channels."+getChannelName()+".sayformat"), context);
+            formatted = MessageTagger.getInstance().formatMessage(Objects.requireNonNull(KitsuneChat.getInstance().getConfig()
+                    .getString("channels." + getChannelName() + ".sayformat")), message, this, context);
         }
         return formatted;
     }

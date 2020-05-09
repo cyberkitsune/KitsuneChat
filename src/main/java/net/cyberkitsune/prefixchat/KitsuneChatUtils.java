@@ -64,40 +64,7 @@ public class KitsuneChatUtils {
 		
 		return colorized;
 	}
-	
-	public String formatChatPrefixes(KitsuneChannel channel, String target, String formatString, AsyncPlayerChatEvent context) {
-		String output;
-		if(KitsuneChat.getInstance().vaultEnabled) {
-			output = formatString.replace("{sender}",
-					KitsuneChat.getInstance().vaultChat.getPlayerPrefix(
-							context.getPlayer()) + context.getPlayer().getDisplayName() +
-							KitsuneChat.getInstance().vaultChat.getPlayerSuffix(context.getPlayer()));
-		} else {
-			output = formatString.replace("{sender}", context.getPlayer().getDisplayName());
-		}
-		if(KitsuneChat.getInstance().multiVerse) {
-			MultiverseCore mvPlug = KitsuneChat.getInstance().multiversePlugin;
-			MultiverseWorld mvWorld = mvPlug.getMVWorldManager().getMVWorld(context.getPlayer().getWorld().getName());
-			if(mvWorld == null) {
-				output = output.replace("{world}", context.getPlayer().getWorld().getName());	
-			} else {
-				output = output.replace("{world}", mvWorld.getColoredWorldString());
-			}
-		} else {
-			output = output.replace("{world}", context.getPlayer().getWorld().getName());	
-		}
-		output = output.replace("{channel}", channel.getChannelName());
-		output = output.replace("{prefix}", channel.getPrefix());
-		output = output.replace("{party}", (ChatParties.getInstance().isInAParty(context.getPlayer()) ?
-				ChatParties.getInstance().getPartyName(context.getPlayer()) : ""));
-		if(context.isCancelled()) {
-			output = output.replace("{message}", target);
-		} else {
-			output = output.replace("{message}", "%2\\$s");
-		}
-		output = colorizeString(output);
-		return output;
-	}
+
     public void chatWatcher(AsyncPlayerChatEvent event) {
 		KitsuneChat.getInstance().mcLog.info(
 				"KitsuneChat "+
