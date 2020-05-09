@@ -161,6 +161,14 @@ public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 
 			return completions;
 		}
+		else if(command.getName().equalsIgnoreCase("me"))
+		{
+			return Collections.singletonList("");
+		}
+		else if(command.getName().equalsIgnoreCase("r"))
+		{
+			return Collections.singletonList("<reply>");
+		}
 
 		return null;
 	}
