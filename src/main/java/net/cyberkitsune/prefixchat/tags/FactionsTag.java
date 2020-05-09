@@ -27,7 +27,7 @@ public class FactionsTag implements ChatTag {
                     }
                 case "faction-relationship":
                 default:
-                    return "";
+                    return ""; // TODO ??? But how
             }
         }
         else
