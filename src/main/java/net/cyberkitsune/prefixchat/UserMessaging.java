@@ -187,7 +187,7 @@ public class UserMessaging implements CommandExecutor {
 					sender.sendMessage(ChatColor.RED+"[KitsuneChat] I can't find "+args[0]+"! D:");
 					return false;
 				} else {
-					otherPlayer = target.getDisplayName(); // Get proper-cased name
+					otherPlayer = target.getName(); // Get proper-cased name
 				}
 			}
 						
