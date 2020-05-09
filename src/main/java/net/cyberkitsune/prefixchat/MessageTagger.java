@@ -57,7 +57,7 @@ public class MessageTagger {
     public String formatMessage(String format, String message, KitsuneChannel channel, AsyncPlayerChatEvent context)
     {
         // Step 1 -- Split format into tag array
-        List<String> parts = Arrays.asList(format.split("((?<=})|(?=\\{))"));
+        String[] parts = format.split("((?<=})|(?=\\{))");
 
         ArrayList<String> formatted_message = new ArrayList<>();
         for(String part : parts)
