@@ -60,6 +60,13 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>Factions</groupId>
+            <artifactId>Factions</artifactId>
+            <version>3.3.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/3rdparty/Factions.jar</systemPath>
+        </dependency>
+        <dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
             <version>0.9.12</version>
