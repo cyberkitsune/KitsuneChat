@@ -13,7 +13,7 @@ public class WorldTag implements ChatTag{
     }
 
     @Override
-    public String getReplacement(String message, KitsuneChannel channel, AsyncPlayerChatEvent context) {
+    public String getReplacement(String message, KitsuneChannel channel, AsyncPlayerChatEvent context, String placeholder) {
         if (KitsuneChat.getInstance().multiVerse)
         {
             MultiverseCore mvPlug = KitsuneChat.getInstance().multiversePlugin;

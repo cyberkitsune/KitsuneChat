@@ -11,7 +11,7 @@ public class PartyTag implements ChatTag {
     }
 
     @Override
-    public String getReplacement(String message, KitsuneChannel channel, AsyncPlayerChatEvent context) {
+    public String getReplacement(String message, KitsuneChannel channel, AsyncPlayerChatEvent context, String placeholder) {
         return ChatParties.getInstance().isInAParty(context.getPlayer()) ?
                 ChatParties.getInstance().getPartyName(context.getPlayer()) : "";
     }

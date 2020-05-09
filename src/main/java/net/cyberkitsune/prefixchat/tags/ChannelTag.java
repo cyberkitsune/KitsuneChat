@@ -10,7 +10,7 @@ public class ChannelTag implements ChatTag {
     }
 
     @Override
-    public String getReplacement(String message, KitsuneChannel channel, AsyncPlayerChatEvent context) {
+    public String getReplacement(String message, KitsuneChannel channel, AsyncPlayerChatEvent context, String placeholder) {
         return channel.getChannelName();
     }
 }

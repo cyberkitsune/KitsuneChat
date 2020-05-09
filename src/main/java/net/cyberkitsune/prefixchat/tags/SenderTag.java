@@ -11,7 +11,7 @@ public class SenderTag implements ChatTag {
     }
 
     @Override
-    public String getReplacement(String message, KitsuneChannel channel, AsyncPlayerChatEvent context) {
+    public String getReplacement(String message, KitsuneChannel channel, AsyncPlayerChatEvent context, String placeholder) {
         if (KitsuneChat.getInstance().vaultEnabled)
         {
             return KitsuneChat.getInstance().vaultChat.getPlayerPrefix(context.getPlayer()) +

@@ -1,18 +1,14 @@
 package net.cyberkitsune.prefixchat;
 
 
-import com.onarandombox.MultiverseCore.listeners.AsyncChatEvent;
 import net.cyberkitsune.prefixchat.channels.KitsuneChannel;
 import net.cyberkitsune.prefixchat.tags.ChatTag;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.reflections.Reflections;
 
-import java.io.Console;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import static java.util.regex.Pattern.compile;
@@ -71,7 +67,7 @@ public class MessageTagger {
                     Class<? extends ChatTag> tagClass = taggers.get(just_placeholder);
                     try {
                         ChatTag tagFormatter = tagClass.getDeclaredConstructor().newInstance();
-                        formatted_message.add(tagFormatter.getReplacement(message, channel, context));
+                        formatted_message.add(tagFormatter.getReplacement(message, channel, context, just_placeholder));
                     } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                         KitsuneChat.getInstance().mcLog.warning(String.format("Unable to create ChatTag %s", tagClass.getSimpleName()));
                         e.printStackTrace();

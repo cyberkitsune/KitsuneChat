@@ -11,7 +11,7 @@ public class ServerTag implements ChatTag {
     }
 
     @Override
-    public String getReplacement(String message, KitsuneChannel channel, AsyncPlayerChatEvent context) {
+    public String getReplacement(String message, KitsuneChannel channel, AsyncPlayerChatEvent context, String placeholder) {
         return KitsuneChat.getInstance().getConfig().getString("bungee-tag");
     }
 }
