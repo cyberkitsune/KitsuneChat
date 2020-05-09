@@ -48,9 +48,9 @@ public class ChatParties {
 			target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] They are: "+memberList);
 		} else {
 			target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] Changing party from "+partyData.get(target)+" to "+name);
-			partyData.remove(target);
 			notifyParty(partyData.get(target), ChatColor.YELLOW+"[KitsuneChat] "+target.getDisplayName()+" has left "+partyData.get(target));
 			notifyParty(name, ChatColor.YELLOW+"[KitsuneChat] "+target.getDisplayName()+" has joined "+name);
+			partyData.remove(target);
 			partyData.put(target, name);
 			Set<Player> channelPeople = getKeysByValue(partyData, name);
 			String memberList = "";

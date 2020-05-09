@@ -1,6 +1,10 @@
 package net.cyberkitsune.prefixchat;
 
 import net.cyberkitsune.prefixchat.channels.KitsuneChannel;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -48,13 +52,19 @@ public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 									}
 									ChatParties.getInstance().changeParty((Player) sender, args[2].toLowerCase());
 									KitsuneChatUserData.getInstance().setUserChannel((Player) sender, KitsuneChat.getInstance().getConfig().getString("channels.party.prefix"));
-									sender.sendMessage(ChatColor.YELLOW + "[KitsuneChat] You are now talking in party chat.");
+									sender.sendMessage(ChatColor.YELLOW + "[KitsuneChat] You have joined the party " +  args[2].toLowerCase() +"!");
 								} else if (args[1].equalsIgnoreCase("invite")) {
 									if (args.length > 2) {
 										if (ChatParties.getInstance().isInAParty((Player) sender)) {
 											Player target = KitsuneChat.getInstance().getServer().getPlayer(args[2]);
 											if (target != null) {
-												target.sendMessage(ChatColor.GREEN + "[KitsuneChat] " + sender.getName() + " has invited you to a party! Type /kc p " + ChatParties.getInstance().getPartyName((Player) sender) + " to join!");
+												ComponentBuilder cb = new ComponentBuilder("[KitsuneChat] ").
+														color(net.md_5.bungee.api.ChatColor.YELLOW).append(sender.getName())
+														.color(net.md_5.bungee.api.ChatColor.YELLOW).append(" has invited you to a party! Click here to join: ")
+														.color(net.md_5.bungee.api.ChatColor.YELLOW).append("[ACCEPT]")
+														.color(net.md_5.bungee.api.ChatColor.GREEN).bold(true).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/kc party join "+ ChatParties.getInstance().getPartyName((Player) sender)))
+														.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Click to join "+ChatParties.getInstance().getPartyName((Player) sender)).create()));
+												target.spigot().sendMessage(cb.create());
 												ChatParties.getInstance().notifyParty(ChatParties.getInstance().getPartyName((Player) sender), ChatColor.GREEN + "[KitsuneChat] " + sender.getName() + " invited " + target.getDisplayName() + ChatColor.GREEN + " to the party.");
 											} else {
 												sender.sendMessage(ChatColor.RED + "[KitsuneChat] That player does not exist!");
