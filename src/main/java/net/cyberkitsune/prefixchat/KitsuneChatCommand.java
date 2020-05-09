@@ -85,6 +85,17 @@ public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 							printHelp((Player) sender);
 						} else if (args[0].equalsIgnoreCase("null")) { // Dummy command for the /me full stop.
 							return true;
+						} else if (args[0].equalsIgnoreCase("reload")) {
+							if (sender.hasPermission("kitsunechat.reload")) {
+								KitsuneChat.getInstance().reload();
+								return true;
+							}
+							else
+								{
+									sender.sendMessage(ChatColor.RED+"[KitsuneChat] You do not have permission to reload.");
+									return true;
+							}
+
 						} else {
 							for (KitsuneChannel channel : KitsuneChat.getInstance().channels.values()) {
 								if (args[0].equalsIgnoreCase(channel.getPrefix())) {
@@ -110,9 +121,8 @@ public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 		}
 	
 	public void printHelp(Player target) {
-		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] KitsuneChat - Channeled Chat System Version "+KitsuneChat.getInstance().getDescription().getVersion()+" by CyberKitsune.");
-		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] KitsuneChat Commands: ");
-		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc ? - This command. ");
+		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] KitsuneChat - Channeled Chat System v"+KitsuneChat.getInstance().getDescription().getVersion()+" by CyberKitsune.");
+		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc ? - Help, this command. ");
 		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc party join <name> - Join a party with name <name>. ");
 		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc party list - Lists who is in your party.");
 		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc party leave - Leaves your current party. ");
@@ -121,6 +131,8 @@ public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 			if (channel.hasPermission(target))
 				target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc "+channel.getPrefix()+" - Change default channel to "+channel.getChannelName()+".");
 		}
+		if (target.hasPermission("kitsunechat.reload"))
+			target.sendMessage("[KitsuneChat] /kc reload - Reload KitsuneChat");
 	}
 
 	@Override
@@ -135,6 +147,8 @@ public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 			if(strings[0].equals("party"))
 			{
 				possibleCompletions = new ArrayList<>(Arrays.asList("join", "list", "leave", "invite"));
+				if(commandSender.hasPermission("kitsunechat.reload"))
+					possibleCompletions.add("reload");
 				if(strings.length > 1)
 				{
 					checkIndex = 1;
