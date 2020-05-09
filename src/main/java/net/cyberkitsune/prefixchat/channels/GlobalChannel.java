@@ -6,6 +6,9 @@ import net.cyberkitsune.prefixchat.KitsuneChat;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
@@ -33,12 +36,29 @@ public class GlobalChannel implements KitsuneChannel {
         // It's bungee time
         if(KitsuneChat.getInstance().getConfig().getBoolean("channels.global.bungee-send"))
         {
-            ByteArrayDataOutput out = ByteStreams.newDataOutput();
-            out.writeUTF(KitsuneChat.getInstance().getConfig().getString("bungee-id"));
-            out.writeUTF(message);
+            String sender_server;
+            sender_server = KitsuneChat.getInstance().getConfig().getString("bungee-tag");
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            DataOutputStream out = new DataOutputStream(stream);
+            if (sender_server == null)
+            {
+                KitsuneChat.getInstance().mcLog.warning("[KitsuneChat] Server tag not set! Not sending bungee message...");
+                return;
+            }
+
+            try {
+                out.writeUTF(sender_server);
+                out.writeUTF(message);
+            }
+            catch (IOException e)
+            {
+                KitsuneChat.getInstance().mcLog.warning("[KitsuneChat] Error preparing bungee message!");
+                e.printStackTrace();
+                return;
+            }
             try
             {
-                context.getPlayer().sendPluginMessage(KitsuneChat.getInstance(), "bungee:kitsunechat", out.toByteArray());
+                context.getPlayer().sendPluginMessage(KitsuneChat.getInstance(), "bungee:kitsunechat", stream.toByteArray());
             }
             catch (Exception e)
             {
