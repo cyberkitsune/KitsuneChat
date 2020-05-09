@@ -87,16 +87,16 @@ public class ChatParties {
 	
 	public void leaveParty(Player target, boolean disconnect) {
 		String party = getPartyName(target);
-		
+
 		if(disconnect) {
 			KitsuneChatUserData.getInstance().setUserParty(target, getPartyName(target));
 			partyData.remove(target);
 			
 		} else {
+			notifyParty(party, ChatColor.YELLOW+"[KitsuneChat] "+target.getDisplayName()+" has left "+party+".");
 			partyData.remove(target);
 			KitsuneChatUserData.getInstance().setUserParty(target, "");
 		}
-		notifyParty(party, ChatColor.YELLOW+"[KitsuneChat] "+target.getDisplayName()+" has left "+party+".");
 	}
 	
 	public static <T, E> Set<T> getKeysByValue(Map<T, E> map, E value) {
