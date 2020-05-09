@@ -48,7 +48,7 @@ permissions:
         default: false
      kitsunechat.nick:
         description: Allows you to change your nickname.
-        default: false
+        default: op
      kitsunechat.reload:
         description: Allows for a reload of the plugin
         default: op
