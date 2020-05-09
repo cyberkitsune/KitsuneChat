@@ -1,37 +1,42 @@
-global:
-  prefix: '!'
-  sayformat: '&b[{world}]&f {sender}:&f {message}'
-  meformat: '&b[{world}] &d*&f {sender} {message}'
-world:
-  prefix: '#'
-  sayformat: '&a[{prefix}]&f {sender}:&f {message}'
-  meformat: '&a[{prefix}] &d*&f {sender} {message}'
-  enabled: true
-admin:
-  prefix: '@'
-  sayformat: '&4[{prefix}]&f {sender}:&f {message}'
-  meformat: '&4[{prefix}] &d*&f {sender} {message}'
-  enabled: true
-staff:
-  prefix: '^'
-  sayformat: '&5[{prefix}]&f {sender}:&f {message}'
-  meformat: '&5[{prefix}] &d*&f {sender} {message}'
-  enabled: true
-party:
-  prefix: '$'
-  cost: 0
-  sayformat: '&d[{party}]&f {sender}:&f {message}'
-  meformat: '&d[{party}] *&f {sender} {message}'
-  enabled: true
-local:
-  prefix: '%'
-  radius: 64
-  sayformat: '<{sender}&r> {message}'
-  meformat: '&d*&f {sender} {message}'
-  warnifalone: true
-  enabled: true
-version: 1.6
+channels:
+  default: '!'
+  global:
+    prefix: '!'
+    sayformat: '&b[{world}]&f {sender}:&f {message}'
+    meformat: '&b[{world}] &d*&f {sender} {message}'
+    enabled: true
+    bungee-send: false
+  world:
+    prefix: '#'
+    sayformat: '&a[{prefix}]&f {sender}:&f {message}'
+    meformat: '&a[{prefix}] &d*&f {sender} {message}'
+    enabled: true
+  admin:
+    prefix: '@'
+    sayformat: '&4[{prefix}]&f {sender}:&f {message}'
+    meformat: '&4[{prefix}] &d*&f {sender} {message}'
+    enabled: true
+  staff:
+    prefix: '^'
+    sayformat: '&5[{prefix}]&f {sender}:&f {message}'
+    meformat: '&5[{prefix}] &d*&f {sender} {message}'
+    enabled: true
+  party:
+    prefix: '$'
+    cost: 0
+    sayformat: '&d[{party}]&f {sender}:&f {message}'
+    meformat: '&d[{party}] *&f {sender} {message}'
+    enabled: true
+  local:
+    prefix: '%'
+    radius: 64
+    sayformat: '<{sender}&r> {message}'
+    meformat: '&d*&f {sender} {message}'
+    warnifalone: true
+    enabled: true
+version: 2.0
 emote:
   prefix: '|'
-default: '!'
 skipvault: false
+bungee-tag: "default"
+bungee-receive: false

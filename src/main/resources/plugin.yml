@@ -1,5 +1,5 @@
 name: KitsuneChat
-version: 1.8.0
+version: 2.0.0-SNAPSHOT
 main: net.cyberkitsune.prefixchat.KitsuneChat
 api-version: "1.15"
 authors: [CyberKitsune, Alynna, Snooper]
@@ -23,21 +23,25 @@ permissions:
      kitsunechat.staffchat:
         description: Allows the use of staff chat.
         default: op
-     kitsunechat.nodefault.*:
+     kitsunechat.no.*:
         description: Deny ALL the chat!
         default: false
         children:
-           kitsunechat.nodefault.global: true
-           kitsunechat.nodefault.world: true
-           kitsunechat.nodefault.party: true
-     kitsunechat.nodefault.global:
+           kitsunechat.no.global: true
+           kitsunechat.no.world: true
+           kitsunechat.no.party: true
+           kitsunechat.no.local: true
+     kitsunechat.no.global:
         description: Denies use of using /kc to default to global chat.
         default: false
-     kitsunechat.nodefault.world:
+     kitsunechat.no.world:
         description: Denies use of using /kc to default to world chat.
         default: false
-     kitsunechat.nodefault.party:
+     kitsunechat.no.party:
         description: Denies use of using /kc to default to party chat.
+        default: false
+     kitsunechat.no.local:
+        description: Denies use of using local chat.
         default: false
      kitsunechat.ignoreradius:
         description: Allows the user to hear ALL local chat.

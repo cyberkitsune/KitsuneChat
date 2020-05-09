@@ -8,21 +8,28 @@ import org.bukkit.entity.Player;
 
 public class KitsuneChatUserData {
 
-	private KitsuneChat plugin;
 	private FileConfiguration userData = null;
 	private File dataFile;
-	
-	public KitsuneChatUserData(KitsuneChat plugin) {
-		this.plugin = plugin;
-		dataFile = new File(plugin.getDataFolder(), "users.yml");
+
+	private static KitsuneChatUserData instance = null;
+
+	public KitsuneChatUserData() {
+		dataFile = new File(KitsuneChat.getInstance().getDataFolder(), "users.yml");
 	}
-	
+
+	public static KitsuneChatUserData getInstance() {
+		if (instance == null)
+			instance = new KitsuneChatUserData();
+
+		return instance;
+	}
+
 	public void loadUserData() {
 		if(!dataFile.exists()) {
 			try {
 				dataFile.createNewFile();
 			} catch (Exception e) {
-				plugin.mcLog.severe("[KitsuneChat] Unable to create user data file!");
+				KitsuneChat.getInstance().mcLog.severe("[KitsuneChat] Unable to create user data file!");
 				e.printStackTrace();
 			}
 		} else {
@@ -51,7 +58,7 @@ public class KitsuneChatUserData {
 		try {
 			userData.save(dataFile);
 		} catch (Exception ex) {
-			plugin.mcLog.severe("[KitsuneChat] Unable to save user data!!");
+			KitsuneChat.getInstance().mcLog.severe("[KitsuneChat] Unable to save user data!!");
 			ex.printStackTrace();
 		}
 	}
@@ -61,7 +68,7 @@ public class KitsuneChatUserData {
 		try {
 			userData.save(dataFile);
 		} catch (Exception ex) {
-			plugin.mcLog.severe("[KitsuneChat] Unable to save user data!!");
+			KitsuneChat.getInstance().mcLog.severe("[KitsuneChat] Unable to save user data!!");
 			ex.printStackTrace();
 		}
 	}
@@ -76,7 +83,7 @@ public class KitsuneChatUserData {
 		try {
 			userData.save(dataFile);
 		} catch (Exception ex) {
-			plugin.mcLog.severe("[KitsuneChat] Unable to save user data file!");
+			KitsuneChat.getInstance().mcLog.severe("[KitsuneChat] Unable to save user data file!");
 		}
 	}
 	

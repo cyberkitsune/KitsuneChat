@@ -1,53 +1,68 @@
 package net.cyberkitsune.prefixchat;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
 import java.util.logging.Logger;
 
+import net.cyberkitsune.prefixchat.channels.KitsuneChannel;
 import net.milkbowl.vault.chat.Chat;
 
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.onarandombox.MultiverseCore.MultiverseCore;
+import org.reflections.Reflections;
 
-public class KitsuneChat extends JavaPlugin{
-	
+public class KitsuneChat extends JavaPlugin {
+
+	private static KitsuneChat instance = null;
+	public HashMap<String, KitsuneChannel> channels;
 	public Logger mcLog = Logger.getLogger("Minecraft");
-	public ChatParties party = new ChatParties(this);
-	public KitsuneChatCommand exec = new KitsuneChatCommand(this);
-	public UserMessaging msgExec = new UserMessaging(this);
+	public KitsuneChatCommand exec = new KitsuneChatCommand();
+	public UserMessaging msgExec = new UserMessaging();
 	public NicknameChanger nickExec = new NicknameChanger();
-	public KitsuneChatUserData dataFile;
-	public KitsuneChatUtils util = new KitsuneChatUtils(this);
 	public List<String> prefixes;
 	public Chat vaultChat = null;
 	public boolean vaultEnabled = false;
 	public boolean multiVerse = false;
 	public MultiverseCore multiversePlugin = null;
 	public Configuration config = null;
-	
+
+	public KitsuneChat()
+	{
+		if (instance == null)
+			instance = this;
+		channels = new HashMap<>();
+	}
+
+	public static KitsuneChat getInstance()
+	{
+		return instance;
+	}
+
 	@Override
 	public void onEnable() {
-		mcLog.info("[KitsuneChat] Enabling KitsuneChat version "+this.getDescription().getVersion()+"a");
+		mcLog.info("[KitsuneChat] Enabling KitsuneChat version "+ this.getDescription().getVersion());
 		if(!(new File(getDataFolder()+"/config.yml").exists())) {
 			mcLog.info("[KitsuneChat] KitsuneChat config does not exist! Creating default config...");
-			if(!(new File(getDataFolder().toString()).isDirectory())) {
-				new File(getDataFolder().toString()).mkdir();
+			if(!getDataFolder().exists()) {
+				boolean succ = getDataFolder().mkdir();
+				if(!succ)
+					mcLog.severe("[KitsuneChat] KitsuneChat could not make data folder...");
 			}
 			try {
-				new File(getDataFolder()+"/config.yml").createNewFile();
+				boolean succ = new File(getDataFolder()+"/config.yml").createNewFile();
+				if(!succ)
+					mcLog.warning("[KitsuneChat] Config file already exists...");
 			} catch (Exception e) {
 				mcLog.severe("[KitsuneChat] KitsuneChat could NOT create config file!!");
 				e.printStackTrace();
 			}
-			loadConfig();
-			setDefaults();
 		}
 		loadConfig();
 		setDefaults();
@@ -66,11 +81,25 @@ public class KitsuneChat extends JavaPlugin{
 			multiVerse = false;
 			mcLog.info("[KitsuneChat] Did not find Multiverse. Not enabling world aliases.");
 		}
-		this.getServer().getPluginManager().registerEvents(new ChatListener(this), this);
-		this.getServer().getPluginManager().registerEvents(new ConnectHandler(this), this);
-		this.getServer().getPluginManager().registerEvents(new JoinQuitListener(this), this);
-		getCommand("kc").setExecutor(exec);
-		getCommand("kc").setTabCompleter(exec);
+		// Channels
+		initChannels();
+
+		// Listeners
+		getServer().getPluginManager().registerEvents(new ChatListener(), this);
+		getServer().getPluginManager().registerEvents(new ConnectHandler(), this);
+		getServer().getPluginManager().registerEvents(new JoinQuitListener(), this);
+
+		// Bungee
+		getServer().getMessenger().registerOutgoingPluginChannel(this, "bungee:kitsunechat");
+
+		if(getConfig().getBoolean("bungee-receive"))
+		{
+			getServer().getMessenger().registerIncomingPluginChannel(this, "bungee:kitsunechat", new KitsuneBungeeListener());
+		}
+
+		// Commands
+		Objects.requireNonNull(getCommand("kc")).setExecutor(exec);
+		Objects.requireNonNull(getCommand("kc")).setTabCompleter(exec);
 		PluginCommand meCmd = getCommand("me");
 		PluginCommand msgCmd = getCommand("msg");
 		PluginCommand repCmd = getCommand("r");
@@ -96,22 +125,22 @@ public class KitsuneChat extends JavaPlugin{
 			nickCmd.setExecutor(nickExec);
 		}
 		
-		dataFile = new KitsuneChatUserData(this);
-		dataFile.loadUserData();
+
+		KitsuneChatUserData.getInstance().loadUserData();
 
 		//Put any online users back into their parties (in the event of a reload)
 		for(Player plr : getServer().getOnlinePlayers()) {
-			party.changeParty(plr, dataFile.getPartyDataForUser(plr));
+			ChatParties.getInstance().changeParty(plr, KitsuneChatUserData.getInstance().getPartyDataForUser(plr));
 		}
 		List<String> channelList = Arrays.asList("global" , "local" , "staff" , "admin" , "party" , "world");
-		prefixes = new ArrayList<String>();
+		prefixes = new ArrayList<>();
 		for(String channel : channelList) {
-			if(channel != "global") {
-				if(getConfig().getBoolean(channel+".enabled")) {
-					prefixes.add(getConfig().getString(channel+".prefix"));
+			if(!channel.equals("global")) {
+				if(getConfig().getBoolean("channels."+ channel + ".enabled")) {
+					prefixes.add(getConfig().getString("channels." + channel + ".prefix"));
 				}
 			} else {
-				prefixes.add(getConfig().getString(channel+".prefix"));
+				prefixes.add(getConfig().getString("channels." + channel + ".prefix"));
 			}
 		}
 	}
@@ -135,56 +164,7 @@ public class KitsuneChat extends JavaPlugin{
 	//TODO Cache config!
 	private void setDefaults() {
 		config = this.getConfig();
-		if(!config.isSet("global.prefix")) {
-			config.set("global.prefix", "!");
-			config.set("world.prefix", "#");
-			config.set("admin.prefix", "@");
-			config.set("staff.prefix", "^");
-			config.set("party.prefix", "$");
-			config.set("local.prefix", "%");
-			config.set("party.cost", 0);
-			config.set("local.radius", 128);
-			config.set("skipvault", false);
-		}
-		if(!config.isSet("global.sayformat")) {
-			config.set("global.sayformat", "[{world}] {sender}: {message}");
-			config.set("admin.sayformat", "[{prefix}] {sender}: {message}");
-			config.set("staff.sayformat", "[{prefix}] {sender}: {message}");
-			config.set("world.sayformat", "[{prefix}] {sender}: {message}");
-			config.set("party.sayformat", "[{party}] {sender}: {message}");
-			config.set("local.sayformat", "{sender}: {message}");
-		}
-		
-		if(!config.isSet("global.meformat")) {
-			config.set("global.meformat", "[{world}] * {sender} {message}");
-			config.set("admin.meformat", "[{prefix}] * {sender} {message}");
-			config.set("staff.meformat", "[{prefix}] * {sender} {message}");
-			config.set("world.meformat", "[{prefix}] * {sender} {message}");
-			config.set("party.meformat", "[{party}] * {sender} {message}");
-			config.set("local.meformat", "* {sender} {message}");
-		}
-		
-		if(!config.isSet("emote.prefix")) {
-			config.set("emote.prefix", "|");
-		}
-		
-		if(!config.isSet("default")) {
-			config.set("default", "%");
-		}
-		
-		if(!config.isSet("local.warnifalone")) {
-			config.set("local.warnifalone", true);
-		}
-		
-		if(!config.isSet("local.enabled")) {
-			config.set("local.enabled", true);
-			config.set("world.enabled", true);
-			config.set("staff.enabled", true);
-			config.set("admin.enabled", true);
-			config.set("party.enabled", true);
-		}
-		
-		config.set("version", this.getDescription().getVersion());
+		config.options().copyDefaults(true);
 		this.saveConfig();
 	}
 	
@@ -192,7 +172,7 @@ public class KitsuneChat extends JavaPlugin{
 		if(getServer().getPluginManager().getPlugin("Vault") == null || getConfig().getBoolean("skipvault")) {
 			return false;
 		}
-		RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.chat.Chat.class);
+		RegisteredServiceProvider<Chat> chatProvider = getServer().getServicesManager().getRegistration(Chat.class);
 		if(chatProvider != null) {
 			vaultChat = chatProvider.getProvider();
 		}
@@ -206,6 +186,41 @@ public class KitsuneChat extends JavaPlugin{
 			multiversePlugin = (MultiverseCore) getServer().getPluginManager().getPlugin("Multiverse-Core");
 			return true;
 		}
+	}
+
+	private void initChannels()
+	{
+		channels.clear();
+		// Is reflection the best place to go here?
+		Reflections reflections = new Reflections("net.cyberkitsune.prefixchat.channels");
+		for(Class<? extends KitsuneChannel> channel : reflections.getSubTypesOf(KitsuneChannel.class))
+		{
+			try {
+				KitsuneChannel ci = channel.getDeclaredConstructor().newInstance();
+				if(getConfig().getBoolean("channels."+ ci.getChannelName() + ".enabled")) {
+					channels.put(ci.getPrefix(), ci);
+				}
+			} catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+				e.printStackTrace();
+			}
+		}
+
+		if (channels.size() == 0)
+			mcLog.warning("[KitsuneChat] No channels were loaded, and nobody will be able to talk." +
+					" Do you have any enabled in config.yml?");
+		else
+		{
+			StringJoiner sd = new StringJoiner(", ");
+			for (KitsuneChannel c : channels.values())
+				sd.add(c.getChannelName());
+			mcLog.info("[KitsuneChat] Loaded and enabled channels: " + sd);
+		}
+
+		// Check default
+		String defaultChannel = getConfig().getString("channels.default");
+		if (!channels.containsKey(defaultChannel))
+			mcLog.warning("[KitsuneChat] Your set default channel does not exist or is not enabled. Make sure to " +
+					"fix this in the config.yml");
 	}
 
 }

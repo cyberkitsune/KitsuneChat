@@ -15,10 +15,8 @@ import com.google.common.base.Joiner;
 public class UserMessaging implements CommandExecutor {
 	
 	private Map<String, String> replies;
-	private KitsuneChat plugin;
 	
-	public UserMessaging(KitsuneChat plugin) {
-		this.plugin = plugin;
+	public UserMessaging() {
 		replies = new HashMap<String, String>();
 	}
 	
@@ -39,7 +37,7 @@ public class UserMessaging implements CommandExecutor {
 	 *  
 	 * @param player The player whom this message is displayed to.
 	 * @param otherPlayer The other player involved in this transaction.
-	 * @param action The action occurring.
+	 * @param message The action occurring.
 	 * @return A formatted action for use of being sent.
 	 */
 	private String formatAction(String player, String otherPlayer, String message) {
@@ -63,42 +61,42 @@ public class UserMessaging implements CommandExecutor {
 		if(!isAction) {
 			// Send message to player
 			if(toconsole) {
-				plugin.getServer().getConsoleSender().sendMessage(formatMessage(player, "Me", message));
+				KitsuneChat.getInstance().getServer().getConsoleSender().sendMessage(formatMessage(player, "Me", message));
 			} else {
 				target.sendMessage(formatMessage(player, "Me", message));
 			}
 			
 			// Display message to sender
 			if(fromconsole) {
-				plugin.getServer().getConsoleSender().sendMessage(formatMessage("Me", "CONSOLE", message));
+				KitsuneChat.getInstance().getServer().getConsoleSender().sendMessage(formatMessage("Me", "CONSOLE", message));
 			} else {
 				sender.sendMessage(formatMessage("Me", otherPlayer, message));
 			}
 			
 			// Log message
 			if(!toconsole && !fromconsole) {
-				plugin.mcLog.info(String.format("[%s -> %s] %s", player, otherPlayer, message));
+				KitsuneChat.getInstance().mcLog.info(String.format("[%s -> %s] %s", player, otherPlayer, message));
 			}
 			
 		// Send the action
 		} else {
 			// Send message to player
 			if(toconsole) {
-				plugin.getServer().getConsoleSender().sendMessage(formatAction(player, "Me", message));
+				KitsuneChat.getInstance().getServer().getConsoleSender().sendMessage(formatAction(player, "Me", message));
 			} else {
 				target.sendMessage(formatAction(player, "Me", message));
 			}
 			
 			// Display message to sender
 			if(fromconsole) {
-				plugin.getServer().getConsoleSender().sendMessage(formatAction("Me", otherPlayer, message));
+				KitsuneChat.getInstance().getServer().getConsoleSender().sendMessage(formatAction("Me", otherPlayer, message));
 			} else {
 				sender.sendMessage(formatAction("Me", otherPlayer, message));
 			}
 			
 			// Log message if not to and from console
 			if(!toconsole && !fromconsole) {
-				plugin.mcLog.info(String.format("[%s -> %s] * %s %s", player, otherPlayer, player, message));
+				KitsuneChat.getInstance().mcLog.info(String.format("[%s -> %s] * %s %s", player, otherPlayer, player, message));
 			}
 		}
 		
@@ -182,7 +180,7 @@ public class UserMessaging implements CommandExecutor {
 				
 			// Get the target if not console
 			} else {
-				target = plugin.getServer().getPlayer(otherPlayer);
+				target = KitsuneChat.getInstance().getServer().getPlayer(otherPlayer);
 				
 				// Does the player exist/online?
 				if((target == null || !target.isOnline())) {
@@ -194,7 +192,7 @@ public class UserMessaging implements CommandExecutor {
 			}
 						
 			// Is this message an action?
-			if(joined.startsWith(plugin.config.getString("emote.prefix"))) {
+			if(joined.startsWith(KitsuneChat.getInstance().config.getString("emote.prefix"))) {
 				joined = joined.substring(1);
 				isAction = true;
 			}
