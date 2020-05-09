@@ -31,7 +31,7 @@ public class KitsuneBungeeListener implements PluginMessageListener, Listener {
         }
 
         //TODO This maybe should be more versatile
-        if (!sender_server.equals(KitsuneChat.getInstance().getConfig().getString("bungee-id")))
+        if (!sender_server.equalsIgnoreCase(KitsuneChat.getInstance().getConfig().getString("bungee-tag")))
         {
             for(Player p : KitsuneChat.getInstance().getServer().getOnlinePlayers())
                 p.sendMessage(sender_message);
