@@ -35,6 +35,8 @@ public class KitsuneBungeeListener implements PluginMessageListener, Listener {
         {
             for(Player p : KitsuneChat.getInstance().getServer().getOnlinePlayers())
                 p.sendMessage(sender_message);
+            if(KitsuneChat.getInstance().getConfig().getBoolean("bungee-console-log"))
+                KitsuneChat.getInstance().mcLog.info(sender_message);
         }
     }
 }
