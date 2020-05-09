@@ -27,7 +27,7 @@ public class FactionsTag implements ChatTag {
                     }
                 case "faction-relationship":
                 default:
-                    return ""; // TODO ??? But how
+                    return ""; // TODO ??? But how? This would need to be per-user.
             }
         }
         else
