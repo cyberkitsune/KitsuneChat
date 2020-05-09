@@ -89,6 +89,7 @@ public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 								if (sender.hasPermission("kitsunechat.reload"))
 								{
 									KitsuneChat.getInstance().reload();
+									sender.sendMessage(ChatColor.GRAY+"[KitsuneChat] KitsuneChat reloaded! >w<");
 								}
 								else
 								{
@@ -140,6 +141,8 @@ public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 		if (command.getName().equalsIgnoreCase("kc"))
 		{
 			ArrayList<String> possibleCompletions = new ArrayList<>(Arrays.asList("?", "party"));
+			if(commandSender.hasPermission("kitsunechat.reload"))
+				possibleCompletions.add("reload");
 			possibleCompletions.addAll(KitsuneChat.getInstance().channels.keySet());
 
 			final List<String> completions = new ArrayList<>();
@@ -147,8 +150,6 @@ public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 			if(strings[0].equals("party"))
 			{
 				possibleCompletions = new ArrayList<>(Arrays.asList("join", "list", "leave", "invite"));
-				if(commandSender.hasPermission("kitsunechat.reload"))
-					possibleCompletions.add("reload");
 				if(strings.length > 1)
 				{
 					checkIndex = 1;
