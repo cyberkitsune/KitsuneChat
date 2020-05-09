@@ -37,3 +37,4 @@ version: 2.0
 emote:
   prefix: '|'
 skipvault: false
+bungee-tag: "default"
