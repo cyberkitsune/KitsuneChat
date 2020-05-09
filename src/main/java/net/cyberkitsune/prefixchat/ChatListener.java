@@ -105,6 +105,7 @@ public class ChatListener implements Listener {
 		}
 
 		if (target_channel.onMessage(message, evt)) {
+			String unformatted_message = message;
 			message = target_channel.formatMessage(message, evt, emote);
 			if (target_channel.willCancel()) {
 				for (Player p : target_channel.getRecipients(message, evt))
@@ -113,7 +114,7 @@ public class ChatListener implements Listener {
 			} else {
 				// Send in a vanilla way, so we can pass the message to other plugins.
 				evt.setFormat(message.replace("%", "%%"));   // Not sure why, old KC had the replace.
-				evt.setMessage(message);                                        // Ensure compatibility. (?)
+				evt.setMessage(unformatted_message);
 				evt.setCancelled(false);                                        // Shouldn't cancel
 			}
 

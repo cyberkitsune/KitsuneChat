@@ -127,7 +127,7 @@ public class UserMessaging implements CommandExecutor {
 				fromconsole = true;
 				player = "CONSOLE";
 			} else {
-				player = ((Player) sender).getDisplayName();
+				player = ((Player) sender).getName();
 			}
 			
 			// MSG checks
