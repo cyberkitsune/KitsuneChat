@@ -146,6 +146,8 @@ public class KitsuneChat extends JavaPlugin {
 	{
 		mcLog.info("[KitsuneChat] Reloading KitsuneChat >w<");
 		HandlerList.unregisterAll(this);
+		getServer().getMessenger().unregisterOutgoingPluginChannel(this);
+		getServer().getMessenger().unregisterIncomingPluginChannel(this);
 		onEnable();
 	}
 
