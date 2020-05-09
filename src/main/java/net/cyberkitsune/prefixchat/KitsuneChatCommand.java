@@ -128,7 +128,7 @@ public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 		if (command.getName().equalsIgnoreCase("kc"))
 		{
 			ArrayList<String> possibleCompletions = new ArrayList<>(Arrays.asList("?", "party"));
-			possibleCompletions.addAll(KitsuneChat.getInstance().prefixes);
+			possibleCompletions.addAll(KitsuneChat.getInstance().channels.keySet());
 
 			final List<String> completions = new ArrayList<>();
 			int checkIndex = 0;

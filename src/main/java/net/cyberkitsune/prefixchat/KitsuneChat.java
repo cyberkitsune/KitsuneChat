@@ -12,6 +12,7 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -26,7 +27,6 @@ public class KitsuneChat extends JavaPlugin {
 	public KitsuneChatCommand exec = new KitsuneChatCommand();
 	public UserMessaging msgExec = new UserMessaging();
 	public NicknameChanger nickExec = new NicknameChanger();
-	public List<String> prefixes;
 	public Chat vaultChat = null;
 	public boolean vaultEnabled = false;
 	public boolean multiVerse = false;
@@ -133,17 +133,7 @@ public class KitsuneChat extends JavaPlugin {
 		for(Player plr : getServer().getOnlinePlayers()) {
 			ChatParties.getInstance().changeParty(plr, KitsuneChatUserData.getInstance().getPartyDataForUser(plr));
 		}
-		List<String> channelList = Arrays.asList("global" , "local" , "staff" , "admin" , "party" , "world");
-		prefixes = new ArrayList<>();
-		for(String channel : channelList) {
-			if(!channel.equals("global")) {
-				if(getConfig().getBoolean("channels."+ channel + ".enabled")) {
-					prefixes.add(getConfig().getString("channels." + channel + ".prefix"));
-				}
-			} else {
-				prefixes.add(getConfig().getString("channels." + channel + ".prefix"));
-			}
-		}
+
 	}
 	
 	@Override
@@ -151,7 +141,14 @@ public class KitsuneChat extends JavaPlugin {
 		// TODO Disable stuff?
 		mcLog.info("[KitsuneChat] KitsuneChat disabled! You made CK cry ;~;");
 	}
-	
+
+	public void reload()
+	{
+		mcLog.info("[KitsuneChat] Reloading KitsuneChat >w<");
+		HandlerList.unregisterAll(this);
+		onEnable();
+	}
+
 	private void loadConfig() {
 		try {
 			this.getConfig().load(getDataFolder()+"/config.yml");
