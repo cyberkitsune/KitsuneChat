@@ -36,7 +36,11 @@ public class KCProxy extends Plugin implements Listener {
             e.printStackTrace();
         }
         if(!sender_server.isEmpty() && !sent_message.isEmpty())
+        {
+            getLogger().info(String.format("%s -> %s", sender_server, sent_message));
             echo_message(sender_server, sent_message);
+        }
+
     }
 
     private void echo_message(String sender_server, String sent_message)
