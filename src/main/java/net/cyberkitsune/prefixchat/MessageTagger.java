@@ -62,7 +62,7 @@ public class MessageTagger {
         ArrayList<String> formatted_message = new ArrayList<>();
         for(String part : parts)
         {
-            Pattern tagCheck = Pattern.compile("\\{*.\\}");
+            Pattern tagCheck = Pattern.compile("\\{.*}");
             if(tagCheck.matcher(part).matches())
             {
                 String just_placeholder = part.substring(1, part.length() - 1);
