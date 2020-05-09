@@ -1,5 +1,7 @@
 package net.cyberkitsune.prefixchat.channels;
 
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import net.cyberkitsune.prefixchat.KitsuneChat;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -27,7 +29,23 @@ public class GlobalChannel implements KitsuneChannel {
     }
 
     @Override
-    public void postMessage(String message, AsyncPlayerChatEvent evt) {
+    public void postMessage(String message, AsyncPlayerChatEvent context) {
+        // It's bungee time
+        if(KitsuneChat.getInstance().getConfig().getBoolean("channels.global.bungee-send"))
+        {
+            ByteArrayDataOutput out = ByteStreams.newDataOutput();
+            out.writeUTF(KitsuneChat.getInstance().getConfig().getString("bungee-id"));
+            out.writeUTF(message);
+            try
+            {
+                context.getPlayer().sendPluginMessage(KitsuneChat.getInstance(), "bungee:kitsunechat", out.toByteArray());
+            }
+            catch (Exception e)
+            {
+                KitsuneChat.getInstance().mcLog.warning("[KitsuneChat] Unable to dispatch bungee message!");
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override

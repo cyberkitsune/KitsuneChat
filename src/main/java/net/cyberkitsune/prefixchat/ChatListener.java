@@ -108,7 +108,7 @@ public class ChatListener implements Listener {
 			} else {
 				// Send in a vanilla way, so we can pass the message to other plugins.
 				evt.setFormat(message.replace("%", "%%"));   // Not sure why, old KC had the replace.
-				evt.setMessage(message);                                        // Ensure compatibility.
+				evt.setMessage(message);                                        // Ensure compatibility. (?)
 				evt.setCancelled(false);                                        // Shouldn't cancel
 			}
 

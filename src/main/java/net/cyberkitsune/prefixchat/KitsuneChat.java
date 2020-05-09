@@ -89,6 +89,14 @@ public class KitsuneChat extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new ConnectHandler(), this);
 		getServer().getPluginManager().registerEvents(new JoinQuitListener(), this);
 
+		// Bungee
+		getServer().getMessenger().registerOutgoingPluginChannel(this, "bungee:kitsunechat");
+
+		if(getConfig().getBoolean("bungee-receive"))
+		{
+			getServer().getMessenger().registerIncomingPluginChannel(this, "bungee:kitsunechat", new KitsuneBungeeListener());
+		}
+
 		// Commands
 		Objects.requireNonNull(getCommand("kc")).setExecutor(exec);
 		Objects.requireNonNull(getCommand("kc")).setTabCompleter(exec);

@@ -5,6 +5,7 @@ channels:
     sayformat: '&b[{world}]&f {sender}:&f {message}'
     meformat: '&b[{world}] &d*&f {sender} {message}'
     enabled: true
+    bungee-send: false
   world:
     prefix: '#'
     sayformat: '&a[{prefix}]&f {sender}:&f {message}'
@@ -38,3 +39,4 @@ emote:
   prefix: '|'
 skipvault: false
 bungee-tag: "default"
+bungee-receive: false
