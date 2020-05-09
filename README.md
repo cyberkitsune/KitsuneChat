@@ -5,7 +5,7 @@ KitsuneChat
 Making chat RP-Safe and Customizable for all!
 ---------------------------------------------
 
-KitsuneChat is a chat system replacement for Bukkit, a modified Minecraft server.
+KitsuneChat is a chat system replacement for Spigot, a modified Minecraft server.
 It splits chat into 4 "channels" and allows for user made "parties" to be used.
 
 (KitsuneChat optionally needs the Vault plugin to be installed for extra functionality.)
