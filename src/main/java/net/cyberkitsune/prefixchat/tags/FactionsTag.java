@@ -23,7 +23,7 @@ public class FactionsTag implements ChatTag {
                 case "faction-name":
                     if (adapter.isPlayerInFaction(context.getPlayer()))
                     {
-                        adapter.getFactionNameFor(context.getPlayer());
+                        return adapter.getFactionNameFor(context.getPlayer());
                     }
                 case "faction-relationship":
                 default:
