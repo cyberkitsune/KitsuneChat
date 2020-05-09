@@ -38,6 +38,11 @@ public class ChatListener implements Listener {
 	// LOW priority makes this event fire before NORMAL priority, so that we can properly rewrite event messages..
 	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = false)
 	public void playerChat(AsyncPlayerChatEvent evt) {
+
+		// If there's no channels enabled, just not do anything chat related.
+		if (KitsuneChat.getInstance().channels.isEmpty())
+			return;
+
 		evt.setCancelled(true);
 
 		if (evt.getMessage().endsWith("--")) {
