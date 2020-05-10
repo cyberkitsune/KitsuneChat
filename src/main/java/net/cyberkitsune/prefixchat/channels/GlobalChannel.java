@@ -3,6 +3,7 @@ package net.cyberkitsune.prefixchat.channels;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import net.cyberkitsune.prefixchat.KitsuneChat;
+import net.cyberkitsune.prefixchat.MessageTagger;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
@@ -11,6 +12,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 public class GlobalChannel implements KitsuneChannel {
 
@@ -28,14 +30,21 @@ public class GlobalChannel implements KitsuneChannel {
     @Override
     public String formatMessage(String message, AsyncPlayerChatEvent context, boolean emote) {
         shouldCancel = emote;
-        return KitsuneChannel.super.formatMessage(message, context, emote);
-    }
-
-    @Override
-    public void postMessage(String message, AsyncPlayerChatEvent context) {
-        // It's bungee time
-        if(KitsuneChat.getInstance().getConfig().getBoolean("channels.global.bungee-send"))
+        // It's bungee time -- Use bungee specific formatting
+        if(KitsuneChat.getInstance().getConfig().getBoolean("channels.global.bungee.send"))
         {
+            // Format the message...
+            String bungee_formatted = "";
+            if(emote)
+            {
+                bungee_formatted = MessageTagger.getInstance().formatMessage(Objects.requireNonNull(KitsuneChat.getInstance().getConfig()
+                        .getString("channels.global.bungee.meformat")), message, this, context);
+            }
+            else
+            {
+                bungee_formatted = MessageTagger.getInstance().formatMessage(Objects.requireNonNull(KitsuneChat.getInstance().getConfig()
+                        .getString("channels.global.bungee.sayformat")), message, this, context);
+            }
             String sender_server;
             sender_server = KitsuneChat.getInstance().getConfig().getString("bungee-tag");
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -43,18 +52,18 @@ public class GlobalChannel implements KitsuneChannel {
             if (sender_server == null)
             {
                 KitsuneChat.getInstance().mcLog.warning("[KitsuneChat] Server tag not set! Not sending bungee message...");
-                return;
+                return KitsuneChannel.super.formatMessage(message, context, emote);
             }
 
             try {
                 out.writeUTF(sender_server);
-                out.writeUTF(message);
+                out.writeUTF(bungee_formatted);
             }
             catch (IOException e)
             {
                 KitsuneChat.getInstance().mcLog.warning("[KitsuneChat] Error preparing bungee message!");
                 e.printStackTrace();
-                return;
+                return KitsuneChannel.super.formatMessage(message, context, emote);
             }
             try
             {
@@ -66,6 +75,12 @@ public class GlobalChannel implements KitsuneChannel {
                 e.printStackTrace();
             }
         }
+        return KitsuneChannel.super.formatMessage(message, context, emote);
+    }
+
+    @Override
+    public void postMessage(String message, AsyncPlayerChatEvent context) {
+
     }
 
     @Override

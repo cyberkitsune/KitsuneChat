@@ -5,7 +5,10 @@ channels:
     sayformat: '&b[{world}]&f {sender}:&f {message}'
     meformat: '&b[{world}] &d*&f {sender} {message}'
     enabled: true
-    bungee-send: false
+    bungee:
+      send: false
+      sayformat: '&b[{world}]&f {sender}:&f {message}' # Format for bungee servers
+      meformat: '&b[{world}] &d*&f {sender} {message}' # Will not show like this locally
   world:
     prefix: '#'
     sayformat: '&a[{prefix}]&f {sender}:&f {message}'
