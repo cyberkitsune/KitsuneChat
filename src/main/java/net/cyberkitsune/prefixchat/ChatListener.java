@@ -1,6 +1,7 @@
 package net.cyberkitsune.prefixchat;
 
 import java.util.*;
+import java.util.regex.Pattern;
 
 import net.cyberkitsune.prefixchat.channels.GlobalChannel;
 import net.cyberkitsune.prefixchat.channels.KitsuneChannel;
@@ -74,13 +75,13 @@ public class ChatListener implements Listener {
 			// Do something here if the user does not have a channel set (or maybe in datafile?)
 			channel_prefix = KitsuneChatUserData.getInstance().getUserChannel(evt.getPlayer());
 		} else {
-			message = message.replaceFirst(channel_prefix, "");
+			message = message.replaceFirst(Pattern.quote(channel_prefix), "");
 		}
 
 		// Now, check if we're an emote message. If yes, flag and strip. (Should this logic go here?)
 		if (message.startsWith(Objects.requireNonNull(KitsuneChat.getInstance().getConfig().getString("emote.prefix")))) {
 			emote = true;
-			message = message.replaceFirst(String.format("\\%s", KitsuneChat.getInstance().getConfig().getString("emote.prefix")), "");
+			message = message.replaceFirst(Pattern.quote(String.format("%s", KitsuneChat.getInstance().getConfig().getString("emote.prefix"))), "");
 		}
 
 
