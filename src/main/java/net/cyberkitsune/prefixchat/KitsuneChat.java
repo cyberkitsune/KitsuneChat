@@ -223,4 +223,14 @@ public class KitsuneChat extends JavaPlugin {
 					"fix this in the config.yml");
 	}
 
+	public KitsuneChannel getChannelByPrefix(String prefix)
+	{
+		if (channels.containsKey(prefix))
+		{
+			return channels.get(prefix);
+		}
+
+		return null;
+	}
+
 }
