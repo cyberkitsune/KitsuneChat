@@ -38,6 +38,11 @@ public class PartyChannel implements KitsuneChannel {
     }
 
     @Override
+    public boolean hasPermission(Player p) {
+        return p.hasPermission("kitsunechat.partychat");
+    }
+
+    @Override
     public boolean willCancel() {
         return true;
     }

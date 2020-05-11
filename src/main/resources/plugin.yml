@@ -52,3 +52,6 @@ permissions:
      kitsunechat.command.reload:
         description: Allows for a reload of the plugin
         default: op
+     kitsunechat.partychat:
+        description: Allows a user to use chat parties
+        default: true

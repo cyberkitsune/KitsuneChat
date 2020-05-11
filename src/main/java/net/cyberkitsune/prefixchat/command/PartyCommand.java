@@ -143,4 +143,9 @@ public class PartyCommand implements KCommand {
         }
         return KCommand.super.getPossibleCompletions(sender, subcommand);
     }
+
+    @Override
+    public boolean hasPermission(Player p, String subCommand) {
+        return p.hasPermission("kitsunechat.partychat");
+    }
 }
