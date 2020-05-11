@@ -160,6 +160,7 @@ public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 				case 1:
 					// No command specificed, or partial command.
 					possibleCompletions.addAll(getCommandNamesForSender(commandSender));
+					possibleCompletions.add("?");
 					break;
 				case 2:
 				default:

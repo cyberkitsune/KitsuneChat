@@ -9,6 +9,7 @@ import net.md_5.bungee.api.chat.HoverEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -19,6 +20,11 @@ public class PartyCommand implements KCommand {
     @Override
     public String getName() {
         return "party";
+    }
+
+    @Override
+    public @NotNull List<String> getAliases() {
+        return Collections.singletonList("p");
     }
 
     @Override
