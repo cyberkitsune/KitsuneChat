@@ -67,7 +67,7 @@ public class PartyCommand implements KCommand {
         switch (command)
         {
             case "join":
-                if (args != null && args.length > 1)
+                if (args != null && args.length > 0)
                 {
                     ChatParties.getInstance().changeParty((Player) sender, args[0].toLowerCase());
                     KitsuneChatUserData.getInstance().setUserChannel((Player) sender, KitsuneChat.getInstance().getConfig().getString("channels.party.prefix"));
@@ -82,7 +82,7 @@ public class PartyCommand implements KCommand {
                 ChatParties.getInstance().leaveParty((Player) sender, false);
                 return true;
             case "invite":
-                if (args != null)
+                if (args != null && args.length > 0)
                 {
                     if (ChatParties.getInstance().isInAParty((Player) sender)) {
                         Player target = KitsuneChat.getInstance().getServer().getPlayer(args[0]);
