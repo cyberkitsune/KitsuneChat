@@ -55,36 +55,4 @@ public interface FactionAdapter {
      */
     String getFactionRelationshipColor(Player a, Player b);
 
-    /**
-     * Check all faction adapters present in the plugin, and if one works, load and return it
-     * @return a FactionAdapter that works for a currently in use Factions plugin, or null if none is found.
-     */
-    static FactionAdapter getAnyLoadedFactions()
-    {
-        Reflections reflections = new Reflections("net.cyberkitsune.prefixchat.adapters");
-        FactionAdapter adapter = null;
-        for(Class<?> connectedClass : reflections.getTypesAnnotatedWith(FactionsRequired.class))
-        {
-            String checkClassname = connectedClass.getAnnotation(FactionsRequired.class).classname();
-            try
-            {
-                Class.forName(checkClassname);
-            }
-            catch (ClassNotFoundException ex)
-            {
-                continue;
-            }
-
-            // Class found
-            try
-            {
-                adapter = (FactionAdapter) connectedClass.getDeclaredConstructor().newInstance();
-            } catch (InstantiationException | InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
-                KitsuneChat.getInstance().mcLog.warning(String.format("[KitsuneChat] Tried to create factions adapter %s but failed!?",
-                        connectedClass.getSimpleName()));
-                e.printStackTrace();
-            }
-        }
-        return adapter;
-    }
 }

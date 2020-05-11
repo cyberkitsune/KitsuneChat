@@ -14,7 +14,7 @@ public class FactionsTag implements ChatTag {
     @Override
     public String getReplacement(String message, KitsuneChannel channel, AsyncPlayerChatEvent context, String placeholder) {
         // Let's look for MC Factions...
-        FactionAdapter adapter = FactionAdapter.getAnyLoadedFactions();
+        FactionAdapter adapter = KitsuneChat.getInstance().getAnyLoadedFactions();
         if (adapter != null)
         {
             switch (placeholder)

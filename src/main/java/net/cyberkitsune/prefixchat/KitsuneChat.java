@@ -5,6 +5,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.logging.Logger;
 
+import net.cyberkitsune.prefixchat.adapters.FactionAdapter;
+import net.cyberkitsune.prefixchat.adapters.FactionsRequired;
 import net.cyberkitsune.prefixchat.channels.KitsuneChannel;
 import net.cyberkitsune.prefixchat.command.KCommand;
 import net.milkbowl.vault.chat.Chat;
@@ -23,6 +25,7 @@ import org.reflections.Reflections;
 public class KitsuneChat extends JavaPlugin {
 
 	private static KitsuneChat instance = null;
+	private FactionAdapter cachedFactions = null;
 	public HashMap<String, KitsuneChannel> channels;
 	public HashMap<String, KCommand> commands;
 	public Logger mcLog = Logger.getLogger("Minecraft");
@@ -234,6 +237,39 @@ public class KitsuneChat extends JavaPlugin {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public FactionAdapter getAnyLoadedFactions()
+	{
+		if(cachedFactions != null)
+			return cachedFactions;
+		Reflections reflections = new Reflections("net.cyberkitsune.prefixchat.adapters");
+		FactionAdapter adapter = null;
+		for(Class<?> connectedClass : reflections.getTypesAnnotatedWith(FactionsRequired.class))
+		{
+			String checkClassname = connectedClass.getAnnotation(FactionsRequired.class).classname();
+			try
+			{
+				Class.forName(checkClassname);
+			}
+			catch (ClassNotFoundException ex)
+			{
+				continue;
+			}
+
+			// Class found
+			try
+			{
+				adapter = (FactionAdapter) connectedClass.getDeclaredConstructor().newInstance();
+			} catch (InstantiationException | InvocationTargetException | NoSuchMethodException | IllegalAccessException e) {
+				KitsuneChat.getInstance().mcLog.warning(String.format("[KitsuneChat] Tried to create factions adapter %s but failed!?",
+						connectedClass.getSimpleName()));
+				e.printStackTrace();
+			}
+		}
+		if(adapter != null)
+			cachedFactions = adapter;
+		return cachedFactions;
 	}
 
 	public KitsuneChannel getChannelByPrefix(String prefix)
