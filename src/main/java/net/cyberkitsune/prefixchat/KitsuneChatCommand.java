@@ -98,7 +98,7 @@ public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 				{
 					sender.sendMessage(ChatColor.RED + String.format("[KitsuneChat] Invalid usage of /kc %s. Possible usages:", cmd.getName()));
 					for(String sCmd : cmd.getSubCommands())
-						sender.sendMessage(ChatColor.YELLOW + "[KitsuneChat]" + cmd.getHelpForSubcommand(sCmd));
+						sender.sendMessage(ChatColor.YELLOW + "[KitsuneChat] " + cmd.getHelpForSubcommand(sCmd));
 				}
 
 
@@ -164,11 +164,9 @@ public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 					{
 						KCommand cmd = commands.get(args[0]);
 						String subCommand = null;
-						String[] subCommandArgs = {};
 
-						if(args.length > 3)
+						if(args.length > 2)
 							subCommand = args[1];
-							subCommandArgs = Arrays.copyOfRange(args, 2, args.length);
 						if(cmd.senderCanRunCommand(commandSender, subCommand))
 						{
 							List<String> cmdCompletions = cmd.getPossibleCompletions(commandSender, subCommand);
