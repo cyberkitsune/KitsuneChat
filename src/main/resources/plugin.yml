@@ -1,5 +1,5 @@
 name: KitsuneChat
-version: 2.0.0-SNAPSHOT
+version: 2.1.0-SNAPSHOT
 main: net.cyberkitsune.prefixchat.KitsuneChat
 api-version: "1.15"
 authors: [CyberKitsune, Alynna, Snooper]
@@ -49,6 +49,6 @@ permissions:
      kitsunechat.nick:
         description: Allows you to change your nickname.
         default: op
-     kitsunechat.reload:
+     kitsunechat.command.reload:
         description: Allows for a reload of the plugin
         default: op
