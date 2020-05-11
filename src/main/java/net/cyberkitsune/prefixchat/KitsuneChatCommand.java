@@ -123,11 +123,11 @@ public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 			sb.append("[KitsuneChat] /kc ").append(cmd.getName());
 			if(cmd.getAliases().size() > 0)
 			{
-				sb.append("(or: ");
+				sb.append(" (or: ");
 				sb.append(String.join(",", cmd.getAliases()));
 				sb.append(") ");
 			}
-			sb.append("- ").append(cmd.getHelp());
+			sb.append(" - ").append(cmd.getHelp());
 			target.sendMessage(sb.toString());
 		}
 	}
