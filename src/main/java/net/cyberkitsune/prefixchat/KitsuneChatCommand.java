@@ -125,7 +125,7 @@ public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 			{
 				sb.append(" (or: ");
 				sb.append(String.join(",", cmd.getAliases()));
-				sb.append(") ");
+				sb.append(")");
 			}
 			sb.append(" - ").append(cmd.getHelp());
 			target.sendMessage(sb.toString());
