@@ -6,6 +6,7 @@ import java.util.*;
 import java.util.logging.Logger;
 
 import net.cyberkitsune.prefixchat.channels.KitsuneChannel;
+import net.cyberkitsune.prefixchat.command.KCommand;
 import net.milkbowl.vault.chat.Chat;
 
 import org.bukkit.command.PluginCommand;
@@ -23,6 +24,7 @@ public class KitsuneChat extends JavaPlugin {
 
 	private static KitsuneChat instance = null;
 	public HashMap<String, KitsuneChannel> channels;
+	public HashMap<String, KCommand> commands;
 	public Logger mcLog = Logger.getLogger("Minecraft");
 	public KitsuneChatCommand exec = new KitsuneChatCommand();
 	public UserMessaging msgExec = new UserMessaging();
@@ -221,6 +223,26 @@ public class KitsuneChat extends JavaPlugin {
 		if (!channels.containsKey(defaultChannel))
 			mcLog.warning("[KitsuneChat] Your set default channel does not exist or is not enabled. Make sure to " +
 					"fix this in the config.yml");
+	}
+
+	private void loadCommands()
+	{
+		commands.clear();
+		// Reflect through all the commands, including aliases
+		Reflections reflections = new Reflections("net.cyberkitsune.prefixchat.command");
+		for(Class<? extends KCommand> cmdClass : reflections.getSubTypesOf(KCommand.class))
+		{
+			try {
+				KCommand kc = cmdClass.getDeclaredConstructor().newInstance();
+				commands.put(kc.getName(), kc);
+				for (String alias : kc.getAliases())
+				{
+					commands.put(alias, kc);
+				}
+			} catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public KitsuneChannel getChannelByPrefix(String prefix)
