@@ -21,7 +21,7 @@ public class ChannelCommand implements KCommand {
     @NotNull
     @Override
     public List<String> getAliases() {
-        return Collections.singletonList("ch");
+        return Collections.singletonList("c");
     }
 
     @Override
