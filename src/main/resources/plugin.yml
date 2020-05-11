@@ -13,8 +13,6 @@ commands:
       description: Send a private message.
      r:
       description: Reply to a message in chat.
-     nick:
-      description: Change your nickname.
       
 permissions:
      kitsunechat.adminchat:
@@ -46,9 +44,6 @@ permissions:
      kitsunechat.ignoreradius:
         description: Allows the user to hear ALL local chat.
         default: false
-     kitsunechat.nick:
-        description: Allows you to change your nickname.
-        default: op
      kitsunechat.command.reload:
         description: Allows for a reload of the plugin
         default: op

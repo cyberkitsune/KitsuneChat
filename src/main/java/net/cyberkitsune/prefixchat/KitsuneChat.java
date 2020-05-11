@@ -28,7 +28,6 @@ public class KitsuneChat extends JavaPlugin {
 	public Logger mcLog = Logger.getLogger("Minecraft");
 	public KitsuneChatCommand exec = new KitsuneChatCommand();
 	public UserMessaging msgExec = new UserMessaging();
-	public NicknameChanger nickExec = new NicknameChanger();
 	public Chat vaultChat = null;
 	public boolean vaultEnabled = false;
 	public boolean multiVerse = false;
@@ -106,7 +105,6 @@ public class KitsuneChat extends JavaPlugin {
 		PluginCommand meCmd = getCommand("me");
 		PluginCommand msgCmd = getCommand("msg");
 		PluginCommand repCmd = getCommand("r");
-		PluginCommand nickCmd = getCommand("nick");
 		
 		if(meCmd == null)
 		{
@@ -121,13 +119,6 @@ public class KitsuneChat extends JavaPlugin {
 			msgCmd.setExecutor(msgExec);
 			repCmd.setExecutor(msgExec);
 		}
-		
-		if(nickCmd == null) {
-			mcLog.info("[KitsuneChat] Unable to hook /nick! Disabling nickname support");
-		} else {
-			nickCmd.setExecutor(nickExec);
-		}
-		
 
 		KitsuneChatUserData.getInstance().loadUserData();
 
