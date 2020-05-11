@@ -26,7 +26,7 @@ public class ChannelCommand implements KCommand {
 
     @Override
     public List<String> getSubCommands() {
-        return new ArrayList<String>(KitsuneChat.getInstance().channels.keySet());
+        return new ArrayList<>(KitsuneChat.getInstance().channels.keySet());
     }
 
     @Override
@@ -66,7 +66,7 @@ public class ChannelCommand implements KCommand {
             if(KitsuneChat.getInstance().channels.containsKey(subCommand))
             {
                 KitsuneChannel ch = KitsuneChat.getInstance().channels.get(subCommand);
-                return !p.hasPermission("kitsunechat.no." + ch.getChannelName());
+                return ch.hasPermission(p);
             }
         }
         return true;
