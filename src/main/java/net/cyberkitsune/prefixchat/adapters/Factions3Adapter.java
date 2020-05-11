@@ -4,7 +4,7 @@ import com.massivecraft.factions.entity.Faction;
 import com.massivecraft.factions.entity.MPlayer;
 import org.bukkit.entity.Player;
 
-@FactionConnector(classname = "com.massivecraft.factions.RelationParticipator")
+@FactionsRequired(classname = "com.massivecraft.factions.RelationParticipator")
 public class Factions3Adapter implements FactionAdapter {
 
     @Override

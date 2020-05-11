@@ -9,7 +9,7 @@ import java.util.Collection;
 
 public class AdminChannel implements KitsuneChannel {
     @Override
-    public Collection<? extends Player> getRecipients(String message, AsyncPlayerChatEvent evt) {
+    public Collection<? extends Player> getRecipients(AsyncPlayerChatEvent evt) {
         ArrayList<Player> currentAdmins = new ArrayList<>();
         for(Player p : KitsuneChat.getInstance().getServer().getOnlinePlayers())
         {

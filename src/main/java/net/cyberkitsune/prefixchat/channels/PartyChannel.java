@@ -9,7 +9,7 @@ import java.util.Collection;
 
 public class PartyChannel implements KitsuneChannel {
     @Override
-    public Collection<? extends Player> getRecipients(String message, AsyncPlayerChatEvent evt) {
+    public Collection<? extends Player> getRecipients(AsyncPlayerChatEvent evt) {
         return ChatParties.getInstance().getPartyMembers(ChatParties.getInstance().getPartyName(evt.getPlayer()));
     }
 

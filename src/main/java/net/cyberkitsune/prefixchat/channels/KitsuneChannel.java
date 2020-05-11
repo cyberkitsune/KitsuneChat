@@ -2,31 +2,51 @@ package net.cyberkitsune.prefixchat.channels;
 
 import net.cyberkitsune.prefixchat.KitsuneChat;
 import net.cyberkitsune.prefixchat.KitsuneChatUserData;
-import net.cyberkitsune.prefixchat.KitsuneChatUtils;
 import net.cyberkitsune.prefixchat.MessageTagger;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 
-//if (evt.getMessage().startsWith(plugin.getConfig().getString("channels.global.prefix"))) {
-//			//plugin.mcLog.info(plugin.util.formatChatPrefixes(message, plugin.getConfig().getString(emote ? "global.meformat" : "global.sayformat"), evt));
-//			if (emote) { // This here is not the ideal way to handle it, but its the way that works.
-//				for(Player plr : plugin.getServer().getOnlinePlayers()) {
-//					plr.sendMessage(plugin.util.formatChatPrefixes(message, plugin.getConfig().getString(emote ? "channels.global.meformat" : "channels.global.sayformat"), evt));
-//				}
-//				evt.setCancelled(true); // Nobody else should see this as a chat event. EVER.
-//				return ; // Now GTFO my listener.
-//
-//			}
+/**
+ * A interface representing a unique chat "channel" in KitsuneChat
+ */
 public interface KitsuneChannel {
-    Collection<? extends Player> getRecipients(String message, AsyncPlayerChatEvent evt);
+    /**
+     * Retrieve the players a message sent to the channel should go to
+     * @param evt Chat event for context (eg, sending Player)
+     * @return A collection of Players to send the message to
+     */
+    Collection<? extends Player> getRecipients(AsyncPlayerChatEvent evt);
+
+    /**
+     * Return the name of this channel. Should be lowercase and typically corrosponds to the entry for the channel in config.yml
+     * eg, channels.global in the config means this should return "global"
+     * @return String containing the channel message
+     */
     String getChannelName();
+
+    /**
+     * Do any post-processing of a channel message in this routine
+     * @param message Fully formatted message that was sent
+     * @param evt Chat event the message was sent in
+     */
     void postMessage(String message, AsyncPlayerChatEvent evt);
+
+    /**
+     * Check weather or not this channel will cancel a PlayerChatEvent. (eg, everything except global chat)
+     * @return true if the channel will cancel, false otherwise.
+     */
     boolean willCancel();
+
+    /**
+     * Called on sending a message. Unless you need to do something specific this shouldn't need overloading.
+     * @param message Fully-formatted message to send
+     * @param context Chat event for context
+     * @return true if the message was sent successfully.
+     */
     default boolean onMessage(String message, AsyncPlayerChatEvent context)
     {
         boolean hasPerms = hasPermission(context.getPlayer());

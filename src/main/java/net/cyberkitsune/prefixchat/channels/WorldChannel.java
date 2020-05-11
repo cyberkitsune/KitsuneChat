@@ -7,7 +7,7 @@ import java.util.Collection;
 
 public class WorldChannel implements KitsuneChannel {
     @Override
-    public Collection<? extends Player> getRecipients(String message, AsyncPlayerChatEvent evt) {
+    public Collection<? extends Player> getRecipients(AsyncPlayerChatEvent evt) {
         return evt.getPlayer().getWorld().getPlayers();
     }
 

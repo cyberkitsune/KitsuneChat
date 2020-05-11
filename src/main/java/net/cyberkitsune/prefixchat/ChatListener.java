@@ -3,7 +3,6 @@ package net.cyberkitsune.prefixchat;
 import java.util.*;
 import java.util.regex.Pattern;
 
-import net.cyberkitsune.prefixchat.channels.GlobalChannel;
 import net.cyberkitsune.prefixchat.channels.KitsuneChannel;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -18,18 +17,17 @@ public class ChatListener implements Listener {
 	private HashMap<Player, String> bufs;
 
 	public ChatListener() {
-		this.bufs = new HashMap<Player, String>();
+		this.bufs = new HashMap<>();
 	}
 
-	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = false)
+	@EventHandler(priority = EventPriority.LOW)
 	public void playerEmote(PlayerCommandPreprocessEvent evt) {
 		if (!evt.getMessage().toLowerCase().startsWith("/me "))
 			return;
 
-		String buf = new String(KitsuneChat.getInstance().getConfig().getString("emote.prefix") + evt.getMessage().substring(4));
+		String buf = KitsuneChat.getInstance().getConfig().getString("emote.prefix") + evt.getMessage().substring(4);
 		AsyncPlayerChatEvent newevt =
-				new AsyncPlayerChatEvent(false, evt.getPlayer(), buf,
-						new HashSet<Player>(KitsuneChat.getInstance().getServer().getOnlinePlayers()));
+				new AsyncPlayerChatEvent(false, evt.getPlayer(), buf, new HashSet<>(KitsuneChat.getInstance().getServer().getOnlinePlayers()));
 
 		KitsuneChat.getInstance().getServer().getPluginManager().callEvent(newevt);
 
@@ -37,7 +35,7 @@ public class ChatListener implements Listener {
 	}
 
 	// LOW priority makes this event fire before NORMAL priority, so that we can properly rewrite event messages..
-	@EventHandler(priority = EventPriority.LOW, ignoreCancelled = false)
+	@EventHandler(priority = EventPriority.LOW)
 	public void playerChat(AsyncPlayerChatEvent evt) {
 
 		// If there's no channels enabled, just not do anything chat related.
@@ -109,7 +107,7 @@ public class ChatListener implements Listener {
 			String unformatted_message = message;
 			message = target_channel.formatMessage(message, evt, emote);
 			if (target_channel.willCancel()) {
-				for (Player p : target_channel.getRecipients(message, evt))
+				for (Player p : target_channel.getRecipients(evt))
 					p.sendMessage(message);
 				evt.setCancelled(true);
 				KitsuneChat.getInstance().mcLog.info(message); // Log to console for admin review (consider moving logic into postMessage?)
