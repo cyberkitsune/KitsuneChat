@@ -73,10 +73,10 @@ public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 
 				String subCommand = null;
 				String[] subCommandArgs = {};
-				if(args.length > 2)
+				if(args.length > 1)
 					subCommand = args[1];
 
-				if(args.length > 3)
+				if(args.length > 2)
 					subCommandArgs = Arrays.copyOfRange(args, 2, args.length);
 
 				if(cmd.requiresPlayer() && !(sender instanceof Player))
