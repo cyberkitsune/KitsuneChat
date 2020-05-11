@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,7 +34,17 @@ public interface KCommand {
         if(getSubCommands() != null)
         {
             if (subCommand == null)
-                return getSubCommands();
+            {
+                ArrayList<String> validSubcommands = new ArrayList<>();
+                for(String sc : getSubCommands())
+                {
+                    if(!senderCanRunCommand(sender, sc))
+                        continue;
+
+                    validSubcommands.add(sc);
+                }
+                return validSubcommands;
+            }
             else
                 return Collections.emptyList();
         }
