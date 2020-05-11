@@ -1,6 +1,7 @@
 package net.cyberkitsune.prefixchat;
 
 import net.cyberkitsune.prefixchat.channels.KitsuneChannel;
+import net.cyberkitsune.prefixchat.command.KCommand;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -9,161 +10,189 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
+import org.jetbrains.annotations.NotNull;
+import org.reflections.Reflections;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
-	
-	public KitsuneChatCommand() {}
 
-	public boolean onCommand(CommandSender sender, Command command,
-							 String label, String[] args) {
+
+	private HashMap<String, KCommand> commands;
+	public KitsuneChatCommand()
+	{
+		commands = new HashMap<>();
+		loadCommands();
+	}
+
+	private void loadCommands()
+	{
+		commands.clear();
+		// Reflect through all the commands, including aliases
+		Reflections reflections = new Reflections("net.cyberkitsune.prefixchat.command");
+		for(Class<? extends KCommand> cmdClass : reflections.getSubTypesOf(KCommand.class))
+		{
+			try {
+				KCommand kc = cmdClass.getDeclaredConstructor().newInstance();
+				if(!kc.getName().equals("?"))
+					commands.put(kc.getName(), kc);
+				for (String alias : kc.getAliases())
+				{
+					if(!alias.equals("?"))
+						commands.put(alias, kc);
+				}
+			} catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public boolean onCommand(@NotNull CommandSender sender, Command command,
+							 @NotNull String label, @NotNull String[] args) {
 		if (command.getName().equalsIgnoreCase("kc")) {
-			if (args.length > 0) {
-				if (args[0].equalsIgnoreCase("reload")) {
-					if (sender instanceof ConsoleCommandSender || sender.hasPermission("kitsunechat.reload")) {
-						KitsuneChat.getInstance().reload();
-						sender.sendMessage(ChatColor.GRAY + "[KitsuneChat] KitsuneChat reloaded! >w<");
-					} else {
-						sender.sendMessage(ChatColor.RED + "[KitsuneChat] You do not have permission to reload.");
-					}
+			// Step one, check if a command was not requested, or if help was requested specifically.
+			if (args.length < 1)
+			{
+				sender.sendMessage(ChatColor.RED + "[KitsuneChat] No command specified. Possible commands:");
+				printHelp(sender);
+			}
+			else if (args[0].equals("?"))
+			{
+				sender.sendMessage(ChatColor.YELLOW+"[KitsuneChat] KitsuneChat - Channeled Chat System v"+KitsuneChat.getInstance().getDescription().getVersion()+" by CyberKitsune.");
+				printHelp(sender);
+			}
+			else if (!commands.containsKey(args[0]))
+			{
+				sender.sendMessage(ChatColor.RED + "[KitsuneChat] Invalid command specified. Possible commands:");
+				printHelp(sender);
+			}
+			else
+			{
+				KCommand cmd = commands.get(args[0]);
+
+				String subCommand = null;
+				String[] subCommandArgs = {};
+				if(args.length > 1)
+					subCommand = args[1];
+
+				if(args.length > 2)
+					subCommandArgs = Arrays.copyOfRange(args, 2, args.length);
+
+				if(cmd.requiresPlayer() && !(sender instanceof Player))
+				{
+					sender.sendMessage(ChatColor.RED + "[KitsuneChat] This command must be run by a player.");
 					return true;
 				}
-				if (sender instanceof Player) {
-					if (args[0].equalsIgnoreCase("party") || args[0].equalsIgnoreCase("p")) {
-						if (args.length > 1) {
-							if (args[1].equalsIgnoreCase("leave")) {
-								ChatParties.getInstance().leaveParty((Player) sender, false);
-								return true;
-							} else if (args[1].equalsIgnoreCase("list")) {
-								if (ChatParties.getInstance().isInAParty((Player) sender)) {
-									StringBuilder playerlist = new StringBuilder();
-									int playerCount = 0;
-									for (Player plr : ChatParties.getInstance().getPartyMembers(ChatParties.getInstance().getPartyName((Player) sender))) {
-										playerlist.append(plr.getDisplayName()).append(", ");
-										playerCount++;
-									}
-									playerlist = new StringBuilder(playerlist.substring(0, playerlist.length() - 2) + ".");
-									sender.sendMessage(ChatColor.YELLOW + "[KitsuneChat] " + playerCount + ((playerCount == 1) ? " person " : " people ") + "in the party.");
-									sender.sendMessage(ChatColor.YELLOW + "[KitsuneChat] They are: " + playerlist + ".");
-									return true;
-								} else {
-									sender.sendMessage(ChatColor.RED + "[KitsuneChat] You are not in a party!");
-									return true;
-								}
-							} else if (args[1].equalsIgnoreCase("join")) {
-								if (args.length < 3) {
-									sender.sendMessage(ChatColor.RED + "[KitsuneChat] Usage: /kc party join <party_name>");
-									return true;
-								}
-								ChatParties.getInstance().changeParty((Player) sender, args[2].toLowerCase());
-								KitsuneChatUserData.getInstance().setUserChannel((Player) sender, KitsuneChat.getInstance().getConfig().getString("channels.party.prefix"));
-								sender.sendMessage(ChatColor.YELLOW + "[KitsuneChat] You have joined the party " + args[2].toLowerCase() + "!");
-							} else if (args[1].equalsIgnoreCase("invite")) {
-								if (args.length > 2) {
-									if (ChatParties.getInstance().isInAParty((Player) sender)) {
-										Player target = KitsuneChat.getInstance().getServer().getPlayer(args[2]);
-										if (target != null) {
-											ComponentBuilder cb = new ComponentBuilder("[KitsuneChat] ").
-													color(net.md_5.bungee.api.ChatColor.YELLOW).append(sender.getName())
-													.color(net.md_5.bungee.api.ChatColor.YELLOW).append(" has invited you to a party! Click here to join: ")
-													.color(net.md_5.bungee.api.ChatColor.YELLOW).append("[ACCEPT]")
-													.color(net.md_5.bungee.api.ChatColor.GREEN).bold(true).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/kc party join " + ChatParties.getInstance().getPartyName((Player) sender)))
-													.event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Click to join " + ChatParties.getInstance().getPartyName((Player) sender)).create()));
-											target.spigot().sendMessage(cb.create());
-											ChatParties.getInstance().notifyParty(ChatParties.getInstance().getPartyName((Player) sender), ChatColor.GREEN + "[KitsuneChat] " + sender.getName() + " invited " + target.getDisplayName() + ChatColor.GREEN + " to the party.");
-										} else {
-											sender.sendMessage(ChatColor.RED + "[KitsuneChat] That player does not exist!");
-										}
-									} else {
-										sender.sendMessage(ChatColor.RED + "[KitsuneChat] You aren't in a party!");
-									}
-								} else {
-									sender.sendMessage(ChatColor.RED + "[KitsuneChat] You didn't specify a player!");
-								}
-							} else {
-								sender.sendMessage(ChatColor.RED + "[KitsuneChat] Usage: /kc party (join|leave|invite|list)");
-							}
-						} else {
-							sender.sendMessage(ChatColor.RED + "[KitsuneChat] Usage: /kc party (join|leave|invite|list)");
-						}
-					} else if (args[0].equalsIgnoreCase("?")) {
-						printHelp((Player) sender);
-					} else if (args[0].equalsIgnoreCase("null")) { // Dummy command for the /me full stop.
-						return true;
-					} else {
-						for (KitsuneChannel channel : KitsuneChat.getInstance().channels.values()) {
-							if (args[0].equalsIgnoreCase(channel.getPrefix())) {
-								if (!channel.hasPermission((Player) sender)) {
-									sender.sendMessage(ChatColor.RED + "[KitsuneChat] You do not have permission to use the " + channel.getChannelName() + " channel.");
-									return true;
-								}
-								KitsuneChatUserData.getInstance().setUserChannel((Player) sender, channel.getPrefix());
-								sender.sendMessage(ChatColor.YELLOW + "[KitsuneChat] Default chat now set to " + channel.getChannelName());
-								return true;
-							}
-						}
-						sender.sendMessage(ChatColor.RED + "[KitsuneChat] Unknown or missing command. See /kc ? for help.");
-					}
+
+				// We're a player, so we should do a permission check
+				if(sender instanceof Player && !cmd.hasPermission((Player) sender, subCommand))
+				{
+					sender.sendMessage(ChatColor.RED + "[KitsuneChat] You do not have permission to do that.");
+					return true;
 				}
-			}
-			else {
-				sender.sendMessage(ChatColor.RED + "[KitsuneChat] Unknown or missing command. See /kc ? for help.");
+
+				// OK we have perms, have collected arguments, now we run the command.
+				boolean argsValid = cmd.runCommand(sender, subCommand, subCommandArgs);
+				if(!argsValid)
+				{
+					sender.sendMessage(ChatColor.RED + String.format("[KitsuneChat] Invalid usage of /kc %s. Possible usages:", cmd.getName()));
+					for(String sCmd : cmd.getSubCommands())
+					{
+						if(cmd.senderCanRunCommand(sender, sCmd))
+							sender.sendMessage(ChatColor.YELLOW + "[KitsuneChat] " + cmd.getHelpForSubcommand(sCmd));
+					}
+
+				}
+
+
 			}
 			return true;
 		} else return !command.getName().equalsIgnoreCase("me");
 	}
 	
-	public void printHelp(Player target) {
-		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] KitsuneChat - Channeled Chat System v"+KitsuneChat.getInstance().getDescription().getVersion()+" by CyberKitsune.");
+	private void printHelp(CommandSender target) {
 		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc ? - Help, this command. ");
-		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc party join <name> - Join a party with name <name>. ");
-		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc party list - Lists who is in your party.");
-		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc party leave - Leaves your current party. ");
-		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc party invite <player> - Invites <player> to your current party.");
-		for(KitsuneChannel channel : KitsuneChat.getInstance().channels.values()) {
-			if (channel.hasPermission(target))
-				target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc "+channel.getPrefix()+" - Change default channel to "+channel.getChannelName()+".");
+		ArrayList<String> checkedCommands = new ArrayList<>();
+		for (KCommand cmd : commands.values())
+		{
+			if (checkedCommands.contains(cmd.getName()))
+				continue;
+
+			checkedCommands.add(cmd.getName());
+			if(!cmd.senderCanRunCommand(target, null))
+				continue;
+
+			StringBuilder sb = new StringBuilder(ChatColor.YELLOW.toString());
+			sb.append("[KitsuneChat] /kc ").append(cmd.getName());
+			if(cmd.getAliases().size() > 0)
+			{
+				sb.append(" (or: ");
+				sb.append(String.join(",", cmd.getAliases()));
+				sb.append(")");
+			}
+			sb.append(" - ").append(cmd.getHelp());
+			target.sendMessage(sb.toString());
 		}
-		if (target.hasPermission("kitsunechat.reload"))
-			target.sendMessage("[KitsuneChat] /kc reload - Reload KitsuneChat");
+	}
+
+	private List<String> getCommandNamesForSender(CommandSender s)
+	{
+		ArrayList<String> names = new ArrayList<>();
+		for(Map.Entry<String, KCommand> cmdEntry : commands.entrySet())
+		{
+			KCommand cmd = cmdEntry.getValue();
+
+			if(cmd.senderCanRunCommand(s, null))
+				names.add(cmdEntry.getKey());
+		}
+		return names;
 	}
 
 	@Override
-	public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
+	public List<String> onTabComplete(CommandSender commandSender, Command command, String alias, String[] args) {
 		if (command.getName().equalsIgnoreCase("kc"))
 		{
-			ArrayList<String> possibleCompletions = new ArrayList<>(Arrays.asList("?", "party"));
-			if(commandSender.hasPermission("kitsunechat.reload"))
-				possibleCompletions.add("reload");
-			possibleCompletions.addAll(KitsuneChat.getInstance().channels.keySet());
-
-			final List<String> completions = new ArrayList<>();
-			int checkIndex = 0;
-			if(strings[0].equals("party"))
+			ArrayList<String> possibleCompletions = new ArrayList<>();
+			switch (args.length)
 			{
-				possibleCompletions = new ArrayList<>(Arrays.asList("join", "list", "leave", "invite"));
-				if(strings.length > 1)
-				{
-					checkIndex = 1;
-					switch (strings[1]) {
-						case "join":
-							return Collections.singletonList("<party_name>");
-						case "invite":
-							return null;
-						case "leave":
-						case "list":
-							return Collections.singletonList("");
+				case 0:
+				case 1:
+					// No command specificed, or partial command.
+					possibleCompletions.addAll(getCommandNamesForSender(commandSender));
+					possibleCompletions.add("?");
+					break;
+				case 2:
+				default:
+					// Command specified. Use handler.
+					if(commands.containsKey(args[0]))
+					{
+						KCommand cmd = commands.get(args[0]);
+						String subCommand = null;
+
+						if(args.length > 2)
+							subCommand = args[1];
+						if(cmd.senderCanRunCommand(commandSender, subCommand))
+						{
+							List<String> cmdCompletions = cmd.getPossibleCompletions(commandSender, subCommand);
+							if(cmdCompletions == null)
+								return null;
+							else if(cmdCompletions.isEmpty())
+								return cmdCompletions;
+							else
+								possibleCompletions.addAll(cmdCompletions);
+						}
+
 					}
-				}
-
-			} else if(strings.length > 1)
-			{
-				possibleCompletions = new ArrayList<>();
+					else
+					{
+						return Collections.emptyList();
+					}
 			}
 
+			final List<String> completions = new ArrayList<>();
 
-			StringUtil.copyPartialMatches(strings[checkIndex], possibleCompletions, completions);
+			StringUtil.copyPartialMatches(args[args.length - 1], possibleCompletions, completions);
 
 			Collections.sort(completions);
 
@@ -171,11 +200,11 @@ public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 		}
 		else if(command.getName().equalsIgnoreCase("me"))
 		{
-			return Collections.singletonList("");
+			return Collections.emptyList();
 		}
 		else if(command.getName().equalsIgnoreCase("r"))
 		{
-			return Collections.singletonList("<reply>");
+			return Collections.emptyList();
 		}
 
 		return null;

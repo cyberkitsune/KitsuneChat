@@ -112,6 +112,7 @@ public class ChatListener implements Listener {
 				for (Player p : target_channel.getRecipients(message, evt))
 					p.sendMessage(message);
 				evt.setCancelled(true);
+				KitsuneChat.getInstance().mcLog.info(message); // Log to console for admin review (consider moving logic into postMessage?)
 			} else {
 				// Send in a vanilla way, so we can pass the message to other plugins.
 				evt.setFormat(message.replace("%", "%%"));   // Not sure why, old KC had the replace.
