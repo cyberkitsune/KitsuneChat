@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.cyberkitsune</groupId>
     <artifactId>KitsuneChat</artifactId>
-    <version>2.1.0</version>
+    <version>2.1.1-SNAPSHOT</version>
     <name>KitsuneChat</name>
     <description>A bukkit plugin for chat.</description>
     <build>
