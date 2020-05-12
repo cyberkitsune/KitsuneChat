@@ -49,4 +49,4 @@ permissions:
         default: op
      kitsunechat.partychat:
         description: Allows a user to use chat parties
-        default: false
+        default: op
