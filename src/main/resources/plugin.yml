@@ -1,5 +1,5 @@
 name: KitsuneChat
-version: 2.1.1-SNAPSHOT
+version: ${project.version}
 main: net.cyberkitsune.prefixchat.KitsuneChat
 api-version: "1.15"
 authors: [CyberKitsune, Alynna, Snooper]
