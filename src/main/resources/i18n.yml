@@ -20,6 +20,8 @@ en_US:
     reminder:
       disabled: "&e[KitsuneChat] Disabled reply reminder when private messaged!"
       enabled: "&e[KitsuneChat] Enabled reply reminder when private messaged!"
+    reload:
+      reloaded: "&7[KitsuneChat] KitsuneChat reloaded! >w<"
   messaging:
     reminder: "&8&oYou can use /r to reply to direct messages."
     invalid: "&c[KitsuneChat] Invalid format, use: /msg [Player] [Message]"

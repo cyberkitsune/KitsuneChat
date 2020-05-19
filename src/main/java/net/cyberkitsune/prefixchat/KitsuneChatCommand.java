@@ -98,7 +98,7 @@ public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 				}
 
 				// OK we have perms, have collected arguments, now we run the command.
-				boolean argsValid = cmd.runCommand(sender, subCommand, subCommandArgs);
+				boolean argsValid = cmd.runCommand(sender, subCommand, subCommandArgs, locale);
 				if(!argsValid)
 				{
 					sender.sendMessage(ChatColor.RED + String.format(LocalizedString.get("badusage", locale), cmd.getName()));

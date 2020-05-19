@@ -47,12 +47,7 @@ public class ChannelCommand implements KCommand {
     }
 
     @Override
-    public boolean runCommand(CommandSender sender, String subCommand, String[] args) {
-        String locale;
-        if(sender instanceof Player)
-            locale = ((Player) sender).getLocale();
-        else
-            locale = "en_US";
+    public boolean runCommand(CommandSender sender, String subCommand, String[] args, String locale) {
         if (subCommand == null)
             return false;
 

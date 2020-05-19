@@ -60,7 +60,7 @@ public class PartyCommand implements KCommand {
     }
 
     @Override
-    public boolean runCommand(CommandSender sender, String command, String[] args) {
+    public boolean runCommand(CommandSender sender, String command, String[] args, String locale) {
         if (command == null)
             return false;
 

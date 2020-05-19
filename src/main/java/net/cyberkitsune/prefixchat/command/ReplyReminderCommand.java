@@ -44,7 +44,7 @@ public class ReplyReminderCommand implements KCommand {
     }
 
     @Override
-    public boolean runCommand(CommandSender sender, String subCommand, String[] subCommandArgs) {
+    public boolean runCommand(CommandSender sender, String subCommand, String[] subCommandArgs, String locale) {
         if (subCommand == null)
             return false;
 
@@ -52,12 +52,12 @@ public class ReplyReminderCommand implements KCommand {
             case "off":
                 // Disable /r warning when player gets a /msg until enabled
                 KitsuneChatUserData.getInstance().setReplyReminderSetting((Player) sender, true);
-                sender.sendMessage(LocalizedString.get("commands.reminder.disabled"));
+                sender.sendMessage(LocalizedString.get("commands.reminder.disabled", locale));
                 return true;
             case "on":
                 // Re-enable /r warning
                 KitsuneChatUserData.getInstance().setReplyReminderSetting((Player) sender, false);
-                sender.sendMessage(LocalizedString.get("commands.reminder.enabled"));
+                sender.sendMessage(LocalizedString.get("commands.reminder.enabled", locale));
                 return true;
         }
         return false;
