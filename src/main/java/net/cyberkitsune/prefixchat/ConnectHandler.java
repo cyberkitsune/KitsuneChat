@@ -35,7 +35,7 @@ public class ConnectHandler implements Listener {
 				KitsuneChat.getInstance().mcLog.info(String.format("[KitsuneChat] %s's locale is %s",evt.getPlayer().getDisplayName(),
 						evt.getPlayer().getLocale()));
 			}
-		}, 100 );
+		}, 80 );
 
 		// A friendly reminder....
 		String currentChannel = KitsuneChatUserData.getInstance().getUserChannel(evt.getPlayer());
@@ -44,8 +44,15 @@ public class ConnectHandler implements Listener {
 			KitsuneChannel channel = KitsuneChat.getInstance().getChannelByPrefix(currentChannel);
 			if (channel != null)
 			{
-				evt.getPlayer().sendMessage(String.format(LocalizedString.get("defwarning", evt.getPlayer().getLocale()),
-						channel.getChannelName(), KitsuneChat.getInstance().getConfig().getString("channels.default")));
+				// Need to do this a bit later, as locale isn't set right away
+				KitsuneChat.getInstance().getServer().getScheduler().scheduleSyncDelayedTask( KitsuneChat.getInstance(), new Runnable()
+				{
+					public void run()
+					{
+						evt.getPlayer().sendMessage(String.format(LocalizedString.get("defwarning", evt.getPlayer().getLocale()),
+								channel.getChannelName(), KitsuneChat.getInstance().getConfig().getString("channels.default")));
+					}
+				}, 80 );
 
 			}
 		}
