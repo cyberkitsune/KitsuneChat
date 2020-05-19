@@ -67,7 +67,8 @@ public class UserMessaging implements CommandExecutor, Listener {
 				KitsuneChat.getInstance().getServer().getConsoleSender().sendMessage(formatMessage(player, "Me", message));
 			} else {
 				target.sendMessage(formatMessage(player, "Me", message));
-				if (!replyWarned.contains(target.getDisplayName())) {
+				// Let player know once they can /r to a /msg if they haven't been already.
+				if (!replyWarned.contains(target.getDisplayName()) && !KitsuneChatUserData.getInstance().getReplyReminderSetting(target)) {
 					target.sendMessage(ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "You can use /r to reply to direct messages.");
 					replyWarned.add(target.getDisplayName());
 				}
@@ -211,6 +212,7 @@ public class UserMessaging implements CommandExecutor, Listener {
 	}
 
 	@EventHandler
+	// Reset the player to be warned again about /r when they reconnect
 	public void onLeave(PlayerQuitEvent evt) {
 		replyWarned.remove(evt.getPlayer().getDisplayName());
 	}
