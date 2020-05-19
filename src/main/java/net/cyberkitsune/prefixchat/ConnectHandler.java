@@ -28,8 +28,14 @@ public class ConnectHandler implements Listener {
 			KitsuneChatUserData.getInstance().setUserChannel(evt.getPlayer(), KitsuneChat.getInstance().getConfig().getString("channels.default"));
 		}
 
-		KitsuneChat.getInstance().mcLog.info(String.format("[KitsuneChat] %s's locale is %s",evt.getPlayer().getDisplayName(),
-				evt.getPlayer().getLocale()));
+		KitsuneChat.getInstance().getServer().getScheduler().scheduleSyncDelayedTask( KitsuneChat.getInstance(), new Runnable()
+		{
+			public void run()
+			{
+				KitsuneChat.getInstance().mcLog.info(String.format("[KitsuneChat] %s's locale is %s",evt.getPlayer().getDisplayName(),
+						evt.getPlayer().getLocale()));
+			}
+		}, 100 );
 
 		// A friendly reminder....
 		String currentChannel = KitsuneChatUserData.getInstance().getUserChannel(evt.getPlayer());
