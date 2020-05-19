@@ -37,7 +37,7 @@ public class LocalizedString {
         if(lf.contains(locale+"."+key))
             message = lf.getString(locale+"."+key);
         else
-            message = "&4&l[TRANSLATION MISSING]";
+            message = String.format("&4&l[MISSING %s %s]", locale, key);
 
         if(colorized) {
             assert message != null;
