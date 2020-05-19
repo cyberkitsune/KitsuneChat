@@ -1,4 +1,4 @@
-en_US:
+en_us:
   dashnotice: "&7&o(Your message ended with --, will append next message to it.)"
   configissue: "&c[KitsuneChat] You tried to talk in a channel that doesn't exist, and the default doesn't exist either. This is a configuration issue, ask your server admin."
   changepartyfrom: "&e[KitsuneChat] Changing party from %s to %s"
@@ -58,3 +58,4 @@ en_US:
       nobody: "&7(Nobody can hear you, try talking in a different channel. Use /kc ? for help.)"
     party:
       notin: "%e[KitsuneChat] You are not currently in a chat party."
+es_mx:
