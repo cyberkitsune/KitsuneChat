@@ -46,4 +46,5 @@ bungee-tag: "default"
 bungee-receive: false
 bungee-console-log: true
 modify-join-leave: true
+# Set this to true to fallback to english on a missing translation instead of displaying an error.
 missing-translation-fallback: true
