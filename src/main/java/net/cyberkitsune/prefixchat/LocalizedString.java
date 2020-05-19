@@ -42,7 +42,7 @@ public class LocalizedString {
             message = lf.getString(locale+"."+key);
         }
         else
-            message = String.format("&4&l[MISSING %s %s]", locale, key);
+            message = String.format("&4&l[MISSING %s %s]&r", locale, key);
 
         if(colorized) {
             assert message != null;
