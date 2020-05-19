@@ -32,10 +32,15 @@ public class LocalizedString {
             return "";
 
         if(!lf.contains(locale))
-            locale = "en_US";
+            locale = "en_us";
         String message;
         if(lf.contains(locale+"."+key))
             message = lf.getString(locale+"."+key);
+        else if(KitsuneChat.getInstance().config.getBoolean("missing-translation-fallback"))
+        {
+            locale = "en_us";
+            message = lf.getString(locale+"."+key);
+        }
         else
             message = String.format("&4&l[MISSING %s %s]", locale, key);
 

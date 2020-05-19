@@ -46,3 +46,4 @@ bungee-tag: "default"
 bungee-receive: false
 bungee-console-log: true
 modify-join-leave: true
+missing-translation-fallback: true
