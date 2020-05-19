@@ -43,7 +43,7 @@ en_us:
       accept: "[ACCEPT]"
       click: "Click to join "
       invitedtohere: "&a[KitsuneChat] %s&a invited %s&a to the party"
-      list: "&e[KitsuneChat] Party Members (%i): %s"
+      list: "&e[KitsuneChat] Party Members (%d): %s"
 
   messaging:
     reminder: "&8&oYou can use /r to reply to direct messages."
