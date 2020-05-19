@@ -33,9 +33,11 @@ public class LocalizedString {
 
         if(!lf.contains(locale))
             locale = "en_US";
-        String message = "";
+        String message;
         if(lf.contains(locale+"."+key))
             message = lf.getString(locale+"."+key);
+        else
+            message = "&4&l[TRANSLATION MISSING]";
 
         if(colorized) {
             assert message != null;
