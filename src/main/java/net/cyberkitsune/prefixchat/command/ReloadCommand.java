@@ -28,7 +28,7 @@ public class ReloadCommand implements KCommand {
     @Override
     public boolean runCommand(CommandSender sender, String command, String[] args, String locale) {
         KitsuneChat.getInstance().reload();
-        sender.sendMessage(LocalizedString.get("command.reload.reloaded", locale));
+        sender.sendMessage(LocalizedString.get("commands.reload.reloaded", locale));
         return true;
     }
 
