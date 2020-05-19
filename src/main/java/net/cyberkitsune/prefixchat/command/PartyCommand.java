@@ -60,7 +60,7 @@ public class PartyCommand implements KCommand {
                 {
                     ChatParties.getInstance().changeParty((Player) sender, args[0].toLowerCase());
                     KitsuneChatUserData.getInstance().setUserChannel((Player) sender, KitsuneChat.getInstance().getConfig().getString("channels.party.prefix"));
-                    sender.sendMessage(ChatColor.YELLOW + "[KitsuneChat] You have joined the party " + args[0].toLowerCase() + "!");
+                    sender.sendMessage(String.format(LocalizedString.get("commands.party.joined", locale), args[0].toLowerCase()));
                     return true;
                 }
                 else
@@ -76,19 +76,18 @@ public class PartyCommand implements KCommand {
                     if (ChatParties.getInstance().isInAParty((Player) sender)) {
                         Player target = KitsuneChat.getInstance().getServer().getPlayer(args[0]);
                         if (target != null) {
-                            ComponentBuilder cb = new ComponentBuilder("[KitsuneChat] ").
-                                    color(net.md_5.bungee.api.ChatColor.YELLOW).append(sender.getName())
-                                    .color(net.md_5.bungee.api.ChatColor.YELLOW).append(" has invited you to a party! Click here to join: ")
-                                    .color(net.md_5.bungee.api.ChatColor.YELLOW).append("[ACCEPT]")
+                            ComponentBuilder cb = new ComponentBuilder(String.format(LocalizedString.get("commands.party.invited", locale),sender.getName()))
+                                    .append(LocalizedString.get("commands.party.accept", locale))
                                     .color(net.md_5.bungee.api.ChatColor.GREEN).bold(true).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/kc party join " + ChatParties.getInstance().getPartyName((Player) sender)))
-                                    .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("Click to join " + ChatParties.getInstance().getPartyName((Player) sender)).create()));
+                                    .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(LocalizedString.get("commands.party.click", locale) + ChatParties.getInstance().getPartyName((Player) sender)).create()));
                             target.spigot().sendMessage(cb.create());
-                            ChatParties.getInstance().notifyParty(ChatParties.getInstance().getPartyName((Player) sender), ChatColor.GREEN + "[KitsuneChat] " + sender.getName() + " invited " + target.getDisplayName() + ChatColor.GREEN + " to the party.");
+                            ChatParties.getInstance().notifyParty(ChatParties.getInstance().getPartyName((Player) sender),
+                                    String.format(LocalizedString.get("commands.party.invitedtohere"), sender.getName(), target.getDisplayName()));
                         } else {
-                            sender.sendMessage(ChatColor.RED + "[KitsuneChat] That player does not exist!");
+                            sender.sendMessage(LocalizedString.get("commands.party.notexist", locale));
                         }
                     } else {
-                        sender.sendMessage(ChatColor.RED + "[KitsuneChat] You aren't in a party!");
+                        sender.sendMessage(LocalizedString.get("commands.party.notinparty", locale));
                     }
                     return true;
                 }
@@ -107,7 +106,7 @@ public class PartyCommand implements KCommand {
                     sender.sendMessage(ChatColor.YELLOW + "[KitsuneChat] " + partyMembers.size() + ((partyMembers.size() == 1) ? " person " : " people ") + "in the party.");
                     sender.sendMessage(ChatColor.YELLOW + "[KitsuneChat] They are: " + playerlist + ".");
                 } else {
-                    sender.sendMessage(ChatColor.RED + "[KitsuneChat] You are not in a party!");
+                    sender.sendMessage((LocalizedString.get("commands.party.notinparty", locale)));
                 }
                 return true;
             default:

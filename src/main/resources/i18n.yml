@@ -36,6 +36,13 @@ en_US:
         leave: "/kc party leave - Leaves a chat party"
         invite: "/kc party invite <name> - Invites a user to join your chat party."
         list: "/kc party list - Shows who is in your current chat party."
+      joined: "&e[KitsuneChat] You have joined the party %s!"
+      notexist: "&c[KitsuneChat] That player does not exist!"
+      notinparty: "&c[KitsuneChat] You are not in a party!"
+      invited: "&e[KitsuneChat] %s has invited you to a party! Click here to join: "
+      accept: "[ACCEPT]"
+      click: "Click to join "
+      invitedtohere: "&a[KitsuneChat] %s&a invited %s&a to the party"
 
   messaging:
     reminder: "&8&oYou can use /r to reply to direct messages."
