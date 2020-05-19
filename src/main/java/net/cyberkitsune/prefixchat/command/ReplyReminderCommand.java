@@ -1,6 +1,7 @@
 package net.cyberkitsune.prefixchat.command;
 
 import net.cyberkitsune.prefixchat.KitsuneChatUserData;
+import net.cyberkitsune.prefixchat.LocalizedString;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -51,12 +52,12 @@ public class ReplyReminderCommand implements KCommand {
             case "off":
                 // Disable /r warning when player gets a /msg until enabled
                 KitsuneChatUserData.getInstance().setReplyReminderSetting((Player) sender, true);
-                sender.sendMessage(ChatColor.YELLOW+"[KitsuneChat] Disabled reply reminder when private messaged!");
+                sender.sendMessage(LocalizedString.get("commands.reminder.disabled"));
                 return true;
             case "on":
                 // Re-enable /r warning
                 KitsuneChatUserData.getInstance().setReplyReminderSetting((Player) sender, false);
-                sender.sendMessage(ChatColor.YELLOW+"[KitsuneChat] Enabled reply reminder when private messaged!");
+                sender.sendMessage(LocalizedString.get("commands.reminder.enabled"));
                 return true;
         }
         return false;

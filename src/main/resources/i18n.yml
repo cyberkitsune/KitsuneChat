@@ -17,6 +17,9 @@ en_US:
       or: "or"
     channel:
       default: "&e[KitsuneChat] Default chat now set to %s"
+    reminder:
+      disabled: "&e[KitsuneChat] Disabled reply reminder when private messaged!"
+      enabled: "&e[KitsuneChat] Enabled reply reminder when private messaged!"
   messaging:
     reminder: "&8&oYou can use /r to reply to direct messages."
     invalid: "&c[KitsuneChat] Invalid format, use: /msg [Player] [Message]"
