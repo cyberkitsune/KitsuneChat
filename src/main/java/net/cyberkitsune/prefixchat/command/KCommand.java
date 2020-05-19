@@ -71,7 +71,7 @@ public interface KCommand {
     boolean runCommand(CommandSender sender, String subCommand, String[] subCommandArgs);
 
     /**
-     * Get a list of possble tab-completions for this command. Default implementation checks permissions for subcommands.
+     * Get a list of possible tab-completions for this command. Default implementation checks permissions for subcommands.
      * @param sender CommandSender sending the command
      * @param subCommand subCommand to tab complete, or null if none.
      * @return A list of possible completions for the given sender and subcommand
