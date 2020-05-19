@@ -22,20 +22,13 @@ public class ReplyReminderCommand implements KCommand {
     }
 
     @Override
-    public String getHelp() {
-        return "Disable or enable the reminder when receiving your first private message.";
+    public String getHelp(String locale) {
+        return LocalizedString.get("commands.reminder.help", locale);
     }
 
     @Override
-    public String getHelpForSubcommand(String subCommand) {
-        switch (subCommand) {
-            case "off":
-                return "/kc reminder off - Disables reply reminder after receiving a message.";
-            case "on":
-                return "/kc remidner on - Enables reply reminder after receiving a message.";
-            default:
-                return "";
-        }
+    public String getHelpForSubcommand(String subCommand, String locale) {
+        return LocalizedString.get("commands.reminder.subcommandhelp."+subCommand, locale);
     }
 
     @Override

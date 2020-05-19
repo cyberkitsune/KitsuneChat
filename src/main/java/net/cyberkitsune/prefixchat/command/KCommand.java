@@ -42,7 +42,7 @@ public interface KCommand {
      * Retrieve the help information for the command (not any subcommands)
      * @return A string with command help
      */
-    String getHelp();
+    String getHelp(String locale);
 
     /**
      * Retrieve the usage information for a given command's subcommand.
@@ -50,7 +50,7 @@ public interface KCommand {
      * @param subCommand The subcommand string to get help for
      * @return The help text, or empty string
      */
-    default String getHelpForSubcommand(String subCommand)
+    default String getHelpForSubcommand(String subCommand, String locale)
     {
         return "";
     }

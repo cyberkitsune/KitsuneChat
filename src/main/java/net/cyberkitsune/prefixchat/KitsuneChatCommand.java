@@ -105,7 +105,7 @@ public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 					for(String sCmd : cmd.getSubCommands())
 					{
 						if(cmd.senderCanRunCommand(sender, sCmd))
-							sender.sendMessage(ChatColor.YELLOW + "[KitsuneChat] " + cmd.getHelpForSubcommand(sCmd));
+							sender.sendMessage(ChatColor.YELLOW + "[KitsuneChat] " + cmd.getHelpForSubcommand(sCmd, locale));
 					}
 
 				}
@@ -142,7 +142,7 @@ public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 				sb.append(String.join(",", cmd.getAliases()));
 				sb.append(")");
 			}
-			sb.append(" - ").append(cmd.getHelp());
+			sb.append(" - ").append(cmd.getHelp(locale));
 			target.sendMessage(sb.toString());
 		}
 	}

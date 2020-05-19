@@ -3,6 +3,7 @@ package net.cyberkitsune.prefixchat.command;
 import net.cyberkitsune.prefixchat.ChatParties;
 import net.cyberkitsune.prefixchat.KitsuneChat;
 import net.cyberkitsune.prefixchat.KitsuneChatUserData;
+import net.cyberkitsune.prefixchat.LocalizedString;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -33,25 +34,13 @@ public class PartyCommand implements KCommand {
     }
 
     @Override
-    public String getHelp() {
-        return "Allows you to create, join, leave, or invite people to a chat party.";
+    public String getHelp(String locale) {
+        return LocalizedString.get("commands.party.help", locale);
     }
 
     @Override
-    public String getHelpForSubcommand(String subCommand) {
-        switch (subCommand)
-        {
-            case "join":
-                return "/kc party join <name> - Joins a chat party by name.";
-            case "leave":
-                return "/kc party leave - Leaves a chat party";
-            case "invite":
-                return "/kc party invite <name> - Invites a user to join your chat party.";
-            case "list":
-                return "/kc party list - Shows who is in your current chat party.";
-            default:
-                return "";
-        }
+    public String getHelpForSubcommand(String subCommand, String locale) {
+        return LocalizedString.get("commands.party.subcommandhelp."+subCommand, locale);
     }
 
     @Override

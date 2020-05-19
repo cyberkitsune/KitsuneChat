@@ -16,8 +16,8 @@ public class ReloadCommand implements KCommand {
     }
 
     @Override
-    public String getHelp() {
-        return "Reloads the plugin";
+    public String getHelp(String locale) {
+        return LocalizedString.get("commands.reload.help");
     }
 
     @Override

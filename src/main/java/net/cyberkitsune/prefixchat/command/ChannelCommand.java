@@ -31,13 +31,13 @@ public class ChannelCommand implements KCommand {
     }
 
     @Override
-    public String getHelp() {
-        return "Changes your current default chat channel.";
+    public String getHelp(String locale) {
+        return LocalizedString.get("commands.channel.help", locale);
     }
 
     @Override
-    public String getHelpForSubcommand(String subCommand) {
-        return String.format("/kc channel %s - Changes your chat channel to %s", subCommand,
+    public String getHelpForSubcommand(String subCommand, String locale) {
+        return String.format(LocalizedString.get("commands.channel.subcommand-help", locale), subCommand,
                 KitsuneChat.getInstance().channels.get(subCommand).getChannelName());
     }
 

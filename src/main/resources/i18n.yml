@@ -17,11 +17,26 @@ en_US:
       or: "or"
     channel:
       default: "&e[KitsuneChat] Default chat now set to %s"
+      help: "Changes your current default chat channel."
+      subcommand-help: "/kc channel %s - Changes your chat channel to %s"
     reminder:
       disabled: "&e[KitsuneChat] Disabled reply reminder when private messaged!"
       enabled: "&e[KitsuneChat] Enabled reply reminder when private messaged!"
+      help: "Disable or enable the reminder when receiving your first private message."
+      subcommandhelp:
+        off: "/kc reminder off - Disables reply reminder after receiving a message."
+        on: "/kc remidner on - Enables reply reminder after receiving a message."
     reload:
+      help: "Reloads the plugin"
       reloaded: "&7[KitsuneChat] KitsuneChat reloaded! >w<"
+    party:
+      help: "Allows you to create, join, leave, or invite people to a chat party."
+      subcommandhelp:
+        join: "/kc party join <name> - Joins a chat party by name."
+        leave: "/kc party leave - Leaves a chat party"
+        invite: "/kc party invite <name> - Invites a user to join your chat party."
+        list: "/kc party list - Shows who is in your current chat party."
+
   messaging:
     reminder: "&8&oYou can use /r to reply to direct messages."
     invalid: "&c[KitsuneChat] Invalid format, use: /msg [Player] [Message]"
