@@ -1,8 +1,6 @@
 package net.cyberkitsune.prefixchat;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -11,13 +9,18 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.google.common.base.Joiner;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerQuitEvent;
 
-public class UserMessaging implements CommandExecutor {
+public class UserMessaging implements CommandExecutor, Listener {
 	
 	private Map<String, String> replies;
+	private List<String> replyWarned;
 	
 	public UserMessaging() {
 		replies = new HashMap<String, String>();
+		replyWarned = new ArrayList<String>();
 	}
 	
 	/**
@@ -64,6 +67,11 @@ public class UserMessaging implements CommandExecutor {
 				KitsuneChat.getInstance().getServer().getConsoleSender().sendMessage(formatMessage(player, "Me", message));
 			} else {
 				target.sendMessage(formatMessage(player, "Me", message));
+				// Let player know once they can /r to a /msg if they haven't been already.
+				if (!replyWarned.contains(target.getDisplayName()) && !KitsuneChatUserData.getInstance().getReplyReminderSetting(target)) {
+					target.sendMessage(ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "You can use /r to reply to direct messages.");
+					replyWarned.add(target.getDisplayName());
+				}
 			}
 			
 			// Display message to sender
@@ -203,4 +211,9 @@ public class UserMessaging implements CommandExecutor {
 		return false;
 	}
 
+	@EventHandler
+	// Reset the player to be warned again about /r when they reconnect
+	public void onLeave(PlayerQuitEvent evt) {
+		replyWarned.remove(evt.getPlayer().getDisplayName());
+	}
 }

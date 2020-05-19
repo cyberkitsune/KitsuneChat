@@ -91,6 +91,17 @@ public class KitsuneChatUserData {
 		return userData.getString(target.getName()+".channel");
 	}
 	
-	
+	public void setReplyReminderSetting(Player target, boolean setting) {
+		userData.set(target.getName()+".replysetting", setting);
+		try {
+			userData.save(dataFile);
+		} catch (Exception ex) {
+			KitsuneChat.getInstance().mcLog.severe("[KitsuneChat] Unable to save user data file!");
+		}
+	}
+
+	public boolean getReplyReminderSetting(Player target) {
+		return userData.getBoolean(target.getName()+".replysetting");
+	}
 	
 }
