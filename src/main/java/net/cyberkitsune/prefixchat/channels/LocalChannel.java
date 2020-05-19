@@ -2,6 +2,7 @@ package net.cyberkitsune.prefixchat.channels;
 
 import net.cyberkitsune.prefixchat.KitsuneChat;
 import net.cyberkitsune.prefixchat.KitsuneChatUtils;
+import net.cyberkitsune.prefixchat.LocalizedString;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -24,7 +25,7 @@ public class LocalChannel implements KitsuneChannel {
         Collection<? extends Player> sentPlayers = getRecipients(evt);
         if (sentPlayers.size() <= 1 && KitsuneChat.getInstance().getConfig().getBoolean("channels.local.warnifalone"))
         {
-            evt.getPlayer().sendMessage(ChatColor.GRAY+"(Nobody can hear you, try talking in a different channel. Use /kc ? for help.)");
+            evt.getPlayer().sendMessage(LocalizedString.get("channel.local.nobody", evt.getPlayer().getLocale()));
         }
         for(Player p : KitsuneChat.getInstance().getServer().getOnlinePlayers())
         {

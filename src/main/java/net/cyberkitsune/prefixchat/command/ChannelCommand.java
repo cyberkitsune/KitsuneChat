@@ -2,6 +2,7 @@ package net.cyberkitsune.prefixchat.command;
 
 import net.cyberkitsune.prefixchat.KitsuneChat;
 import net.cyberkitsune.prefixchat.KitsuneChatUserData;
+import net.cyberkitsune.prefixchat.LocalizedString;
 import net.cyberkitsune.prefixchat.channels.KitsuneChannel;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -30,13 +31,13 @@ public class ChannelCommand implements KCommand {
     }
 
     @Override
-    public String getHelp() {
-        return "Changes your current default chat channel.";
+    public String getHelp(String locale) {
+        return LocalizedString.get("commands.channel.help", locale);
     }
 
     @Override
-    public String getHelpForSubcommand(String subCommand) {
-        return String.format("/kc channel %s - Changes your chat channel to %s", subCommand,
+    public String getHelpForSubcommand(String subCommand, String locale) {
+        return String.format(LocalizedString.get("commands.channel.subcommand-help", locale), subCommand,
                 KitsuneChat.getInstance().channels.get(subCommand).getChannelName());
     }
 
@@ -46,7 +47,7 @@ public class ChannelCommand implements KCommand {
     }
 
     @Override
-    public boolean runCommand(CommandSender sender, String subCommand, String[] args) {
+    public boolean runCommand(CommandSender sender, String subCommand, String[] args, String locale) {
         if (subCommand == null)
             return false;
 
@@ -55,7 +56,7 @@ public class ChannelCommand implements KCommand {
 
         KitsuneChannel ch = KitsuneChat.getInstance().channels.get(subCommand);
         KitsuneChatUserData.getInstance().setUserChannel((Player) sender, ch.getPrefix());
-        sender.sendMessage(ChatColor.YELLOW + "[KitsuneChat] Default chat now set to " + ch.getChannelName());
+        sender.sendMessage(String.format(LocalizedString.get("commands.channel.default", locale),ch.getChannelName()));
         return true;
     }
 

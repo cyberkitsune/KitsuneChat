@@ -1,6 +1,7 @@
 package net.cyberkitsune.prefixchat.command;
 
 import net.cyberkitsune.prefixchat.KitsuneChat;
+import net.cyberkitsune.prefixchat.LocalizedString;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -15,8 +16,8 @@ public class ReloadCommand implements KCommand {
     }
 
     @Override
-    public String getHelp() {
-        return "Reloads the plugin";
+    public String getHelp(String locale) {
+        return LocalizedString.get("commands.reload.help", locale);
     }
 
     @Override
@@ -25,9 +26,9 @@ public class ReloadCommand implements KCommand {
     }
 
     @Override
-    public boolean runCommand(CommandSender sender, String command, String[] args) {
+    public boolean runCommand(CommandSender sender, String command, String[] args, String locale) {
         KitsuneChat.getInstance().reload();
-        sender.sendMessage(ChatColor.GRAY + "[KitsuneChat] KitsuneChat reloaded! >w<");
+        sender.sendMessage(LocalizedString.get("commands.reload.reloaded", locale));
         return true;
     }
 

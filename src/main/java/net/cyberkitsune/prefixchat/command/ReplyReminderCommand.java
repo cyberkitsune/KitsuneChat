@@ -1,6 +1,7 @@
 package net.cyberkitsune.prefixchat.command;
 
 import net.cyberkitsune.prefixchat.KitsuneChatUserData;
+import net.cyberkitsune.prefixchat.LocalizedString;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -21,20 +22,13 @@ public class ReplyReminderCommand implements KCommand {
     }
 
     @Override
-    public String getHelp() {
-        return "Disable or enable the reminder when receiving your first private message.";
+    public String getHelp(String locale) {
+        return LocalizedString.get("commands.reminder.help", locale);
     }
 
     @Override
-    public String getHelpForSubcommand(String subCommand) {
-        switch (subCommand) {
-            case "off":
-                return "/kc reminder off - Disables reply reminder after receiving a message.";
-            case "on":
-                return "/kc remidner on - Enables reply reminder after receiving a message.";
-            default:
-                return "";
-        }
+    public String getHelpForSubcommand(String subCommand, String locale) {
+        return LocalizedString.get("commands.reminder.subcommandhelp."+subCommand, locale);
     }
 
     @Override
@@ -43,7 +37,7 @@ public class ReplyReminderCommand implements KCommand {
     }
 
     @Override
-    public boolean runCommand(CommandSender sender, String subCommand, String[] subCommandArgs) {
+    public boolean runCommand(CommandSender sender, String subCommand, String[] subCommandArgs, String locale) {
         if (subCommand == null)
             return false;
 
@@ -51,12 +45,12 @@ public class ReplyReminderCommand implements KCommand {
             case "off":
                 // Disable /r warning when player gets a /msg until enabled
                 KitsuneChatUserData.getInstance().setReplyReminderSetting((Player) sender, true);
-                sender.sendMessage(ChatColor.YELLOW+"[KitsuneChat] Disabled reply reminder when private messaged!");
+                sender.sendMessage(LocalizedString.get("commands.reminder.disabled", locale));
                 return true;
             case "on":
                 // Re-enable /r warning
                 KitsuneChatUserData.getInstance().setReplyReminderSetting((Player) sender, false);
-                sender.sendMessage(ChatColor.YELLOW+"[KitsuneChat] Enabled reply reminder when private messaged!");
+                sender.sendMessage(LocalizedString.get("commands.reminder.enabled", locale));
                 return true;
         }
         return false;

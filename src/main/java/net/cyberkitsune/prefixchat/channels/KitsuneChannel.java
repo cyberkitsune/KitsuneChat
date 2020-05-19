@@ -1,7 +1,9 @@
 package net.cyberkitsune.prefixchat.channels;
 
+import jdk.vm.ci.meta.Local;
 import net.cyberkitsune.prefixchat.KitsuneChat;
 import net.cyberkitsune.prefixchat.KitsuneChatUserData;
+import net.cyberkitsune.prefixchat.LocalizedString;
 import net.cyberkitsune.prefixchat.MessageTagger;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -55,14 +57,16 @@ public interface KitsuneChannel {
             // Step 1, see if the user was trying to talk here by default, move em.
             if(KitsuneChatUserData.getInstance().getUserChannel(context.getPlayer()).equals(getPrefix()))
             {
-                context.getPlayer().sendMessage(
-                        ChatColor.GRAY+"(You do not have permission to talk in " + getChannelName() + " by default. Changing you to default chat.)");
+                context.getPlayer().sendMessage(String.format(LocalizedString.get("channel.nodefperms",
+                        context.getPlayer().getLocale()), getChannelName()));
+
                 KitsuneChatUserData.getInstance().setUserChannel(context.getPlayer(),
                         KitsuneChat.getInstance().getConfig().getString("channels.default"));
             }
             else
             {
-                context.getPlayer().sendMessage(ChatColor.RED+ "You do not have permissions to use "+ getChannelName() +" chat.");
+                context.getPlayer().sendMessage(String.format(LocalizedString.get("channel.noperms",
+                        context.getPlayer().getLocale()), getChannelName()));
             }
         }
         return hasPerms;

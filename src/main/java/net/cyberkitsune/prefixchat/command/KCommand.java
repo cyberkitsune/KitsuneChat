@@ -42,7 +42,7 @@ public interface KCommand {
      * Retrieve the help information for the command (not any subcommands)
      * @return A string with command help
      */
-    String getHelp();
+    String getHelp(String locale);
 
     /**
      * Retrieve the usage information for a given command's subcommand.
@@ -50,7 +50,7 @@ public interface KCommand {
      * @param subCommand The subcommand string to get help for
      * @return The help text, or empty string
      */
-    default String getHelpForSubcommand(String subCommand)
+    default String getHelpForSubcommand(String subCommand, String locale)
     {
         return "";
     }
@@ -68,7 +68,7 @@ public interface KCommand {
      * @param subCommandArgs The given subCommand args to use, if there are any, else empty array.
      * @return true if the usage was correct, false if not (usage help will be displayed)
      */
-    boolean runCommand(CommandSender sender, String subCommand, String[] subCommandArgs);
+    boolean runCommand(CommandSender sender, String subCommand, String[] subCommandArgs, String locale);
 
     /**
      * Get a list of possible tab-completions for this command. Default implementation checks permissions for subcommands.

@@ -51,8 +51,7 @@ public class ChatListener implements Listener {
 				bufs.put(evt.getPlayer(),
 						bufs.get(evt.getPlayer()) + " " + evt.getMessage().substring(0, evt.getMessage().length() - 2));
 			}
-			evt.getPlayer().sendMessage(ChatColor.GRAY + "" + ChatColor.ITALIC
-					+ "(Your message ended with --, will append next message to it.)");
+			evt.getPlayer().sendMessage(LocalizedString.get("dashnotice", evt.getPlayer().getLocale()));
 			return;
 		} else {
 			if (bufs.get(evt.getPlayer()) != null)
@@ -94,8 +93,7 @@ public class ChatListener implements Listener {
 			if (default_channel == null)
 			{
 				KitsuneChat.getInstance().mcLog.severe("[KitsuneChat] Default channel doesn't actually exist! Check your config!");
-				evt.getPlayer().sendMessage(ChatColor.RED + "[KitsuneChat] You tried to talk in a channel that doesn't exist, and the default doesn't exist either." +
-						" This is a configuration issue, ask your server admin.");
+				evt.getPlayer().sendMessage(LocalizedString.get("configissue", evt.getPlayer().getLocale()));
 				evt.setCancelled(true);
 				return;
 			}

@@ -25,20 +25,22 @@ public class ChatParties {
 	public HashMap<Player, String> partyData = new HashMap<Player, String>();
 	
 	public void changeParty(Player target, String name) {
-		if(name == "" || name == null) {
+		if(name.equals("")) {
 			if(isInAParty(target)) {
 				partyData.remove(target);
 				return;
 			}
 			return;
 		}
+		String locale = target.getLocale();
 		if(!partyData.containsKey(target))
 		{
-			notifyParty(name, ChatColor.YELLOW+"[KitsuneChat] "+target.getDisplayName()+" has joined the party "+name);
+			notifyParty(name, String.format(LocalizedString.get("joinedparty", locale), target.getDisplayName(), name));
 		} else {
-			target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] Changing party from "+partyData.get(target)+" to "+name);
-			notifyParty(partyData.get(target), ChatColor.YELLOW+"[KitsuneChat] "+target.getDisplayName()+" has left "+partyData.get(target));
-			notifyParty(name, ChatColor.YELLOW+"[KitsuneChat] "+target.getDisplayName()+" has joined "+name);
+
+			target.sendMessage(String.format(LocalizedString.get("changepartyfrom", locale), partyData.get(target), name));
+			notifyParty(partyData.get(target), String.format(LocalizedString.get("hasleft", locale), target.getDisplayName(), partyData.get(target)));
+			notifyParty(name, String.format(LocalizedString.get("hasjoined", locale), target.getDisplayName(), name));
 			partyData.remove(target);
 
 		}
@@ -74,7 +76,8 @@ public class ChatParties {
 			partyData.remove(target);
 			
 		} else {
-			notifyParty(party, ChatColor.YELLOW+"[KitsuneChat] "+target.getDisplayName()+" has left "+party+".");
+			notifyParty(party, ChatColor.YELLOW+"[KitsuneChat] "+target.getDisplayName()+
+					LocalizedString.get("hasleft", target.getLocale())+party+".");
 			partyData.remove(target);
 			KitsuneChatUserData.getInstance().setUserParty(target, "");
 		}
