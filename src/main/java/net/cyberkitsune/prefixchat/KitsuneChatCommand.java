@@ -51,20 +51,25 @@ public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 	public boolean onCommand(@NotNull CommandSender sender, Command command,
 							 @NotNull String label, @NotNull String[] args) {
 		if (command.getName().equalsIgnoreCase("kc")) {
+			String locale;
+			if(sender instanceof Player)
+				locale = ((Player) sender).getLocale();
+			else
+				locale = "en_US";
 			// Step one, check if a command was not requested, or if help was requested specifically.
 			if (args.length < 1)
 			{
-				sender.sendMessage(ChatColor.RED + "[KitsuneChat] No command specified. Possible commands:");
+				sender.sendMessage(LocalizedString.get("nocommand", locale));
 				printHelp(sender);
 			}
 			else if (args[0].equals("?"))
 			{
-				sender.sendMessage(ChatColor.YELLOW+"[KitsuneChat] KitsuneChat - Channeled Chat System v"+KitsuneChat.getInstance().getDescription().getVersion()+" by CyberKitsune.");
+				sender.sendMessage(String.format(LocalizedString.get("about", locale),KitsuneChat.getInstance().getDescription().getVersion()));
 				printHelp(sender);
 			}
 			else if (!commands.containsKey(args[0]))
 			{
-				sender.sendMessage(ChatColor.RED + "[KitsuneChat] Invalid command specified. Possible commands:");
+				sender.sendMessage(LocalizedString.get("invalid", locale));
 				printHelp(sender);
 			}
 			else
@@ -88,7 +93,7 @@ public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 				// We're a player, so we should do a permission check
 				if(sender instanceof Player && !cmd.hasPermission((Player) sender, subCommand))
 				{
-					sender.sendMessage(ChatColor.RED + "[KitsuneChat] You do not have permission to do that.");
+					sender.sendMessage(LocalizedString.get("noperms", ((Player) sender).getLocale()));
 					return true;
 				}
 
@@ -96,7 +101,7 @@ public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 				boolean argsValid = cmd.runCommand(sender, subCommand, subCommandArgs);
 				if(!argsValid)
 				{
-					sender.sendMessage(ChatColor.RED + String.format("[KitsuneChat] Invalid usage of /kc %s. Possible usages:", cmd.getName()));
+					sender.sendMessage(ChatColor.RED + String.format(LocalizedString.get("badusage", locale), cmd.getName()));
 					for(String sCmd : cmd.getSubCommands())
 					{
 						if(cmd.senderCanRunCommand(sender, sCmd))
@@ -112,7 +117,13 @@ public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 	}
 	
 	private void printHelp(CommandSender target) {
-		target.sendMessage(ChatColor.YELLOW+"[KitsuneChat] /kc ? - Help, this command. ");
+		String locale;
+		if(target instanceof Player)
+			locale = ((Player) target).getLocale();
+		else
+			locale = "en_US";
+
+		target.sendMessage(LocalizedString.get("commands.help.helptext", locale));
 		ArrayList<String> checkedCommands = new ArrayList<>();
 		for (KCommand cmd : commands.values())
 		{
@@ -127,7 +138,7 @@ public class KitsuneChatCommand implements CommandExecutor, TabCompleter {
 			sb.append("[KitsuneChat] /kc ").append(cmd.getName());
 			if(cmd.getAliases().size() > 0)
 			{
-				sb.append(" (or: ");
+				sb.append(" (").append(LocalizedString.get("commands.help.or", locale)).append(": ");
 				sb.append(String.join(",", cmd.getAliases()));
 				sb.append(")");
 			}

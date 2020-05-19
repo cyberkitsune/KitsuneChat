@@ -2,6 +2,7 @@ package net.cyberkitsune.prefixchat.command;
 
 import net.cyberkitsune.prefixchat.KitsuneChat;
 import net.cyberkitsune.prefixchat.KitsuneChatUserData;
+import net.cyberkitsune.prefixchat.LocalizedString;
 import net.cyberkitsune.prefixchat.channels.KitsuneChannel;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -47,6 +48,11 @@ public class ChannelCommand implements KCommand {
 
     @Override
     public boolean runCommand(CommandSender sender, String subCommand, String[] args) {
+        String locale;
+        if(sender instanceof Player)
+            locale = ((Player) sender).getLocale();
+        else
+            locale = "en_US";
         if (subCommand == null)
             return false;
 
@@ -55,7 +61,7 @@ public class ChannelCommand implements KCommand {
 
         KitsuneChannel ch = KitsuneChat.getInstance().channels.get(subCommand);
         KitsuneChatUserData.getInstance().setUserChannel((Player) sender, ch.getPrefix());
-        sender.sendMessage(ChatColor.YELLOW + "[KitsuneChat] Default chat now set to " + ch.getChannelName());
+        sender.sendMessage(String.format(LocalizedString.get("commands.channel.default", locale),ch.getChannelName()));
         return true;
     }
 

@@ -1,6 +1,7 @@
 package net.cyberkitsune.prefixchat.channels;
 
 import net.cyberkitsune.prefixchat.ChatParties;
+import net.cyberkitsune.prefixchat.LocalizedString;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -20,7 +21,7 @@ public class PartyChannel implements KitsuneChannel {
             return false;
         if(!ChatParties.getInstance().isInAParty(context.getPlayer()))
         {
-            context.getPlayer().sendMessage(ChatColor.YELLOW + "[KitsuneChat] You are not currently in a channel.");
+            context.getPlayer().sendMessage(LocalizedString.get("channel.party.notin", context.getPlayer().getLocale()));
             return false;
         }
 

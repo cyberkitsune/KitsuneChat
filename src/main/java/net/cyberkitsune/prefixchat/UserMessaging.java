@@ -69,7 +69,7 @@ public class UserMessaging implements CommandExecutor, Listener {
 				target.sendMessage(formatMessage(player, "Me", message));
 				// Let player know once they can /r to a /msg if they haven't been already.
 				if (!replyWarned.contains(target.getDisplayName()) && !KitsuneChatUserData.getInstance().getReplyReminderSetting(target)) {
-					target.sendMessage(ChatColor.DARK_GRAY + "" + ChatColor.ITALIC + "You can use /r to reply to direct messages.");
+					target.sendMessage(LocalizedString.get("messaging.reminder", target.getLocale()));
 					replyWarned.add(target.getDisplayName());
 				}
 			}
@@ -129,26 +129,29 @@ public class UserMessaging implements CommandExecutor, Listener {
 			boolean isAction = false;
 			String[] message = null;
 			String joined = null;
-			
+			String locale;
+
 			// Are we from console? Get player name.
 			if(!(sender instanceof Player)) {
 				fromconsole = true;
 				player = "CONSOLE";
+				locale = "en_US";
 			} else {
 				player = ((Player) sender).getName();
+				locale = ((Player) sender).getLocale();
 			}
 			
 			// MSG checks
 			if(cmd.getName().equalsIgnoreCase("msg")) {
 				// Argument checks
 				if(args.length < 2) {
-					sender.sendMessage(ChatColor.RED+"[KitsuneChat] Invalid format, use: /msg [Player] [Message]");
+					sender.sendMessage(LocalizedString.get("messaging.invalid", locale));
 					return false;
 				}
 			
 				// Self-talk check
 				if(sender.getName().equalsIgnoreCase(args[0])) {
-					sender.sendMessage(ChatColor.GRAY+"Talking to yourself is a sign of insanity.");
+					sender.sendMessage(LocalizedString.get("messaging.yourself", locale));
 					return true;
 				}
 				
@@ -164,13 +167,13 @@ public class UserMessaging implements CommandExecutor, Listener {
 			} else if(cmd.getName().equalsIgnoreCase("r")) {
 				// Argument checks
 				if(args.length <= 0) {
-					sender.sendMessage(ChatColor.RED+"[KitsuneChat] Usage: /r [message]");
+					sender.sendMessage(LocalizedString.get("messaging.rusage", locale));
 					return false;
 				}
 				
 				// Get the receiver
 				if(!replies.containsKey(player.toLowerCase())) {
-					sender.sendMessage(ChatColor.RED+"[KitsuneChat] You have nobody to reply to.");
+					sender.sendMessage(LocalizedString.get("messaging.nobody", locale));
 					return false;
 				} else {
 					otherPlayer = replies.get(player.toLowerCase());
@@ -192,7 +195,7 @@ public class UserMessaging implements CommandExecutor, Listener {
 				
 				// Does the player exist/online?
 				if((target == null || !target.isOnline())) {
-					sender.sendMessage(ChatColor.RED+"[KitsuneChat] I can't find "+args[0]+"! D:");
+					sender.sendMessage(String.format(LocalizedString.get("cantfind", locale), args[0]));
 					return false;
 				} else {
 					otherPlayer = target.getName(); // Get proper-cased name

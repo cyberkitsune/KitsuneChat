@@ -35,7 +35,7 @@ public class ConnectHandler implements Listener {
 			KitsuneChannel channel = KitsuneChat.getInstance().getChannelByPrefix(currentChannel);
 			if (channel != null)
 			{
-				evt.getPlayer().sendMessage(ChatColor.GRAY+String.format("[KitsuneChat] Current talking to %s. Run /kc channel %s to return to default.",
+				evt.getPlayer().sendMessage(String.format(LocalizedString.get("defwarning", evt.getPlayer().getLocale()),
 						channel.getChannelName(), KitsuneChat.getInstance().getConfig().getString("channels.default")));
 
 			}

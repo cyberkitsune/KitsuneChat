@@ -1,1 +1,33 @@
 en_US:
+  dashnotice: "&7&o(Your message ended with --, will append next message to it.)"
+  configissue: "&c[KitsuneChat] You tried to talk in a channel that doesn't exist, and the default doesn't exist either. This is a configuration issue, ask your server admin."
+  changepartyfrom: "&e[KitsuneChat] Changing party from %s to %s"
+  hasleft: "&e[KitsuneChat] %s has left %s"
+  hasjoined: "&e[KitsuneChat] %s has joined %s"
+  joinedparty: "&e[KitsuneChat] %s has joined the party %s"
+  defwarning: "&7[KitsuneChat] Current talking to %s. Run /kc channel %s to return to default."
+  nocommand: "&c[KitsuneChat] No command specified. Possible commands:"
+  about: "&e[KitsuneChat] KitsuneChat - Channeled Chat System v%s by CyberKitsune."
+  invalid: "&c[KitsuneChat] Invalid command specified. Possible commands:"
+  noperms: "&c[KitsuneChat] You do not have permission to do that."
+  badusage: "&c[KitsuneChat] Invalid usage of /kc %s. Possible usages:"
+  commands:
+    help:
+      helptext: "&e[KitsuneChat] /kc ? - Help, this command. "
+      or: "or"
+    channel:
+      default: "&e[KitsuneChat] Default chat now set to %s"
+  messaging:
+    reminder: "&8&oYou can use /r to reply to direct messages."
+    invalid: "&c[KitsuneChat] Invalid format, use: /msg [Player] [Message]"
+    yourself: "&7You can't talk to yourself! o.o;"
+    rusage: "&c[KitsuneChat] Usage: /r [message]"
+    nobody: "&c[KitsuneChat] You have nobody to reply to."
+    cantfind: "&c[KitsuneChat] I can't find %s! D:"
+  channel:
+    nodefperms: "&7(You do not have permission to talk in %s by default. Changing you to default chat.)"
+    noperms: "&cYou do not have permissions to use %s chat."
+    local:
+      nobody: "&7(Nobody can hear you, try talking in a different channel. Use /kc ? for help.)"
+    party:
+      notin: "%e[KitsuneChat] You are not currently in a chat party."
