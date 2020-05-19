@@ -17,7 +17,7 @@ public class ReloadCommand implements KCommand {
 
     @Override
     public String getHelp(String locale) {
-        return LocalizedString.get("commands.reload.help");
+        return LocalizedString.get("commands.reload.help", locale);
     }
 
     @Override
