@@ -60,3 +60,5 @@ en_us:
     party:
       notin: "%e[KitsuneChat] You are not currently in a chat party."
 es_mx:
+  messaging:
+    rusage: "&c[KitsuneChat] Usage: /r [mensaje]"
