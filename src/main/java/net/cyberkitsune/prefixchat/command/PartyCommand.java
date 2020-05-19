@@ -103,8 +103,7 @@ public class PartyCommand implements KCommand {
                         playerlist.append(plr.getDisplayName()).append(", ");
                     }
                     playerlist = new StringBuilder(playerlist.substring(0, playerlist.length() - 2) + ".");
-                    sender.sendMessage(ChatColor.YELLOW + "[KitsuneChat] " + partyMembers.size() + ((partyMembers.size() == 1) ? " person " : " people ") + "in the party.");
-                    sender.sendMessage(ChatColor.YELLOW + "[KitsuneChat] They are: " + playerlist + ".");
+                    sender.sendMessage(String.format(LocalizedString.get("commands.party.list", locale), partyMembers.size(), playerlist));
                 } else {
                     sender.sendMessage((LocalizedString.get("commands.party.notinparty", locale)));
                 }
