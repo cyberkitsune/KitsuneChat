@@ -76,8 +76,7 @@ public class ChatParties {
 			partyData.remove(target);
 			
 		} else {
-			notifyParty(party, ChatColor.YELLOW+"[KitsuneChat] "+target.getDisplayName()+
-					LocalizedString.get("hasleft", target.getLocale())+party+".");
+			notifyParty(party, String.format(LocalizedString.get("hasleft", target.getLocale()), target.getDisplayName(), party));
 			partyData.remove(target);
 			KitsuneChatUserData.getInstance().setUserParty(target, "");
 		}
