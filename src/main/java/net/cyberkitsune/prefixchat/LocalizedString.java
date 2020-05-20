@@ -7,6 +7,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.regex.Pattern;
 
 public class LocalizedString {
 
@@ -32,7 +33,22 @@ public class LocalizedString {
             return "";
 
         if(!lf.contains(locale))
+        {
+            String[] localeparts = locale.split(Pattern.quote("_"));
             locale = "en_us";
+            if(localeparts.length == 2)
+            {
+                String lang = localeparts[0];
+                // Find anything beginning with language if one has been set
+                for(String rootKey : lf.getKeys(false))
+                {
+                    if(rootKey.startsWith(lang))
+                        locale = rootKey;
+                }
+            }
+
+        }
+
         String message;
         if(lf.contains(locale+"."+key))
             message = lf.getString(locale+"."+key);
