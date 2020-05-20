@@ -122,6 +122,8 @@ public class KitsuneChat extends JavaPlugin {
 		} else {
 			msgCmd.setExecutor(msgExec);
 			repCmd.setExecutor(msgExec);
+			msgCmd.setExecutor(msgExec);
+			repCmd.setTabCompleter(msgExec);
 		}
 
 		KitsuneChatUserData.getInstance().loadUserData();

@@ -6,14 +6,17 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import com.google.common.base.Joiner;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-public class UserMessaging implements CommandExecutor, Listener {
+public class UserMessaging implements CommandExecutor, Listener, TabCompleter {
 	
 	private Map<String, String> replies;
 	private List<String> replyWarned;
@@ -218,5 +221,27 @@ public class UserMessaging implements CommandExecutor, Listener {
 	// Reset the player to be warned again about /r when they reconnect
 	public void onLeave(PlayerQuitEvent evt) {
 		replyWarned.remove(evt.getPlayer().getDisplayName());
+	}
+
+	@Override
+	public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+		if(command.getName().equals("r"))
+		{
+			return Collections.emptyList();
+		}
+
+		if(command.getName().equals("msg"))
+		{
+			if(args.length < 2)
+			{
+				return null;
+			}
+			else
+			{
+				return Collections.emptyList();
+			}
+		}
+
+		return null;
 	}
 }
