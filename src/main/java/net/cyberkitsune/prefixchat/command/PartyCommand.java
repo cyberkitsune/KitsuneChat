@@ -4,10 +4,10 @@ import net.cyberkitsune.prefixchat.ChatParties;
 import net.cyberkitsune.prefixchat.KitsuneChat;
 import net.cyberkitsune.prefixchat.KitsuneChatUserData;
 import net.cyberkitsune.prefixchat.LocalizedString;
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -77,6 +77,7 @@ public class PartyCommand implements KCommand {
                         Player target = KitsuneChat.getInstance().getServer().getPlayer(args[0]);
                         if (target != null) {
                             ComponentBuilder cb = new ComponentBuilder(String.format(LocalizedString.get("commands.party.invited", locale),sender.getName()))
+                                    .color(ChatColor.YELLOW)
                                     .append(LocalizedString.get("commands.party.accept", locale))
                                     .color(net.md_5.bungee.api.ChatColor.GREEN).bold(true).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/kc party join " + ChatParties.getInstance().getPartyName((Player) sender)))
                                     .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(LocalizedString.get("commands.party.click", locale) + ChatParties.getInstance().getPartyName((Player) sender)).create()));
