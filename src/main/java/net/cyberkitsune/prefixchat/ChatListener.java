@@ -133,7 +133,6 @@ public class ChatListener implements Listener {
 			evt.setCancelled(true);
 		}
 	}
-
 	public void onLeave(PlayerQuitEvent evt) {
 		dashReminded.remove(evt.getPlayer().getDisplayName());
 	}
