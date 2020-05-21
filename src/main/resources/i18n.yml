@@ -64,6 +64,65 @@ en_us:
       nobody: "&7(Nobody can hear you, try talking in a different channel. Use /kc ? for help.)"
     party:
       notin: "%e[KitsuneChat] You are not currently in a chat party."
-es_mx:
+es_mx: # Credit to sloppywuff
+  dashnotice: "&7&o(Tu mensaje finalizó con --, el próximo mensaje será anexado a ello.)"
+  configissue: "&c[KitsuneChat] Intentaste hablar en un chat que no existe, y el predeterminado tampoco existe. Esto es un problema de configuración, pregunta a un administrador del servidor."
+  changepartyfrom: "&e[KitsuneChat] Cambiando party de %s a %s"
+  hasleft: "&e[KitsuneChat] %s ha dejado %s"
+  hasjoined: "&e[KitsuneChat] %s se unió a %s"
+  joinedparty: "&e[KitsuneChat] %s se unió a la party %s"
+  defwarning: "&7[KitsuneChat] Actualmente hablando con %s. Ejecuta /kc channel %s para volver al defecto."
+  nocommand: "&c[KitsuneChat] No se especificó comando. Posibles comandos:"
+  about: "&e[KitsuneChat] KitsuneChat - Sistema de chat canalizado v%s, por CyberKitsune."
+  invalid: "&c[KitsuneChat] Comando inválido especificado. Posibles comandos:"
+  noperms: "&c[KitsuneChat] No tienes permiso para hacer eso."
+  badusage: "&c[KitsuneChat] Uso inválido de /kc %s. Posibles usos:"
+  commands:
+    help:
+      helptext: "&e[KitsuneChat] /kc ? - Ayuda, este comando. "
+      or: "o"
+    channel:
+      default: "&e[KitsuneChat] Chat por defecto ahora puesto en %s"
+      help: "Cambia tu actual canal predeterminado."
+      subcommand-help: "/kc channel %s - Cambia tu canal a %s"
+    reminder:
+      disabled: "&e[KitsuneChat] ¡El recordatorio de respuesta para mensajes privados está ahora deshabilitado!"
+      enabled: "&e[KitsuneChat] ¡El recordatorio de respuesta para mensajes privados está ahora habilitado!"
+      help: "Este comando deshabilitará o habilitará el recordatorio al recibir tu primer mensaje privado."
+      subcommandhelp:
+        off: "/kc reminder off - Este comando deshabilita el recordatorio después de recibir un mensaje."
+        on: "/kc remidner on - Este comando habilita el recordatorio después de recibir un mensaje."
+    reload:
+      help: "Recarga el plugin"
+      reloaded: "&7[KitsuneChat] ¡KitsuneChat recargado! >w<"
+    party:
+      help: "Te permite crear, unirse, abandonar, o invitar personas a un chat party."
+      subcommandhelp:
+        join: "/kc party join <name> - Permite unirse a un chat party por nombre."
+        leave: "/kc party leave - Permite abandonar un chat party"
+        invite: "/kc party invite <name> - Invita a un usuario para unirse a tu chat party."
+        list: "/kc party list - Muestra quién está en tu actual chat party."
+      joined: "&e[KitsuneChat] ¡Te has unido a la party %s!"
+      notexist: "&c[KitsuneChat] ¡Ese usuario no existe!"
+      notinparty: "&c[KitsuneChat] ¡No estás en una party!"
+      invited: "&e[KitsuneChat] ¡%s te ha invitado a una party! Haz clic para unirse: "
+      accept: "[ACEPTAR]"
+      click: "Haz clic para unirse "
+      invitedtohere: "&a[KitsuneChat] %s&a invitó a %s&a a la party"
+      list: "&e[KitsuneChat] Miembros de la party (%d): %s"
+
   messaging:
+    reminder: "&8&oPuedes usar /r para responder mensajes directos."
+    invalid: "&c[KitsuneChat] Formato inválido, usa: /msg [Jugador] [Mensaje]"
+    yourself: "&7¡No puedes hablar a ti mismo! o.o;"
     rusage: "&c[KitsuneChat] Uso: /r [mensaje]"
+    nobody: "&c[KitsuneChat] No tienes a nadie con quien responder."
+    cantfind: "&c[KitsuneChat] ¡No puedo encontrar a %s! D:"
+  channel:
+    nodefperms: "&7(No tienes permiso para hablar en %s por defecto. Cambiando al chat predeterminado.)"
+    noperms: "&cNo tienes permiso para usar el chat %s."
+    local:
+      nobody: "&7(Nadie puede oirte, intenta hablar en un canal diferente. Usa /kc ? para ayuda.)"
+    party:
+      notin: "%e[KitsuneChat] Actualmente no estás en un chat party."
+
