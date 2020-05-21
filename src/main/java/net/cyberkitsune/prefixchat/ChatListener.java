@@ -10,6 +10,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 public class ChatListener implements Listener {
 
@@ -103,14 +104,6 @@ public class ChatListener implements Listener {
 			target_channel = default_channel;
 		}
 
-		// If message is longer than 200 characters (max is 256) reminder player they can append
-		if (evt.getMessage().length()>=200) {
-			if (!dashReminded.contains(evt.getPlayer().getDisplayName())) {
-				evt.getPlayer().sendMessage(LocalizedString.get("dashreminder", evt.getPlayer().getLocale()));
-				dashReminded.add(evt.getPlayer().getDisplayName());
-			}
-		}
-
 		if (target_channel.onMessage(message, evt)) {
 			String unformatted_message = message;
 			message = target_channel.formatMessage(message, evt, emote);
@@ -126,12 +119,23 @@ public class ChatListener implements Listener {
 				evt.setCancelled(false);                                        // Shouldn't cancel
 			}
 
+			// If message is longer than 200 characters (max is 256) reminder player they can append
+			if (evt.getMessage().length()>=200) {
+				if (!dashReminded.contains(evt.getPlayer().getDisplayName())) {
+					evt.getPlayer().sendMessage(LocalizedString.get("dashreminder", evt.getPlayer().getLocale()));
+					dashReminded.add(evt.getPlayer().getDisplayName());
+				}
+			}
+
 			target_channel.postMessage(message, evt);
 		} else {
 			// OnMessage should handle any permissions / other warnings
 			evt.setCancelled(true);
-
 		}
+	}
+
+	public void onLeave(PlayerQuitEvent evt) {
+		dashReminded.remove(evt.getPlayer().getDisplayName());
 	}
 }
 
