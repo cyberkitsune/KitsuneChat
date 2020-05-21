@@ -103,7 +103,7 @@ public class ChatListener implements Listener {
 			target_channel = default_channel;
 		}
 
-		// If message is longer than 200 characters (max is 256)
+		// If message is longer than 200 characters (max is 256) reminder player they can append
 		if (evt.getMessage().length()>=200) {
 			if (!dashReminded.contains(evt.getPlayer().getDisplayName())) {
 				evt.getPlayer().sendMessage(LocalizedString.get("dashreminder", evt.getPlayer().getLocale()));
