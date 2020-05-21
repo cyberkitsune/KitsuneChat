@@ -4,6 +4,7 @@
 # Copy en_us as a base and paste it below the en_us block, change the encoding name and you should be good to go!
 
 en_us:
+  dashreminder: "&7&o(Your message can end with --, it will append your message and continue it)"
   dashnotice: "&7&o(Your message ended with --, will append next message to it.)"
   configissue: "&c[KitsuneChat] You tried to talk in a channel that doesn't exist, and the default doesn't exist either. This is a configuration issue, ask your server admin."
   changepartyfrom: "&e[KitsuneChat] Changing party from %s to %s"
@@ -125,4 +126,3 @@ es_mx: # Credit to sloppywuff
       nobody: "&7(Nadie puede oirte, intenta hablar en un canal diferente. Usa /kc ? para ayuda.)"
     party:
       notin: "%e[KitsuneChat] Actualmente no estás en un chat party."
-

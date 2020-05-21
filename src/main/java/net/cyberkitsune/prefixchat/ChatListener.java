@@ -4,13 +4,13 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 import net.cyberkitsune.prefixchat.channels.KitsuneChannel;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 public class ChatListener implements Listener {
 
@@ -18,7 +18,10 @@ public class ChatListener implements Listener {
 
 	public ChatListener() {
 		this.bufs = new HashMap<>();
+		dashReminded = new ArrayList<String>();
 	}
+
+	private List<String> dashReminded;
 
 	@EventHandler(priority = EventPriority.LOW)
 	public void playerEmote(PlayerCommandPreprocessEvent evt) {
@@ -116,12 +119,22 @@ public class ChatListener implements Listener {
 				evt.setCancelled(false);                                        // Shouldn't cancel
 			}
 
+			// If message is longer than 200 characters (max is 256) reminder player they can append
+			if (evt.getMessage().length()>=200) {
+				if (!dashReminded.contains(evt.getPlayer().getDisplayName())) {
+					evt.getPlayer().sendMessage(LocalizedString.get("dashreminder", evt.getPlayer().getLocale()));
+					dashReminded.add(evt.getPlayer().getDisplayName());
+				}
+			}
+
 			target_channel.postMessage(message, evt);
 		} else {
 			// OnMessage should handle any permissions / other warnings
 			evt.setCancelled(true);
-
 		}
+	}
+	public void onLeave(PlayerQuitEvent evt) {
+		dashReminded.remove(evt.getPlayer().getDisplayName());
 	}
 }
 
