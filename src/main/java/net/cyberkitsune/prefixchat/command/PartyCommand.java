@@ -76,14 +76,15 @@ public class PartyCommand implements KCommand {
                     if (ChatParties.getInstance().isInAParty((Player) sender)) {
                         Player target = KitsuneChat.getInstance().getServer().getPlayer(args[0]);
                         if (target != null) {
-                            ComponentBuilder cb = new ComponentBuilder(String.format(LocalizedString.get("commands.party.invited", locale),sender.getName()))
+                            String targetLocale = target.getLocale();
+                            ComponentBuilder cb = new ComponentBuilder(String.format(LocalizedString.get("commands.party.invited", targetLocale),sender.getName()))
                                     .color(ChatColor.YELLOW)
-                                    .append(LocalizedString.get("commands.party.accept", locale))
+                                    .append(LocalizedString.get("commands.party.accept", targetLocale))
                                     .color(net.md_5.bungee.api.ChatColor.GREEN).bold(true).event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/kc party join " + ChatParties.getInstance().getPartyName((Player) sender)))
-                                    .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(LocalizedString.get("commands.party.click", locale) + ChatParties.getInstance().getPartyName((Player) sender)).create()));
+                                    .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(LocalizedString.get("commands.party.click", targetLocale) + ChatParties.getInstance().getPartyName((Player) sender)).create()));
                             target.spigot().sendMessage(cb.create());
-                            ChatParties.getInstance().notifyParty(ChatParties.getInstance().getPartyName((Player) sender),
-                                    String.format(LocalizedString.get("commands.party.invitedtohere"), sender.getName(), target.getDisplayName()));
+                            ChatParties.getInstance().notifyPartyLocalized(ChatParties.getInstance().getPartyName((Player) sender),
+                                    "commands.party.invitedtohere", sender.getName(), target.getDisplayName());
                         } else {
                             sender.sendMessage(LocalizedString.get("commands.party.notexist", locale));
                         }

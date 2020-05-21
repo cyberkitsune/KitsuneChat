@@ -35,12 +35,12 @@ public class ChatParties {
 		String locale = target.getLocale();
 		if(!partyData.containsKey(target))
 		{
-			notifyParty(name, String.format(LocalizedString.get("joinedparty", locale), target.getDisplayName(), name));
+			notifyPartyLocalized(name, "joinedparty", target.getDisplayName(), name);
 		} else {
 
 			target.sendMessage(String.format(LocalizedString.get("changepartyfrom", locale), partyData.get(target), name));
-			notifyParty(partyData.get(target), String.format(LocalizedString.get("hasleft", locale), target.getDisplayName(), partyData.get(target)));
-			notifyParty(name, String.format(LocalizedString.get("hasjoined", locale), target.getDisplayName(), name));
+			notifyPartyLocalized(partyData.get(target), "hasleft", target.getDisplayName(), partyData.get(target));
+			notifyPartyLocalized(name, "hasjoined", target.getDisplayName(), name);
 			partyData.remove(target);
 
 		}
@@ -53,6 +53,13 @@ public class ChatParties {
 		Set<Player> channelMembers = getKeysByValue(partyData, party);
 		for(Player plr : channelMembers) {
 			plr.sendMessage(message);
+		}
+	}
+
+	public void notifyPartyLocalized(String party, String key, Object... args) {
+		Set<Player> channelMembers = getKeysByValue(partyData, party);
+		for(Player plr : channelMembers) {
+			plr.sendMessage(String.format(LocalizedString.get(key, plr.getLocale()), args));
 		}
 	}
 	
@@ -76,7 +83,7 @@ public class ChatParties {
 			partyData.remove(target);
 			
 		} else {
-			notifyParty(party, String.format(LocalizedString.get("hasleft", target.getLocale()), target.getDisplayName(), party));
+			notifyPartyLocalized(party, "hasleft", target.getDisplayName(), party);
 			partyData.remove(target);
 			KitsuneChatUserData.getInstance().setUserParty(target, "");
 		}
