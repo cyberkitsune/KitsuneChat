@@ -1,11 +1,9 @@
 package net.cyberkitsune.prefixchat.channels;
 
-import jdk.vm.ci.meta.Local;
 import net.cyberkitsune.prefixchat.KitsuneChat;
 import net.cyberkitsune.prefixchat.KitsuneChatUserData;
 import net.cyberkitsune.prefixchat.LocalizedString;
 import net.cyberkitsune.prefixchat.MessageTagger;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
