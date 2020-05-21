@@ -19,11 +19,11 @@ import org.jetbrains.annotations.Nullable;
 public class UserMessaging implements CommandExecutor, Listener, TabCompleter {
 	
 	private Map<String, String> replies;
-	private List<String> replyWarned;
+	private List<String> replyReminded;
 	
 	public UserMessaging() {
 		replies = new HashMap<String, String>();
-		replyWarned = new ArrayList<String>();
+		replyReminded = new ArrayList<String>();
 	}
 	
 	/**
@@ -71,9 +71,9 @@ public class UserMessaging implements CommandExecutor, Listener, TabCompleter {
 			} else {
 				target.sendMessage(formatMessage(player, "Me", message));
 				// Let player know once they can /r to a /msg if they haven't been already.
-				if (!replyWarned.contains(target.getDisplayName()) && !KitsuneChatUserData.getInstance().getReplyReminderSetting(target)) {
+				if (!replyReminded.contains(target.getDisplayName()) && !KitsuneChatUserData.getInstance().getReplyReminderSetting(target)) {
 					target.sendMessage(LocalizedString.get("messaging.reminder", target.getLocale()));
-					replyWarned.add(target.getDisplayName());
+					replyReminded.add(target.getDisplayName());
 				}
 			}
 			
@@ -220,7 +220,7 @@ public class UserMessaging implements CommandExecutor, Listener, TabCompleter {
 	@EventHandler
 	// Reset the player to be warned again about /r when they reconnect
 	public void onLeave(PlayerQuitEvent evt) {
-		replyWarned.remove(evt.getPlayer().getDisplayName());
+		replyReminded.remove(evt.getPlayer().getDisplayName());
 	}
 
 	@Override

@@ -4,7 +4,6 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 import net.cyberkitsune.prefixchat.channels.KitsuneChannel;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -18,7 +17,10 @@ public class ChatListener implements Listener {
 
 	public ChatListener() {
 		this.bufs = new HashMap<>();
+		dashReminded = new ArrayList<String>();
 	}
+
+	private List<String> dashReminded;
 
 	@EventHandler(priority = EventPriority.LOW)
 	public void playerEmote(PlayerCommandPreprocessEvent evt) {
@@ -99,6 +101,14 @@ public class ChatListener implements Listener {
 			}
 			KitsuneChatUserData.getInstance().setUserChannel(evt.getPlayer(), default_channel.getPrefix());
 			target_channel = default_channel;
+		}
+
+		// If message is longer than 200 characters (max is 256)
+		if (evt.getMessage().length()>=200) {
+			if (!dashReminded.contains(evt.getPlayer().getDisplayName())) {
+				evt.getPlayer().sendMessage(LocalizedString.get("dashreminder", evt.getPlayer().getLocale()));
+				dashReminded.add(evt.getPlayer().getDisplayName());
+			}
 		}
 
 		if (target_channel.onMessage(message, evt)) {
