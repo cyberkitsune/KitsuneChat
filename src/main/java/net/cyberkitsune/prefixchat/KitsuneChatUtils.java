@@ -75,4 +75,16 @@ public class KitsuneChatUtils {
 				event.getMessage()
 				);
 	}
+
+	public Player getPlayerFromDisplay(String displayName)
+	{
+		Player out = null;
+		for(Player p : KitsuneChat.getInstance().getServer().getOnlinePlayers())
+		{
+			if(ChatColor.stripColor(p.getDisplayName()).equalsIgnoreCase(displayName))
+				out = p;
+		}
+
+		return out;
+	}
 }

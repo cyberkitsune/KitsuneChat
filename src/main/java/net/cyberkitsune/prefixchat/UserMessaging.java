@@ -140,7 +140,7 @@ public class UserMessaging implements CommandExecutor, Listener, TabCompleter {
 				player = "CONSOLE";
 				locale = "en_US";
 			} else {
-				player = ((Player) sender).getName();
+				player = ChatColor.stripColor(((Player) sender).getDisplayName());
 				locale = ((Player) sender).getLocale();
 			}
 			
@@ -194,14 +194,14 @@ public class UserMessaging implements CommandExecutor, Listener, TabCompleter {
 				
 			// Get the target if not console
 			} else {
-				target = KitsuneChat.getInstance().getServer().getPlayer(otherPlayer);
+				target = KitsuneChatUtils.getInstance().getPlayerFromDisplay(otherPlayer);
 				
 				// Does the player exist/online?
 				if((target == null || !target.isOnline())) {
 					sender.sendMessage(String.format(LocalizedString.get("cantfind", locale), args[0]));
 					return false;
 				} else {
-					otherPlayer = target.getName(); // Get proper-cased name
+					otherPlayer = target.getDisplayName(); // Get proper-cased name
 				}
 			}
 						
@@ -234,7 +234,11 @@ public class UserMessaging implements CommandExecutor, Listener, TabCompleter {
 		{
 			if(args.length < 2)
 			{
-				return null;
+				ArrayList<String> names = new ArrayList<>();
+				for(Player p : KitsuneChat.getInstance().getServer().getOnlinePlayers())
+					names.add(ChatColor.stripColor(p.getDisplayName()));
+
+				return names;
 			}
 			else
 			{
