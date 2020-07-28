@@ -13,6 +13,7 @@ import com.google.common.base.Joiner;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -235,10 +236,13 @@ public class UserMessaging implements CommandExecutor, Listener, TabCompleter {
 			if(args.length < 2)
 			{
 				ArrayList<String> names = new ArrayList<>();
+				ArrayList<String> completions = new ArrayList<>();
 				for(Player p : KitsuneChat.getInstance().getServer().getOnlinePlayers())
 					names.add(ChatColor.stripColor(p.getDisplayName()));
 
-				return names;
+				StringUtil.copyPartialMatches(args[args.length - 1], names, completions);
+
+				return completions;
 			}
 			else
 			{
