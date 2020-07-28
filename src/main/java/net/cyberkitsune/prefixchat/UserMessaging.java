@@ -202,7 +202,7 @@ public class UserMessaging implements CommandExecutor, Listener, TabCompleter {
 					sender.sendMessage(String.format(LocalizedString.get("cantfind", locale), args[0]));
 					return false;
 				} else {
-					otherPlayer = target.getDisplayName(); // Get proper-cased name
+					otherPlayer = ChatColor.stripColor(target.getDisplayName()); // Get proper-cased name
 				}
 			}
 						
